@@ -21,7 +21,7 @@ jobs:
           script: |
             cd ${{ secrets.DEPLOY_PATH }}
             git pull origin main
-            docker build -t playground-macos .
-            docker stop playground-macos || true
-            docker rm playground-macos || true
-            docker run -d --name playground-macos -p 5000:5000 --restart unless-stopped playground-macos
+            docker build -t portfolio_front .
+            docker stop portfolio_front || true
+            docker rm portfolio_front || true
+            docker run -d --name portfolio_front -p 5000:5000 --restart unless-stopped portfolio_front
