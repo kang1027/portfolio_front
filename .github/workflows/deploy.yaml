@@ -21,4 +21,6 @@ jobs:
           script: |
             cd ${{ secrets.DEPLOY_PATH }}
             git pull origin main
+            docker compose stop playground-macos
+            docker rm playground-macos
             docker compose up --build -d
