@@ -10,9 +10,11 @@
 
 저는 지금까지 약 **6년의 시간**에 걸쳐 코딩을 배우고 적용했으며, 현재 **앱스토어에 2개의 앱을 배포**하고 관련 웹서비스들을 셀프 호스팅으로 운영중입니다.
 
-근래에는 **Rust**를 공부하고 있고, Rust기반 서버를 구성 및 운영하고, Crates를 개발해 오픈소스에 기여하고자 하고 있습니다.
+근래에는 **Rust**를 사용해 작업하고 있고, Rust기반 서버를 구성 및 운영 중입니다.
 
-또한 claude code와 함께 **flutter, react, react native**를 사용해 프론트를 개발합니다.
+또한 claude code와 함께 **flutter, react, react native**로 프론트를 개발합니다.
+
+디지털 노마드의 라이프스타일을 추구하며, 언제나 새로운 기술을 탐구하고자 합니다.
 
 ---
 
@@ -59,7 +61,7 @@ Contact me by:
     - SK-Lookie 연합 동아리
       - [WISEFEE](https://github.com/WISEFEE/SKLookie_SMU_Wisefee_Server) BackEnd 개발
   - **40학점(4.46/4.5) 이수 및 수석**
-- **오픈SW 공모전 참가**
+- **오픈SW 공모전 출품**
   - [TokeNest](https://github.com/TokeNest) SmartContract/BackEnd 개발
 
 ### 2024~2025

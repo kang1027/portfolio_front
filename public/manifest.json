@@ -1,19 +1,19 @@
 {
   "short_name": "playground-macos",
-  "name": "Xiaohan Zou's Portfolio",
+  "name": "kang1027's Portfolio",
   "icons": [
     {
-      "src": "logo/favicon.svg",
+      "src": "logo/favicon.png",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/x-icon"
     },
     {
-      "src": "logo/logo192.png",
+      "src": "logo/mimoji_labtop.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "logo/logo512.png",
+      "src": "logo/mimoji_labtop.png",
       "type": "image/png",
       "sizes": "512x512"
     }
