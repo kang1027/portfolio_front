@@ -6,6 +6,7 @@ import MusicWidget from "~/components/MusicWidget";
 import PhotoWidget from "~/components/PhotoWidget";
 import WeatherWidget from "~/components/WeatherWidget";
 import ContactWidget from "~/components/ContactWidget";
+import bear from "~/configs/bear";
 
 interface DesktopState {
   showApps: {
@@ -47,6 +48,34 @@ export default function Desktop(props: MacActions) {
     dark: state.dark,
     brightness: state.brightness
   }));
+
+  // 페이지 로드 시 이미지 및 마크다운 파일 미리 로딩
+  useEffect(() => {
+    // Photo 이미지 preload
+    const version = "v2";
+    const photoUrls = [
+      `/img/photos/1.png?${version}`,
+      `/img/photos/2.png?${version}`,
+      `/img/photos/3.png?${version}`
+    ];
+
+    photoUrls.forEach((src) => {
+      const img = new Image();
+      img.src = src;
+    });
+
+    // Bear 마크다운 파일 preload
+    const markdownUrls: string[] = [];
+    bear.forEach((category) => {
+      category.md.forEach((item) => {
+        markdownUrls.push(item.file);
+      });
+    });
+
+    markdownUrls.forEach((url) => {
+      fetch(url).catch(() => {});
+    });
+  }, []);
 
   const getAppsData = (): void => {
     let showApps = {},

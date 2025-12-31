@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 
 export default function PhotoWidget() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -17,6 +17,14 @@ export default function PhotoWidget() {
     `/img/photos/2.png?${version}`,
     `/img/photos/3.png?${version}`
   ];
+
+  // 이미지 미리 로딩
+  useEffect(() => {
+    photos.forEach((src) => {
+      const img = new Image();
+      img.src = src;
+    });
+  }, []);
 
   const handlePrevious = () => {
     setCurrentIndex((prev) => (prev === 0 ? photos.length - 1 : prev - 1));
