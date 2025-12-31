@@ -5,6 +5,7 @@ import Desktop from "~/pages/Desktop";
 import Login from "~/pages/Login";
 import Boot from "~/pages/Boot";
 import AdminSetup from "~/pages/AdminSetup";
+import SEO, { SEOProvider } from "~/components/SEO";
 
 import "@unocss/reset/tailwind.css";
 import "uno.css";
@@ -71,30 +72,31 @@ export default function App() {
     setShowAdminSetup(false);
   };
 
-  if (booting) {
-    return <Boot restart={restart} sleep={sleep} setBooting={setBooting} />;
-  } else if (showAdminSetup) {
-    return <AdminSetup onComplete={handleSetupComplete} onSkip={handleSetupSkip} />;
-  } else if (login) {
-    return (
-      <Desktop
-        setLogin={setLogin}
-        shutMac={shutMac}
-        sleepMac={sleepMac}
-        restartMac={restartMac}
-      />
-    );
-  } else {
-    return (
-      <Login
-        setLogin={setLogin}
-        setAdminMode={handleAdminMode}
-        shutMac={shutMac}
-        sleepMac={sleepMac}
-        restartMac={restartMac}
-      />
-    );
-  }
+  return (
+    <SEOProvider>
+      <SEO />
+      {booting ? (
+        <Boot restart={restart} sleep={sleep} setBooting={setBooting} />
+      ) : showAdminSetup ? (
+        <AdminSetup onComplete={handleSetupComplete} onSkip={handleSetupSkip} />
+      ) : login ? (
+        <Desktop
+          setLogin={setLogin}
+          shutMac={shutMac}
+          sleepMac={sleepMac}
+          restartMac={restartMac}
+        />
+      ) : (
+        <Login
+          setLogin={setLogin}
+          setAdminMode={handleAdminMode}
+          shutMac={shutMac}
+          sleepMac={sleepMac}
+          restartMac={restartMac}
+        />
+      )}
+    </SEOProvider>
+  );
 }
 
 const rootElement = document.getElementById("root") as HTMLElement;
