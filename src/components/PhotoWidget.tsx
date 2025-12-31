@@ -10,7 +10,13 @@ export default function PhotoWidget() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   // 임시 사진 배열 (나중에 실제 파일로 교체)
-  const photos = ["/img/photos/1.png", "/img/photos/2.png", "/img/photos/3.png"];
+  // 캐시 방지를 위한 버전 쿼리 파라미터 추가
+  const version = "v2"; // 이미지 업데이트 시 버전 변경
+  const photos = [
+    `/img/photos/1.png?${version}`,
+    `/img/photos/2.png?${version}`,
+    `/img/photos/3.png?${version}`
+  ];
 
   const handlePrevious = () => {
     setCurrentIndex((prev) => (prev === 0 ? photos.length - 1 : prev - 1));
