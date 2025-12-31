@@ -14,11 +14,11 @@ const bear: BearData[] = [
         excerpt: "Rust와 React Native로 서비스를 만들고 운영하는 풀스택 개발자입니다..."
       },
       {
-        id: "github-stats",
-        title: "Github Stats",
-        file: "markdown/github-stats.md",
-        icon: "i-icon-park-outline:github",
-        excerpt: "Here are some status about my github account..."
+        id: "skills",
+        title: "Skills & Style",
+        file: "markdown/skills.md",
+        icon: "i-fa-solid:code",
+        excerpt: "다양한 기술 스택을 활용한 실전 프로젝트 경험..."
       }
     ]
   },

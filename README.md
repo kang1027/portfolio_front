@@ -1,12 +1,11 @@
 # playground-macos
 
-My portfolio website simulating macOS's GUI: https://portfolio.zxh.me
+My portfolio website simulating macOS's GUI: <https://portfolio.zxh.me>
 
 Powered by [React](https://reactjs.org/) + [Zustand](https://zustand-demo.pmnd.rs/) + [UnoCSS](https://uno.antfu.me/) + [TypeScript](https://www.typescriptlang.org/) + [Vite](https://vitejs.dev/).
 
 ![light mode](./public/screenshots/light.png)
 ![dark mode](./public/screenshots/dark.png)
-
 
 &nbsp;
 
@@ -30,7 +29,6 @@ Build for production with minification to the `dist` folder:
 pnpm build
 ```
 
-
 &nbsp;
 
 ## Changelog
@@ -43,7 +41,6 @@ pnpm build
 
 - **Update 2021.12.05**: Refactored for cleaner code by utilizing functional components and hooks. Refer to [this branch](https://github.com/Renovamen/playground-macos/tree/class-component) for the previous version implemented with class components.
 
-
 &nbsp;
 
 ## Credits
@@ -55,9 +52,6 @@ pnpm build
 - [sindresorhus/file-icon-cli](https://github.com/sindresorhus/file-icon-cli)
 - [vivek9patel.github.io](https://github.com/vivek9patel/vivek9patel.github.io)
 
-
-&nbsp;
-
-## License
-
-[MIT](MIT)
+- **Developer:** [kang1027](https://github.com/kang1027) (All core logic, backend, and features)
+- **Design Reference:** This project is based on the open-source design by [Xiaohan Zou (@Renovamen)](https://github.com/Renovamen/playground-macos).
+- **License:** Distributed under the **MIT License**. See `LICENSE` for more information.
