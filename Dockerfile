@@ -10,10 +10,20 @@ RUN corepack enable && corepack prepare pnpm@9.0.6 --activate
 COPY package.json pnpm-lock.yaml ./
 
 # Install dependencies
-RUN pnpm install --frozen-lockfile
+RUN pnpm install --no-frozen-lockfile
 
 # Copy source code
 COPY . .
+
+# Build arguments for environment variables
+ARG VITE_ADMIN_PASSWORD
+ARG VITE_API_URL
+ARG VITE_OPENWEATHER_API_KEY
+
+# Set environment variables from build args
+ENV VITE_ADMIN_PASSWORD=$VITE_ADMIN_PASSWORD
+ENV VITE_API_URL=$VITE_API_URL
+ENV VITE_OPENWEATHER_API_KEY=$VITE_OPENWEATHER_API_KEY
 
 # Build the application
 RUN pnpm build

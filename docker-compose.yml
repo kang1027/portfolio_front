@@ -3,6 +3,10 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        VITE_ADMIN_PASSWORD: ${VITE_ADMIN_PASSWORD}
+        VITE_API_URL: ${VITE_API_URL}
+        VITE_OPENWEATHER_API_KEY: ${VITE_OPENWEATHER_API_KEY}
     env_file:
       - .env
     ports:
