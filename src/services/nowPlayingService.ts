@@ -32,8 +32,19 @@ class NowPlayingService {
 
   constructor() {
     const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:3000";
+
     // HTTP -> WS, HTTPS -> WSS 변환
-    this.wsUrl = apiUrl.replace(/^http/, "ws") + "/ws/now-playing";
+    // https:// -> wss://, http:// -> ws://
+    let wsProtocol = "ws://";
+    if (apiUrl.startsWith("https://")) {
+      wsProtocol = "wss://";
+    }
+
+    const hostname = apiUrl.replace(/^https?:\/\//, "");
+    this.wsUrl = wsProtocol + hostname + "/ws/now-playing";
+
+    console.log("[NowPlayingService] API URL:", apiUrl);
+    console.log("[NowPlayingService] WebSocket URL:", this.wsUrl);
   }
 
   private notifyListeners(data: NowPlayingResponse | null) {
