@@ -2,7 +2,7 @@ name: build-and-deploy
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   deploy:
@@ -21,7 +21,4 @@ jobs:
           script: |
             cd ${{ secrets.DEPLOY_PATH }}
             git pull origin main
-            docker build -t portfolio_front .
-            docker stop portfolio_front || true
-            docker rm portfolio_front || true
-            docker run -d --name portfolio_front -p 5000:5000 --restart unless-stopped portfolio_front
+            docker compose up --build -d
