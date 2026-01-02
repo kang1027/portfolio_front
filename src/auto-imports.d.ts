@@ -21,6 +21,8 @@ declare global {
   const MenuItemGroup: typeof import('./components/menus/base')['MenuItemGroup']
   const MusicWidget: typeof import('./components/MusicWidget')['default']
   const PhotoWidget: typeof import('./components/PhotoWidget')['default']
+  const SEO: typeof import('./components/SEO')['default']
+  const SEOProvider: typeof import('./components/SEO')['SEOProvider']
   const Safari: typeof import('./components/apps/Safari')['default']
   const Spotlight: typeof import('./components/Spotlight')['default']
   const Terminal: typeof import('./components/apps/Terminal')['default']
