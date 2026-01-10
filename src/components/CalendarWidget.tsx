@@ -5,7 +5,6 @@ export default function CalendarWidget() {
 
   const handleClick = () => {
     // TODO: Contact 모달/창 열기
-    console.log("Opening contact form...");
   };
 
   const handleSocialClick = (url: string, e: React.MouseEvent) => {

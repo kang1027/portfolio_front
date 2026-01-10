@@ -42,14 +42,11 @@ class NowPlayingService {
 
     const hostname = apiUrl.replace(/^https?:\/\//, "");
     this.wsUrl = wsProtocol + hostname + "/ws/now-playing";
-
-    console.log("[NowPlayingService] API URL:", apiUrl);
-    console.log("[NowPlayingService] WebSocket URL:", this.wsUrl);
   }
 
   private notifyListeners(data: NowPlayingResponse | null) {
     this.lastData = data;
-    this.listeners.forEach(listener => listener(data));
+    this.listeners.forEach((listener) => listener(data));
   }
 
   // 데이터 구독 (자동으로 연결 시작)
@@ -85,7 +82,10 @@ class NowPlayingService {
       this.ws.onerror = null;
       this.ws.onmessage = null;
       this.ws.onopen = null;
-      if (this.ws.readyState === WebSocket.OPEN || this.ws.readyState === WebSocket.CONNECTING) {
+      if (
+        this.ws.readyState === WebSocket.OPEN ||
+        this.ws.readyState === WebSocket.CONNECTING
+      ) {
         this.ws.close();
       }
       this.ws = null;
@@ -97,7 +97,6 @@ class NowPlayingService {
       this.ws = new WebSocket(this.wsUrl);
 
       this.ws.onopen = () => {
-        console.log("WebSocket connected to", this.wsUrl);
         this.isConnecting = false;
       };
 
