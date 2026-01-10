@@ -27,7 +27,7 @@ class AppleMusicService {
       const developerToken = import.meta.env.VITE_APPLE_MUSIC_DEVELOPER_TOKEN;
 
       if (!developerToken) {
-        console.warn('Apple Music Developer Token not found in .env');
+        console.warn("Apple Music Developer Token not found in .env");
         return;
       }
 
@@ -35,17 +35,15 @@ class AppleMusicService {
       await (window as any).MusicKit.configure({
         developerToken: developerToken,
         app: {
-          name: 'Playground macOS',
-          build: '1.0.0'
+          name: "Playground macOS",
+          build: "1.0.0"
         }
       });
 
       this.musicKit = (window as any).MusicKit.getInstance();
       this.isInitialized = true;
-
-      console.log('Apple Music API initialized successfully');
     } catch (error) {
-      console.error('Failed to initialize Apple Music API:', error);
+      console.error("Failed to initialize Apple Music API:", error);
     }
   }
 
@@ -57,11 +55,11 @@ class AppleMusicService {
         return;
       }
 
-      const script = document.createElement('script');
-      script.src = 'https://js-cdn.music.apple.com/musickit/v3/musickit.js';
+      const script = document.createElement("script");
+      script.src = "https://js-cdn.music.apple.com/musickit/v3/musickit.js";
       script.async = true;
       script.onload = () => resolve();
-      script.onerror = () => reject(new Error('Failed to load MusicKit JS'));
+      script.onerror = () => reject(new Error("Failed to load MusicKit JS"));
       document.head.appendChild(script);
     });
   }
@@ -75,7 +73,7 @@ class AppleMusicService {
       await this.musicKit.authorize();
       return true;
     } catch (error) {
-      console.error('Authorization failed:', error);
+      console.error("Authorization failed:", error);
       return false;
     }
   }
@@ -93,40 +91,38 @@ class AppleMusicService {
       }
 
       return {
-        title: nowPlaying.title || 'Unknown',
-        artist: nowPlaying.artistName || 'Unknown Artist',
-        album: nowPlaying.albumName || 'Unknown Album',
+        title: nowPlaying.title || "Unknown",
+        artist: nowPlaying.artistName || "Unknown Artist",
+        album: nowPlaying.albumName || "Unknown Album",
         artwork: this.getArtworkUrl(nowPlaying.artwork),
         duration: nowPlaying.playbackDuration || 0,
         currentTime: this.musicKit.currentPlaybackTime || 0,
         isPlaying: this.musicKit.isPlaying
       };
     } catch (error) {
-      console.error('Failed to get current playback:', error);
+      console.error("Failed to get current playback:", error);
       return null;
     }
   }
 
   private getArtworkUrl(artwork: any): string {
-    if (!artwork) return '';
+    if (!artwork) return "";
 
     // Apple Music artwork URL 형식
     const width = 400;
     const height = 400;
-    return artwork.url
-      .replace('{w}', width.toString())
-      .replace('{h}', height.toString());
+    return artwork.url.replace("{w}", width.toString()).replace("{h}", height.toString());
   }
 
   onPlaybackStateChange(callback: (track: AppleMusicTrack | null) => void) {
     if (!this.musicKit) return;
 
-    this.musicKit.addEventListener('nowPlayingItemDidChange', async () => {
+    this.musicKit.addEventListener("nowPlayingItemDidChange", async () => {
       const track = await this.getCurrentPlayback();
       callback(track);
     });
 
-    this.musicKit.addEventListener('playbackStateDidChange', async () => {
+    this.musicKit.addEventListener("playbackStateDidChange", async () => {
       const track = await this.getCurrentPlayback();
       callback(track);
     });
@@ -135,7 +131,7 @@ class AppleMusicService {
   onPlaybackTimeChange(callback: (currentTime: number) => void) {
     if (!this.musicKit) return;
 
-    this.musicKit.addEventListener('playbackTimeDidChange', (event: any) => {
+    this.musicKit.addEventListener("playbackTimeDidChange", (event: any) => {
       callback(event.currentPlaybackTime);
     });
   }

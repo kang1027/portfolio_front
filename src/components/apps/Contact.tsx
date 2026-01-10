@@ -69,7 +69,6 @@ const Contact = () => {
       }
 
       const result = await response.json();
-      console.log("Form submitted successfully:", result);
 
       setIsSubmitting(false);
       setSubmitStatus("success");
