@@ -66,7 +66,32 @@ const bear: BearData[] = [
     id: "experience",
     title: "Experience",
     icon: "i-fa-solid:briefcase",
-    md: []
+    md: [
+      {
+        id: "exp-opark",
+        title: "(주)오파크",
+        file: "markdown/exp-opark.md",
+        icon: "i-fa-solid:rocket",
+        excerpt:
+          "2026~ 현재. 스타트업 풀스택 개발자로 재직중. Rust/React/Flutter 기반으로 제품 전반 담당."
+      },
+      {
+        id: "exp-army",
+        title: "M/W 운용병",
+        file: "markdown/exp-army.md",
+        icon: "i-fa-solid:satellite-dish",
+        excerpt:
+          "2024~2025. 국가지휘통신사령부 53대대 마이크로웨이브 통신 장비 운용. 정보보안기사 취득, AI 포스터 준장 훈상."
+      },
+      {
+        id: "exp-jusung",
+        title: "주성엔지니어링",
+        file: "markdown/exp-jusung.md",
+        icon: "i-fa-solid:industry",
+        excerpt:
+          "2020~2021. R&D센터 정보기술팀 ERP/PLM 관리자. 그룹웨어 입력·퇴사자 처리 자동화 도구 개발."
+      }
+    ]
   }
 ];
 
