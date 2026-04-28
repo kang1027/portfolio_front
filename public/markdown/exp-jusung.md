@@ -1,8 +1,8 @@
 # 주성엔지니어링(주) R&D센터 정보기술팀
 
-**기간**: 2020년 ~ 2021년
-**소속**: [주성엔지니어링(주) R&D센터](https://www.jusung.com/document/domestic_branch) 정보기술팀
-**역할**: ERP/PLM 관리자, 사내 자동화 도구 개발
+- **기간**: 2020년 ~ 2021년
+- **소속**: [주성엔지니어링(주) R&D센터](https://www.jusung.com/document/domestic_branch) 정보기술팀
+- **역할**: ERP/PLM 관리자, 사내 자동화 도구 개발
 
 ## 회사 소개
 
