@@ -73,7 +73,7 @@ const bear: BearData[] = [
         file: "markdown/exp-opark.md",
         icon: "i-fa-solid:rocket",
         excerpt:
-          "2026~ 현재. 스타트업 풀스택 개발자로 재직중. Rust/React/Flutter 기반으로 제품 전반 담당."
+          "2026~ 현재. AI 자재 매칭 플랫폼 TOONT-M 개발, SMS↔Slack CS 게이트웨이 구축, TOONT 쇼핑몰 리뉴얼(결제·Meta Pixel) 담당."
       },
       {
         id: "exp-army",
