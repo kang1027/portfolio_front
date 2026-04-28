@@ -1,35 +1,28 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Desktop from "~/pages/Desktop";
 import Login from "~/pages/Login";
 import Boot from "~/pages/Boot";
 import AdminSetup from "~/pages/AdminSetup";
 import SEO, { SEOProvider } from "~/components/SEO";
+import BlogListPage from "~/pages/BlogListPage";
+import BlogPostPage from "~/pages/BlogPostPage";
 
 import "@unocss/reset/tailwind.css";
 import "uno.css";
 import "katex/dist/katex.min.css";
 import "~/styles/index.css";
 
-export default function App() {
+// Portfolio (macOS) Page Component
+function PortfolioPage() {
   const [login, setLogin] = useState<boolean>(false);
   const [booting, setBooting] = useState<boolean>(false);
   const [restart, setRestart] = useState<boolean>(false);
   const [sleep, setSleep] = useState<boolean>(false);
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
   const [showAdminSetup, setShowAdminSetup] = useState<boolean>(false);
-
-  const dark = useStore((state) => state.dark);
-
-  // Apply dark mode class on initial load
-  useEffect(() => {
-    if (dark) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  }, [dark]);
 
   const shutMac = (e: React.MouseEvent): void => {
     e.stopPropagation();
@@ -55,7 +48,6 @@ export default function App() {
     setBooting(true);
   };
 
-  // 관리자 모드 설정 핸들러
   const handleAdminMode = (admin: boolean) => {
     setIsAdmin(admin);
     if (admin) {
@@ -63,7 +55,6 @@ export default function App() {
     }
   };
 
-  // Admin Setup 완료/스킵 핸들러
   const handleSetupComplete = () => {
     setShowAdminSetup(false);
   };
@@ -73,8 +64,7 @@ export default function App() {
   };
 
   return (
-    <SEOProvider>
-      <SEO />
+    <>
       {booting ? (
         <Boot restart={restart} sleep={sleep} setBooting={setBooting} />
       ) : showAdminSetup ? (
@@ -95,7 +85,34 @@ export default function App() {
           restartMac={restartMac}
         />
       )}
-    </SEOProvider>
+    </>
+  );
+}
+
+// Main App Component with Router
+export default function App() {
+  const dark = useStore((state) => state.dark);
+
+  // Apply dark mode class
+  useEffect(() => {
+    if (dark) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }, [dark]);
+
+  return (
+    <BrowserRouter>
+      <SEOProvider>
+        <SEO />
+        <Routes>
+          <Route path="/" element={<PortfolioPage />} />
+          <Route path="/blog" element={<BlogListPage />} />
+          <Route path="/blog/:category/:slug" element={<BlogPostPage />} />
+        </Routes>
+      </SEOProvider>
+    </BrowserRouter>
   );
 }
 
