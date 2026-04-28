@@ -37,7 +37,7 @@
 }
 
 .bear .markdown h1 {
-  @apply text-3xl;
+  @apply text-3xl pb-3 border-b border-c-300;
 }
 
 .bear .markdown h1::before {
@@ -45,7 +45,7 @@
 }
 
 .bear .markdown h2 {
-  @apply text-2xl;
+  @apply text-2xl pb-2 border-b border-c-200;
 }
 
 .bear .markdown h2::before {
