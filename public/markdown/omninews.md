@@ -6,7 +6,7 @@
 
 - **웹**: [https://kang1027.com/omninews](https://kang1027.com/omninews)
 - **iOS**: [App Store](https://apps.apple.com/kr/app/omninews/id6746567181?l=en-GB)
-- **Android**: 심사 중
+- **Android**: [Google Play](https://play.google.com/store/apps/details?id=com.kdh.omninews)
 
 ## 프로젝트 개요
 
