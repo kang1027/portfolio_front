@@ -34,7 +34,7 @@
 
 - 복무 중 자기계발 시간을 활용해 개인 프로젝트 진행
 - Rust 백엔드 + Flutter 앱 + React 웹의 모노레포 구조로 설계
-- App Store 출시 ([web](https://kang1027.com/omninews))
+- 출시 채널: [Web](https://kang1027.com/omninews) / [App Store](https://apps.apple.com/kr/app/omninews/id6746567181) / [Google Play](https://play.google.com/store/apps/details?id=com.kdh.omninews)
 
 ## 배운 점
 

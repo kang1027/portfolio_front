@@ -69,7 +69,7 @@ Contact me by:
 - **국가지휘통신사령부 53대대 M/W운용병 복무**
   - AI활용 포스터 제작대회 준장 훈상
   - 정보보안기사 자격증 취득
-  - [OmniNews](https://github.com/Omni-News) ([web](https://kang1027.com/omninews)) 개발 및 배포
+  - [OmniNews](https://github.com/Omni-News) ([web](https://kang1027.com/omninews) / [App Store](https://apps.apple.com/kr/app/omninews/id6746567181) / [Google Play](https://play.google.com/store/apps/details?id=com.kdh.omninews)) 개발 및 배포
 - **[ClassicMap](https://github.com/ClassicMap)** ([web](https://kang1027.com/classicmap)) 개발 및 배포
 - **[Portfolio](https://kang1027.com)** 구축
 

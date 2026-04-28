@@ -54,7 +54,7 @@
           "year": "2025",
           "event": {
             "ko": "OmniNews 서비스 시작",
-            "en": "OmniNews App Store Launch (iOS)"
+            "en": "OmniNews Launch (iOS / Android / Web)"
           }
         },
         {
@@ -350,6 +350,7 @@
       "links": {
         "live": "https://kang1027.com/omninews",
         "appStore": "https://apps.apple.com/kr/app/omninews/id6746567181",
+        "playStore": "https://play.google.com/store/apps/details?id=com.kdh.omninews",
         "readmeUrl": "https://raw.githubusercontent.com/Omni-News/.github/refs/heads/main/profile/README.md"
       },
       "screenshots": [
