@@ -67,6 +67,34 @@ const bear: BearData[] = [
     title: "Experience",
     icon: "i-fa-solid:briefcase",
     md: []
+  },
+  {
+    id: "posting",
+    title: "Posting",
+    icon: "i-fa-solid:pen",
+    md: [
+      {
+        id: "tech",
+        title: "Tech",
+        file: "",
+        icon: "i-fa-solid:code",
+        excerpt: "개발과 기술에 대한 이야기"
+      },
+      {
+        id: "life",
+        title: "Life",
+        file: "",
+        icon: "i-fa-solid:heart",
+        excerpt: "일상과 생각에 대한 이야기"
+      },
+      {
+        id: "review",
+        title: "Review",
+        file: "",
+        icon: "i-fa-solid:book",
+        excerpt: "책과 경험에 대한 리뷰"
+      }
+    ]
   }
 ];
 
