@@ -12,6 +12,14 @@
 .bear .markdown h3,
 .bear .markdown h4 {
   @apply font-bold relative text-c-800;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+
+.bear .markdown p,
+.bear .markdown li {
+  word-break: keep-all;
+  overflow-wrap: anywhere;
 }
 
 .bear .markdown h1,

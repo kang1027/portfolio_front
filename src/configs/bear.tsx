@@ -73,7 +73,7 @@ const bear: BearData[] = [
         file: "markdown/exp-opark.md",
         icon: "i-fa-solid:rocket",
         excerpt:
-          "2026~ 현재. AI 자재 매칭 플랫폼 TOONT-M 개발, SMS↔Slack CS 게이트웨이 구축, TOONT 쇼핑몰 리뉴얼(결제·Meta Pixel) 담당."
+          "2026~ 풀스택. TOONT-M 플랫폼 개발과 TOONT 쇼핑몰 리뉴얼 담당..."
       },
       {
         id: "exp-army",
@@ -81,7 +81,7 @@ const bear: BearData[] = [
         file: "markdown/exp-army.md",
         icon: "i-fa-solid:satellite-dish",
         excerpt:
-          "2024~2025. 국가지휘통신사령부 53대대 마이크로웨이브 통신 장비 운용. 정보보안기사 취득, AI 포스터 준장 훈상."
+          "2024~2025. 국가지휘통신사령부 53대대 마이크로웨이브 통신 운용..."
       },
       {
         id: "exp-jusung",
@@ -89,7 +89,7 @@ const bear: BearData[] = [
         file: "markdown/exp-jusung.md",
         icon: "i-fa-solid:industry",
         excerpt:
-          "2020~2021. R&D센터 정보기술팀 ERP/PLM 관리자. 그룹웨어 입력·퇴사자 처리 자동화 도구 개발."
+          "2020~2021. R&D센터 정보기술팀 ERP/PLM 관리자 및 자동화 개발..."
       }
     ]
   }
