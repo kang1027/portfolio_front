@@ -35,9 +35,3 @@
 - 복무 중 자기계발 시간을 활용해 개인 프로젝트 진행
 - Rust 백엔드 + Flutter 앱 + React 웹의 모노레포 구조로 설계
 - 출시 채널: [Web](https://kang1027.com/omninews) / [App Store](https://apps.apple.com/kr/app/omninews/id6746567181) / [Google Play](https://play.google.com/store/apps/details?id=com.kdh.omninews)
-
-## 배운 점
-
-- 24시간 운용되는 시스템에서의 **장애 대응 매뉴얼**과 **운영 책임감**
-- 제약된 환경(시간/도구/네트워크) 속에서도 꾸준히 사이드 프로젝트를 끝까지 배포해본 경험
-- 보안과 운용을 한 몸으로 다뤄야 하는 **네트워크/통신 인프라**에 대한 실무적 이해
