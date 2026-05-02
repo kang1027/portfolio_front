@@ -72,24 +72,21 @@ const bear: BearData[] = [
         title: "(주)오파크",
         file: "markdown/exp-opark.md",
         icon: "i-fa-solid:rocket",
-        excerpt:
-          "2026~ 풀스택. TOONT-M 플랫폼 개발과 TOONT 쇼핑몰 리뉴얼 담당..."
+        excerpt: "2026~ 풀스택. TOONT-M 플랫폼 개발과 TOONT 쇼핑몰 리뉴얼 담당..."
       },
       {
         id: "exp-army",
         title: "M/W 운용병",
         file: "markdown/exp-army.md",
         icon: "i-fa-solid:satellite-dish",
-        excerpt:
-          "2024~2025. 국가지휘통신사령부 53대대 마이크로웨이브 통신 운용..."
+        excerpt: "2024~2025. 국가지휘통신사령부 53대대 마이크로웨이브 통신 운용..."
       },
       {
         id: "exp-jusung",
         title: "주성엔지니어링",
         file: "markdown/exp-jusung.md",
         icon: "i-fa-solid:industry",
-        excerpt:
-          "2020~2021. R&D센터 정보기술팀 ERP/PLM 관리자 및 자동화 개발..."
+        excerpt: "2020~2021. R&D센터 정보기술팀 ERP/PLM 관리자 및 자동화 개발..."
       }
     ]
   }

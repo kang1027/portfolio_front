@@ -13,8 +13,10 @@ const terminal: TerminalData[] = [
         content: (
           <div className="py-1">
             <div>
-              안녕하세요, 강동현입니다. Rust와 React Native를 사용해 직접 웹/앱을 개발하고 배포 및 운영하는 풀스택 개발자입니다.
-              현재 대학생이자 프리랜서로 활동하고 있으며 Rust 라이브러리를 개발하고 오픈소스에 기여하는 데 열정을 갖고 있습니다.
+              안녕하세요, 강동현입니다. Rust와 React Native를 사용해 직접 웹/앱을 개발하고
+              배포 및 운영하는 풀스택 개발자입니다. 현재 대학생이자 프리랜서로 활동하고
+              있으며 Rust 라이브러리를 개발하고 오픈소스에 기여하는 데 열정을 갖고
+              있습니다.
             </div>
           </div>
         )
@@ -23,7 +25,8 @@ const terminal: TerminalData[] = [
         id: "about-interests",
         title: "interests.txt",
         type: "file",
-        content: "Rust Backend Development / Full Stack Engineering / Security & Performance Optimization"
+        content:
+          "Rust Backend Development / Full Stack Engineering / Security & Performance Optimization"
       },
       {
         id: "about-status",
@@ -71,9 +74,7 @@ const terminal: TerminalData[] = [
                 @donghyeon179
               </a>
             </li>
-            <li>
-              Location: Gyeonggi-do, Korea
-            </li>
+            <li>Location: Gyeonggi-do, Korea</li>
           </ul>
         )
       }
