@@ -275,7 +275,7 @@ export default function SettingsMobile() {
         title={title}
         dragControls={dragControls}
         left={
-          pushStack.length > 0 ? (
+          isSection ? (
             <button
               type="button"
               onClick={handlePop}
@@ -298,7 +298,7 @@ export default function SettingsMobile() {
           </button>
         }
       />
-      {pushStack.length > 0 && <EdgeBackGesture onBack={handlePop} />}
+      {isSection && <EdgeBackGesture onBack={handlePop} />}
       <AnimatePresence
         mode="wait"
         custom={direction}
