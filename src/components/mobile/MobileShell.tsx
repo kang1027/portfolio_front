@@ -28,7 +28,7 @@ export default function MobileShell(_props: MacActions) {
       <div className="mobile-stage" style={{ backgroundImage: `url(${bg})` }} />
       <StatusBar />
       <DynamicIsland />
-      <HomeIndicator onSwipeUp={() => {}} />
+      {!activeApp && <HomeIndicator onSwipeUp={() => {}} />}
       {lockScreenSeen && !activeApp && (
         <div className="absolute inset-0 z-0">
           <HomeScreen />
