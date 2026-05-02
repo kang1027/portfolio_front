@@ -11,7 +11,7 @@ export default function MusicMedium() {
 
   useEffect(() => {
     setArtFailed(false);
-  }, [np?.track?.artwork]);
+  }, [np?.track]);
 
   const track = np?.track;
   const hasTrack = !!track;
