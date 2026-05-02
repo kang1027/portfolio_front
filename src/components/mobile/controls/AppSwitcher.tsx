@@ -12,11 +12,10 @@ export default function AppSwitcher() {
       mobileOpenApp: s.mobileOpenApp
     }))
   );
-  const list = activeApp
-    ? [apps.find((a) => a.id === activeApp)].filter((a): a is NonNullable<typeof a> =>
-        Boolean(a)
-      )
-    : [];
+  if (!activeApp) return null;
+  const list = [apps.find((a) => a.id === activeApp)].filter(
+    (a): a is NonNullable<typeof a> => Boolean(a)
+  );
 
   return (
     <motion.div
