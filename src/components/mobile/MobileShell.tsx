@@ -2,6 +2,7 @@ import "~/styles/mobile.css";
 import { useStore } from "~/stores";
 import { wallpapers } from "~/configs";
 import type { MacActions } from "~/types";
+import StatusBar from "./shell/StatusBar";
 
 export default function MobileShell(_props: MacActions) {
   const { dark, wallpaperOverride } = useStore((s) => ({
@@ -13,7 +14,8 @@ export default function MobileShell(_props: MacActions) {
   return (
     <div className="mobile-shell">
       <div className="mobile-stage" style={{ backgroundImage: `url(${bg})` }} />
-      {/* StatusBar / DynamicIsland / HomeIndicator / LockScreen mount here */}
+      <StatusBar />
+      {/* DynamicIsland / HomeIndicator / LockScreen mount here */}
     </div>
   );
 }
