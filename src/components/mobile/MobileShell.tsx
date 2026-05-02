@@ -20,6 +20,7 @@ import BearMobile from "./apps/BearMobile";
 import SettingsMobile from "./apps/SettingsMobile";
 import ControlCenter from "./controls/ControlCenter";
 import NotificationCenter from "./controls/NotificationCenter";
+import AppSwitcher from "./controls/AppSwitcher";
 
 const SAFE_IDS = MOBILE_SAFE_APP_IDS as readonly string[];
 const STUB_IDS = MOBILE_STUB_APP_IDS as readonly string[];
@@ -32,6 +33,7 @@ export default function MobileShell(_props: MacActions) {
     activeApp,
     controlCenterOpen,
     notificationCenterOpen,
+    appSwitcherOpen,
     setOverlay
   } = useStore(
     useShallow((s) => ({
@@ -41,6 +43,7 @@ export default function MobileShell(_props: MacActions) {
       activeApp: s.activeApp,
       controlCenterOpen: s.controlCenterOpen,
       notificationCenterOpen: s.notificationCenterOpen,
+      appSwitcherOpen: s.appSwitcherOpen,
       setOverlay: s.setOverlay
     }))
   );
@@ -60,7 +63,7 @@ export default function MobileShell(_props: MacActions) {
       <div className="mobile-stage" style={{ backgroundImage: `url(${bg})` }} />
       <StatusBar />
       <DynamicIsland />
-      {!activeApp && <HomeIndicator onSwipeUp={() => {}} />}
+      {!activeApp && <HomeIndicator />}
       {lockScreenSeen && !activeApp && (
         <div className="absolute inset-0 z-0">
           <HomeScreen />
@@ -139,6 +142,8 @@ export default function MobileShell(_props: MacActions) {
           </>
         )}
       </AnimatePresence>
+
+      <AnimatePresence>{appSwitcherOpen && <AppSwitcher key="sw" />}</AnimatePresence>
     </div>
   );
 }
