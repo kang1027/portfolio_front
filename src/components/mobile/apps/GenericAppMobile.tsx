@@ -1,3 +1,4 @@
+import { useDragControls } from "framer-motion";
 import { apps } from "~/configs";
 import { useStore } from "~/stores";
 import AppContainer from "./AppContainer";
@@ -9,13 +10,15 @@ interface Props {
 
 export default function GenericAppMobile({ id }: Props) {
   const mobileCloseApp = useStore((s) => s.mobileCloseApp);
+  const dragControls = useDragControls();
   const app = apps.find((a) => a.id === id);
   if (!app || !app.content) return null;
 
   return (
-    <AppContainer>
+    <AppContainer dragControls={dragControls}>
       <AppNavBar
         title={app.title}
+        dragControls={dragControls}
         right={
           <button
             type="button"
@@ -23,7 +26,7 @@ export default function GenericAppMobile({ id }: Props) {
             aria-label="Close"
             className="w-7 h-7 rounded-full bg-black/10 dark:bg-white/10 flex items-center justify-center"
           >
-            <span className="i-fa-solid:xmark text-sm" />
+            <span className="i-fa-solid:xmark text-sm" aria-hidden="true" />
           </button>
         }
       />
