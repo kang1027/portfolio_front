@@ -1,19 +1,19 @@
-import type { MacActions } from "~/types";
+import "~/styles/mobile.css";
 import { useStore } from "~/stores";
+import { wallpapers } from "~/configs";
+import type { MacActions } from "~/types";
 
 export default function MobileShell(_props: MacActions) {
-  const setForcedMode = useStore((s) => s.setForcedMode);
+  const { dark, wallpaperOverride } = useStore((s) => ({
+    dark: s.dark,
+    wallpaperOverride: s.wallpaperOverride
+  }));
+  const bg = wallpaperOverride ?? (dark ? wallpapers.night : wallpapers.day);
+
   return (
-    <div className="size-full flex-center bg-black text-white">
-      <div className="flex flex-col items-center gap-4">
-        <div className="text-2xl font-semibold">Mobile shell — coming soon</div>
-        <button
-          className="px-4 py-2 rounded-lg bg-white/10 backdrop-blur"
-          onClick={() => setForcedMode("auto")}
-        >
-          Back to Desktop
-        </button>
-      </div>
+    <div className="mobile-shell">
+      <div className="mobile-stage" style={{ backgroundImage: `url(${bg})` }} />
+      {/* StatusBar / DynamicIsland / HomeIndicator / LockScreen mount here */}
     </div>
   );
 }
