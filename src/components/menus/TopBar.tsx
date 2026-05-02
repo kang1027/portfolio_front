@@ -203,9 +203,10 @@ const TopBar = (props: TopBarProps) => {
           <Battery />
         </TopBarItem>
         <button
-          className="hidden sm:inline-flex hover:bg-c-200/50 rounded px-1"
+          className="hidden md:inline-flex hover:bg-c-200/50 rounded px-1"
           onClick={() => setForcedMode("mobile")}
           aria-label="Preview mobile shell"
+          title="Mobile preview (Desktop session state will reset)"
         >
           <span className="i-fa-solid:mobile-screen text-base" />
         </button>

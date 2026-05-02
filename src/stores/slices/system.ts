@@ -46,14 +46,13 @@ export const createSystemSlice: StateCreator<SystemSlice> = (set) => ({
   airdrop: true,
   fullscreen: false,
   wallpaperOverride: getInitialWallpaper(),
-  setWallpaperOverride: (w) =>
-    set(() => {
-      try {
-        if (w) window.localStorage.setItem("wallpaperOverride", w);
-        else window.localStorage.removeItem("wallpaperOverride");
-      } catch {}
-      return { wallpaperOverride: w };
-    }),
+  setWallpaperOverride: (w) => {
+    try {
+      if (w !== null) window.localStorage.setItem("wallpaperOverride", w);
+      else window.localStorage.removeItem("wallpaperOverride");
+    } catch {}
+    set({ wallpaperOverride: w });
+  },
   toggleDark: () =>
     set((state) => {
       if (!state.dark) document.documentElement.classList.add("dark");

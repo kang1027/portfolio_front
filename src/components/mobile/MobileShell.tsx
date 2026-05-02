@@ -8,7 +8,7 @@ export default function MobileShell(_props: MacActions) {
         <div className="text-2xl font-semibold">Mobile shell — coming soon</div>
         <button
           className="px-4 py-2 rounded-lg bg-white/10 backdrop-blur"
-          onClick={() => setForcedMode("desktop")}
+          onClick={() => setForcedMode("auto")}
         >
           Back to Desktop
         </button>

@@ -16,7 +16,11 @@ export function useDeviceMode(): "desktop" | "mobile" {
   useEffect(() => {
     const handler = () => setAuto(detectAuto());
     window.addEventListener("resize", handler);
-    return () => window.removeEventListener("resize", handler);
+    window.addEventListener("orientationchange", handler);
+    return () => {
+      window.removeEventListener("resize", handler);
+      window.removeEventListener("orientationchange", handler);
+    };
   }, []);
 
   if (forced === "desktop" || forced === "mobile") return forced;
