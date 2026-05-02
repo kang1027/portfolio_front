@@ -1,5 +1,7 @@
-import { useDragControls } from "framer-motion";
+import { motion, AnimatePresence, useDragControls } from "framer-motion";
+import { useEffect, useState, type ReactNode } from "react";
 import { useShallow } from "zustand/react/shallow";
+import ReactMarkdown from "react-markdown";
 import { useStore } from "~/stores";
 import { bear } from "~/configs";
 import AppContainer from "./AppContainer";
@@ -33,19 +35,123 @@ function CategoriesView() {
   );
 }
 
+interface ListViewProps {
+  categoryId: string;
+}
+
+function ListView({ categoryId }: ListViewProps) {
+  const push = useStore((s) => s.push);
+  const cat = bear.find((c) => c.id === categoryId);
+  if (!cat) return null;
+  return (
+    <ul className="absolute inset-0 overflow-y-auto" style={{ paddingTop: NAV_TOP_PT }}>
+      {cat.md.map((m) => (
+        <li key={m.id}>
+          <button
+            type="button"
+            onClick={() =>
+              push({
+                view: "bear-article",
+                categoryId,
+                mdId: m.id,
+                file: m.file
+              })
+            }
+            className="w-full px-4 py-3 text-left border-b border-black/5 dark:border-white/5 active:bg-black/5"
+          >
+            <div className="text-black dark:text-white font-semibold">{m.title}</div>
+            <div className="text-c-500 text-sm mt-0.5 line-clamp-2">{m.excerpt}</div>
+          </button>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+interface ArticleViewProps {
+  file: string;
+}
+
+function ArticleView({ file }: ArticleViewProps) {
+  const [text, setText] = useState<string>("");
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    setText("");
+    setError(null);
+    fetch(file)
+      .then((r) => (r.ok ? r.text() : Promise.reject(new Error(`HTTP ${r.status}`))))
+      .then((t) => {
+        if (!cancelled) setText(t);
+      })
+      .catch((e) => {
+        if (!cancelled) setError(String(e));
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [file]);
+
+  return (
+    <div
+      className="absolute inset-0 overflow-y-auto px-4 pb-8 bear"
+      style={{ paddingTop: NAV_TOP_PT }}
+    >
+      <div className="markdown text-black dark:text-white max-w-none">
+        {error ? (
+          <div className="text-red-500">불러오기 실패: {error}</div>
+        ) : (
+          <ReactMarkdown>{text}</ReactMarkdown>
+        )}
+      </div>
+    </div>
+  );
+}
+
 export default function BearMobile() {
-  const { mobileCloseApp } = useStore(
+  const { pushStack, pop, mobileCloseApp } = useStore(
     useShallow((s) => ({
+      pushStack: s.pushStack,
+      pop: s.pop,
       mobileCloseApp: s.mobileCloseApp
     }))
   );
   const dragControls = useDragControls();
+  const top = pushStack[pushStack.length - 1] ?? null;
+
+  let title = "Bear";
+  let body: ReactNode = <CategoriesView />;
+  let viewKey = "root";
+  if (top?.view === "bear-list") {
+    const cat = bear.find((c) => c.id === top.categoryId);
+    title = cat?.title ?? "List";
+    body = <ListView categoryId={top.categoryId} />;
+    viewKey = `list-${top.categoryId}`;
+  } else if (top?.view === "bear-article") {
+    const cat = bear.find((c) => c.id === top.categoryId);
+    title = cat?.md.find((m) => m.id === top.mdId)?.title ?? "Article";
+    body = <ArticleView file={top.file} />;
+    viewKey = `article-${top.mdId}`;
+  }
 
   return (
     <AppContainer dragControls={dragControls}>
       <AppNavBar
-        title="Bear"
+        title={title}
         dragControls={dragControls}
+        left={
+          pushStack.length > 0 ? (
+            <button
+              type="button"
+              onClick={pop}
+              className="flex items-center gap-1 text-blue-500 text-sm"
+            >
+              <span className="i-fa-solid:chevron-left" aria-hidden="true" />
+              <span>Back</span>
+            </button>
+          ) : null
+        }
         right={
           <button
             type="button"
@@ -57,7 +163,18 @@ export default function BearMobile() {
           </button>
         }
       />
-      <CategoriesView />
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={viewKey}
+          initial={{ x: 60, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          exit={{ x: -60, opacity: 0 }}
+          transition={{ type: "spring", stiffness: 350, damping: 32 }}
+          className="absolute inset-0"
+        >
+          {body}
+        </motion.div>
+      </AnimatePresence>
     </AppContainer>
   );
 }
