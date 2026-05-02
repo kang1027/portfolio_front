@@ -2,6 +2,9 @@ import { motion, AnimatePresence, useDragControls } from "framer-motion";
 import { useEffect, useState, type ReactNode } from "react";
 import { useShallow } from "zustand/react/shallow";
 import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import rehypeRaw from "rehype-raw";
+import rehypeExternalLinks from "rehype-external-links";
 import { useStore } from "~/stores";
 import { bear } from "~/configs";
 import AppContainer from "./AppContainer";
@@ -103,7 +106,15 @@ function ArticleView({ file }: ArticleViewProps) {
         {error ? (
           <div className="text-red-500">불러오기 실패: {error}</div>
         ) : (
-          <ReactMarkdown>{text}</ReactMarkdown>
+          <ReactMarkdown
+            remarkPlugins={[remarkGfm]}
+            rehypePlugins={[
+              rehypeRaw,
+              [rehypeExternalLinks, { target: "_blank", rel: ["noopener", "noreferrer"] }]
+            ]}
+          >
+            {text}
+          </ReactMarkdown>
         )}
       </div>
     </div>
