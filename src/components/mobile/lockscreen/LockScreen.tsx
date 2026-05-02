@@ -8,11 +8,12 @@ const fmtTime = () => {
   return `${d.getHours()}:${d.getMinutes().toString().padStart(2, "0")}`;
 };
 
-const fmtDate = () => {
-  const d = new Date();
-  const day = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][d.getDay()];
-  return `${day}, ${d.toLocaleDateString("en-US", { month: "long", day: "numeric" })}`;
-};
+const fmtDate = () =>
+  new Date().toLocaleDateString("en-US", {
+    weekday: "short",
+    month: "long",
+    day: "numeric"
+  });
 
 export default function LockScreen() {
   const unlock = useStore((s) => s.unlockScreen);
