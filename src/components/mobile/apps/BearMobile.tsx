@@ -160,6 +160,7 @@ export default function BearMobile() {
   };
 
   const top = pushStack[pushStack.length - 1] ?? null;
+  const isBearFrame = top?.view === "bear-list" || top?.view === "bear-article";
 
   let title = "Bear";
   let body: ReactNode = <CategoriesView />;
@@ -182,7 +183,7 @@ export default function BearMobile() {
         title={title}
         dragControls={dragControls}
         left={
-          pushStack.length > 0 ? (
+          isBearFrame ? (
             <button
               type="button"
               onClick={handlePop}
@@ -205,7 +206,7 @@ export default function BearMobile() {
           </button>
         }
       />
-      {pushStack.length > 0 && <EdgeBackGesture onBack={handlePop} />}
+      {isBearFrame && <EdgeBackGesture onBack={handlePop} />}
       <AnimatePresence
         mode="wait"
         custom={direction}
