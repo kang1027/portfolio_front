@@ -3,7 +3,7 @@ import { AnimatePresence } from "framer-motion";
 import { useShallow } from "zustand/react/shallow";
 import { useStore } from "~/stores";
 import { apps, wallpapers } from "~/configs";
-import { MOBILE_SAFE_APP_IDS } from "~/configs/mobile";
+import { MOBILE_SAFE_APP_IDS, MOBILE_STUB_APP_IDS } from "~/configs/mobile";
 import type { MacActions } from "~/types";
 import StatusBar from "./shell/StatusBar";
 import DynamicIsland from "./shell/DynamicIsland";
@@ -14,6 +14,7 @@ import GenericAppMobile from "./apps/GenericAppMobile";
 import StubApp from "./apps/StubApp";
 
 const SAFE_IDS = MOBILE_SAFE_APP_IDS as readonly string[];
+const STUB_IDS = MOBILE_STUB_APP_IDS as readonly string[];
 
 export default function MobileShell(_props: MacActions) {
   const { dark, wallpaperOverride, lockScreenSeen, activeApp } = useStore(
@@ -26,11 +27,11 @@ export default function MobileShell(_props: MacActions) {
   );
   const bg = wallpaperOverride ?? (dark ? wallpapers.night : wallpapers.day);
 
-  const isSafe = !!activeApp && SAFE_IDS.includes(activeApp);
-  const isStubKnown = activeApp === "bear" || activeApp === "settings";
-  const showFallbackStub = !!activeApp && !isStubKnown && !isSafe;
+  const isStub = activeApp ? STUB_IDS.includes(activeApp) : false;
+  const isSafe = activeApp ? SAFE_IDS.includes(activeApp) : false;
+  const showFallbackStub = !!activeApp && !isStub && !isSafe;
   const fallbackTitle = showFallbackStub
-    ? apps.find((a) => a.id === activeApp)?.title ?? activeApp
+    ? apps.find((a) => a.id === activeApp)?.title ?? activeApp ?? ""
     : "";
 
   return (
