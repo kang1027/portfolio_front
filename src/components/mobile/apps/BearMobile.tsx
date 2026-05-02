@@ -1,5 +1,5 @@
 import { motion, AnimatePresence, useDragControls } from "framer-motion";
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { useShallow } from "zustand/react/shallow";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -10,6 +10,7 @@ import { bear } from "~/configs";
 import AppContainer from "./AppContainer";
 import AppNavBar from "./AppNavBar";
 import EdgeBackGesture from "../shell/EdgeBackGesture";
+import { usePushNavigation } from "../hooks/usePushNavigation";
 
 const NAV_TOP_PT = "calc(var(--mobile-safe-top, 12px) + 36px + 52px)";
 
@@ -141,23 +142,10 @@ export default function BearMobile() {
   );
   const dragControls = useDragControls();
 
-  const lastDepthRef = useRef(pushStack.length);
-  const direction =
-    pushStack.length > lastDepthRef.current
-      ? 1
-      : pushStack.length < lastDepthRef.current
-        ? -1
-        : 1;
-  useEffect(() => {
-    lastDepthRef.current = pushStack.length;
-  });
-
-  const [animating, setAnimating] = useState(false);
-  const handlePop = () => {
-    if (animating) return;
-    setAnimating(true);
-    pop();
-  };
+  const { direction, handlePop, onExitComplete } = usePushNavigation(
+    pushStack.length,
+    pop
+  );
 
   const top = pushStack[pushStack.length - 1] ?? null;
   const isBearFrame = top?.view === "bear-list" || top?.view === "bear-article";
@@ -207,11 +195,7 @@ export default function BearMobile() {
         }
       />
       {isBearFrame && <EdgeBackGesture onBack={handlePop} />}
-      <AnimatePresence
-        mode="wait"
-        custom={direction}
-        onExitComplete={() => setAnimating(false)}
-      >
+      <AnimatePresence mode="wait" custom={direction} onExitComplete={onExitComplete}>
         <motion.div
           key={viewKey}
           custom={direction}
