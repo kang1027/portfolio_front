@@ -142,12 +142,15 @@ export default function BearMobile() {
   const dragControls = useDragControls();
 
   const lastDepthRef = useRef(pushStack.length);
-  const [direction, setDirection] = useState(1);
+  const direction =
+    pushStack.length > lastDepthRef.current
+      ? 1
+      : pushStack.length < lastDepthRef.current
+        ? -1
+        : 1;
   useEffect(() => {
-    if (pushStack.length > lastDepthRef.current) setDirection(1);
-    else if (pushStack.length < lastDepthRef.current) setDirection(-1);
     lastDepthRef.current = pushStack.length;
-  }, [pushStack.length]);
+  });
 
   const [animating, setAnimating] = useState(false);
   const handlePop = () => {
