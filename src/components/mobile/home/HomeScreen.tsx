@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useShallow } from "zustand/react/shallow";
 import { useStore } from "~/stores";
 import { PAGE_COUNT } from "~/configs/mobile";
@@ -16,9 +16,16 @@ export default function HomeScreen() {
     }))
   );
   const [width, setWidth] = useState(() => window.innerWidth);
+  const skipTransitionRef = useRef(false);
 
   useEffect(() => {
-    const r = () => setWidth(window.innerWidth);
+    const r = () => {
+      skipTransitionRef.current = true;
+      setWidth(window.innerWidth);
+      requestAnimationFrame(() => {
+        skipTransitionRef.current = false;
+      });
+    };
     window.addEventListener("resize", r);
     window.addEventListener("orientationchange", r);
     return () => {
@@ -32,7 +39,11 @@ export default function HomeScreen() {
       <motion.div
         className="absolute inset-0 flex"
         animate={{ x: -currentPage * width }}
-        transition={{ type: "spring", stiffness: 250, damping: 30 }}
+        transition={
+          skipTransitionRef.current
+            ? { duration: 0 }
+            : { type: "spring", stiffness: 250, damping: 30 }
+        }
         drag="x"
         dragConstraints={{ left: -width * (PAGE_COUNT - 1), right: 0 }}
         dragElastic={0.2}

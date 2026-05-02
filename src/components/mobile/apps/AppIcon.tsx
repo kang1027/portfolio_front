@@ -22,6 +22,7 @@ export default function AppIcon({ id, title, img, link }: Props) {
     <button
       type="button"
       onClick={handleClick}
+      aria-label={title || id}
       className="flex flex-col items-center gap-1.5 active:scale-90 transition-transform"
     >
       <div className="w-14 h-14 rounded-2xl overflow-hidden shadow-lg shadow-black/30 bg-white/10 flex-center">
