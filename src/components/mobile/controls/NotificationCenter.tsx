@@ -31,6 +31,7 @@ export default function NotificationCenter() {
       transition={{ type: "spring", stiffness: 280, damping: 28 }}
       className="absolute left-0 right-0 m-3 z-45"
       style={{ top: "var(--mobile-safe-top, 12px)" }}
+      onClick={(e) => e.stopPropagation()}
     >
       {FAKE.map((n) => (
         <div
@@ -50,7 +51,7 @@ export default function NotificationCenter() {
       ))}
       <button
         type="button"
-        className="text-white/70 text-xs underline mt-2"
+        className="mt-2 px-4 py-2 text-white/80 text-sm rounded-lg bg-white/10 backdrop-blur"
         onClick={() => setOverlay(null)}
       >
         Close
