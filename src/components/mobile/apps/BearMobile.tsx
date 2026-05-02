@@ -78,19 +78,27 @@ interface ArticleViewProps {
 
 function ArticleView({ file }: ArticleViewProps) {
   const [text, setText] = useState<string>("");
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     let cancelled = false;
     setText("");
     setError(null);
+    setLoading(true);
     fetch(file)
       .then((r) => (r.ok ? r.text() : Promise.reject(new Error(`HTTP ${r.status}`))))
       .then((t) => {
-        if (!cancelled) setText(t);
+        if (!cancelled) {
+          setText(t);
+          setLoading(false);
+        }
       })
       .catch((e) => {
-        if (!cancelled) setError(String(e));
+        if (!cancelled) {
+          setError(String(e));
+          setLoading(false);
+        }
       });
     return () => {
       cancelled = true;
@@ -99,11 +107,13 @@ function ArticleView({ file }: ArticleViewProps) {
 
   return (
     <div
-      className="absolute inset-0 overflow-y-auto px-4 pb-8 bear"
+      className="absolute inset-0 overflow-y-auto px-4 pl-9 pb-8 bear"
       style={{ paddingTop: NAV_TOP_PT }}
     >
       <div className="markdown text-black dark:text-white max-w-none">
-        {error ? (
+        {loading ? (
+          <div className="text-c-500 text-sm py-4">불러오는 중…</div>
+        ) : error ? (
           <div className="text-red-500">불러오기 실패: {error}</div>
         ) : (
           <ReactMarkdown
@@ -157,6 +167,7 @@ export default function BearMobile() {
             <button
               type="button"
               onClick={pop}
+              aria-label="뒤로 가기"
               className="flex items-center gap-1 text-blue-500 text-sm"
             >
               <span className="i-fa-solid:chevron-left" aria-hidden="true" />
