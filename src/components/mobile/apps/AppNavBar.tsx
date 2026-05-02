@@ -19,7 +19,7 @@ export default function AppNavBar({ title, left, right, dragControls }: Props) {
       onPointerDown={onPointerDown}
       style={{
         top: "calc(var(--mobile-safe-top, 12px) + 36px)",
-        touchAction: dragControls ? "none" : undefined
+        touchAction: dragControls ? "none" : "auto"
       }}
     >
       <div className="w-16">{left}</div>
