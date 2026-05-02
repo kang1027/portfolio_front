@@ -45,7 +45,7 @@ export default function HomeScreen() {
             setCurrentPage((currentPage - 1) as 0 | 1);
           }
         }}
-        style={{ width: width * PAGE_COUNT }}
+        style={{ width: width * PAGE_COUNT, touchAction: "pan-y" }}
       >
         <div style={{ width }} className="overflow-y-auto h-full">
           <WidgetPage />

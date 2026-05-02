@@ -28,7 +28,11 @@ export default function MobileShell(_props: MacActions) {
       <StatusBar />
       <DynamicIsland />
       <HomeIndicator onSwipeUp={() => {}} />
-      {lockScreenSeen && !activeApp && <HomeScreen />}
+      {lockScreenSeen && !activeApp && (
+        <div className="absolute inset-0 z-0">
+          <HomeScreen />
+        </div>
+      )}
       {activeApp && (
         <div className="absolute inset-0 z-30 flex flex-col items-center justify-center bg-neutral-900/95 text-white gap-4">
           <div className="text-xl font-semibold">App: {activeApp}</div>
