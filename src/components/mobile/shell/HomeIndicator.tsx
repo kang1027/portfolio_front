@@ -23,8 +23,8 @@ export default function HomeIndicator() {
             // fast upward — close active app
             if (activeApp) mobileCloseApp();
           } else {
-            // slow upward — open app switcher
-            setOverlay("sw");
+            // slow upward — only meaningful when there's an active app to switch
+            if (activeApp) setOverlay("sw");
           }
         }
       }}

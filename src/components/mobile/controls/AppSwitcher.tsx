@@ -47,7 +47,7 @@ export default function AppSwitcher() {
                   }}
                   className="text-white text-xs"
                 >
-                  Open
+                  Resume
                 </button>
                 <button
                   type="button"
