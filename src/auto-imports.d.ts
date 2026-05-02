@@ -19,11 +19,13 @@ declare global {
   const Launchpad: typeof import('./components/Launchpad')['default']
   const MenuItem: typeof import('./components/menus/base')['MenuItem']
   const MenuItemGroup: typeof import('./components/menus/base')['MenuItemGroup']
+  const MobileShell: typeof import('./components/mobile/MobileShell')['default']
   const MusicWidget: typeof import('./components/MusicWidget')['default']
   const PhotoWidget: typeof import('./components/PhotoWidget')['default']
   const SEO: typeof import('./components/SEO')['default']
   const SEOProvider: typeof import('./components/SEO')['SEOProvider']
   const Safari: typeof import('./components/apps/Safari')['default']
+  const Shell: typeof import('./components/Shell')['default']
   const Spotlight: typeof import('./components/Spotlight')['default']
   const Terminal: typeof import('./components/apps/Terminal')['default']
   const TopBar: typeof import('./components/menus/TopBar')['default']
@@ -45,6 +47,7 @@ declare global {
   const useContext: typeof import('react')['useContext']
   const useDebugValue: typeof import('react')['useDebugValue']
   const useDeferredValue: typeof import('react')['useDeferredValue']
+  const useDeviceMode: typeof import('./components/mobile/hooks/useDeviceMode')['useDeviceMode']
   const useEffect: typeof import('react')['useEffect']
   const useId: typeof import('react')['useId']
   const useImperativeHandle: typeof import('react')['useImperativeHandle']
@@ -59,10 +62,4 @@ declare global {
   const useSyncExternalStore: typeof import('react')['useSyncExternalStore']
   const useTransition: typeof import('react')['useTransition']
   const useWindowSize: typeof import('./hooks/useWindowSize')['useWindowSize']
-}
-// for type re-export
-declare global {
-  // @ts-ignore
-  export type { Terminal } from './components/apps/Terminal'
-  import('./components/apps/Terminal')
 }
