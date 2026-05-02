@@ -14,7 +14,7 @@ export default function DynamicIsland() {
           : { width: 128, height: 32, borderRadius: 16 }
       }
       transition={{ type: "spring", stiffness: 320, damping: 28 }}
-      className="absolute top-2.5 bg-black z-30 overflow-hidden flex items-center"
+      className="absolute top-2.5 bg-black z-50 overflow-hidden flex items-center"
       style={{ left: "50%", x: "-50%" }}
     >
       <AnimatePresence mode="wait">
