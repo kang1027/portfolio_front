@@ -75,6 +75,7 @@ declare global {
   const useInterval: typeof import('./hooks/useInterval')['useInterval']
   const useLayoutEffect: typeof import('react')['useLayoutEffect']
   const useMemo: typeof import('react')['useMemo']
+  const usePushNavigation: typeof import('./components/mobile/hooks/usePushNavigation')['usePushNavigation']
   const useReducer: typeof import('react')['useReducer']
   const useRef: typeof import('react')['useRef']
   const useState: typeof import('react')['useState']
