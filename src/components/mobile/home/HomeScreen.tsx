@@ -2,12 +2,11 @@ import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useShallow } from "zustand/react/shallow";
 import { useStore } from "~/stores";
+import { PAGE_COUNT } from "~/configs/mobile";
 import WidgetPage from "./WidgetPage";
 import AppPage from "./AppPage";
 import MobileDock from "./Dock";
 import PageDots from "./PageDots";
-
-const PAGE_COUNT = 2;
 
 export default function HomeScreen() {
   const { currentPage, setCurrentPage } = useStore(
@@ -40,9 +39,9 @@ export default function HomeScreen() {
         onDragEnd={(_, info) => {
           const threshold = width / 4;
           if (info.offset.x < -threshold && currentPage < PAGE_COUNT - 1) {
-            setCurrentPage((currentPage + 1) as 0 | 1);
+            setCurrentPage(currentPage + 1);
           } else if (info.offset.x > threshold && currentPage > 0) {
-            setCurrentPage((currentPage - 1) as 0 | 1);
+            setCurrentPage(currentPage - 1);
           }
         }}
         style={{ width: width * PAGE_COUNT, touchAction: "pan-y" }}

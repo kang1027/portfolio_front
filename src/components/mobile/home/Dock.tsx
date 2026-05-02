@@ -1,7 +1,6 @@
 import { apps } from "~/configs";
+import { DOCK_IDS } from "~/configs/mobile";
 import AppIcon from "../apps/AppIcon";
-
-const DOCK_IDS = ["bear", "safari", "contact", "github"];
 
 export default function MobileDock() {
   const dockApps = DOCK_IDS.map((id) => apps.find((a) => a.id === id)).filter(

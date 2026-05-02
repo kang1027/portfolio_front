@@ -1,8 +1,6 @@
 import { apps } from "~/configs";
+import { DOCK_IDS, HIDDEN_FROM_GRID_IDS } from "~/configs/mobile";
 import AppIcon from "../apps/AppIcon";
-
-const DOCK_IDS = ["bear", "safari", "contact", "github"];
-const HIDDEN_IDS = ["launchpad"];
 
 const SETTINGS_ITEM = {
   id: "settings",
@@ -13,7 +11,10 @@ const SETTINGS_ITEM = {
 
 export default function AppPage() {
   const gridApps = apps.filter(
-    (a) => !DOCK_IDS.includes(a.id) && !HIDDEN_IDS.includes(a.id)
+    (a) =>
+      a.desktop !== false &&
+      !DOCK_IDS.includes(a.id as (typeof DOCK_IDS)[number]) &&
+      !HIDDEN_FROM_GRID_IDS.includes(a.id as (typeof HIDDEN_FROM_GRID_IDS)[number])
   );
   const items = [...gridApps, SETTINGS_ITEM];
 
