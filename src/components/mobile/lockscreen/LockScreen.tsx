@@ -20,15 +20,18 @@ export default function LockScreen() {
 
   return (
     <motion.div
+      initial={{ y: 0 }}
+      animate={{ y: 0 }}
+      exit={{ y: "-100%" }}
+      transition={{ type: "spring", stiffness: 300, damping: 35 }}
       drag="y"
-      dragConstraints={{ top: -window.innerHeight, bottom: 0 }}
+      dragConstraints={{ top: -9999, bottom: 0 }}
       dragElastic={0.1}
       onDragStart={() => setDragging(true)}
       onDragEnd={(_, info) => {
         setDragging(false);
         if (info.offset.y < -120 || info.velocity.y < -500) unlock();
       }}
-      animate={{ y: 0 }}
       className="lock-screen absolute inset-0 z-40 flex flex-col items-center justify-between py-24 cursor-grab active:cursor-grabbing"
     >
       <div className="flex flex-col items-center pt-16">

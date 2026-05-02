@@ -1,5 +1,6 @@
 import "~/styles/mobile.css";
 import { AnimatePresence } from "framer-motion";
+import { useShallow } from "zustand/react/shallow";
 import { useStore } from "~/stores";
 import { wallpapers } from "~/configs";
 import type { MacActions } from "~/types";
@@ -9,11 +10,13 @@ import HomeIndicator from "./shell/HomeIndicator";
 import LockScreen from "./lockscreen/LockScreen";
 
 export default function MobileShell(_props: MacActions) {
-  const { dark, wallpaperOverride, lockScreenSeen } = useStore((s) => ({
-    dark: s.dark,
-    wallpaperOverride: s.wallpaperOverride,
-    lockScreenSeen: s.lockScreenSeen
-  }));
+  const { dark, wallpaperOverride, lockScreenSeen } = useStore(
+    useShallow((s) => ({
+      dark: s.dark,
+      wallpaperOverride: s.wallpaperOverride,
+      lockScreenSeen: s.lockScreenSeen
+    }))
+  );
   const bg = wallpaperOverride ?? (dark ? wallpapers.night : wallpapers.day);
 
   return (
