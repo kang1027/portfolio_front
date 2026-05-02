@@ -21,3 +21,11 @@
   background-size: cover;
   background-position: center;
 }
+
+.mobile-shell .tap-feedback {
+  transition: transform 120ms ease-out;
+}
+
+.mobile-shell .tap-feedback:active {
+  transform: scale(0.97);
+}

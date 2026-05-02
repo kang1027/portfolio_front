@@ -18,7 +18,7 @@ export default function WidgetFrame({ size, children, onClick }: Props) {
   return (
     <div
       onClick={onClick}
-      className={`${SIZE_CLASS[size]} rounded-3xl bg-white/10 backdrop-blur-2xl shadow-lg shadow-black/20 overflow-hidden ${onClick ? "cursor-pointer active:scale-[0.98] transition-transform" : ""}`}
+      className={`${SIZE_CLASS[size]} rounded-3xl bg-white/10 backdrop-blur-2xl shadow-lg shadow-black/20 overflow-hidden ${onClick ? "cursor-pointer tap-feedback" : ""}`}
     >
       {children}
     </div>
