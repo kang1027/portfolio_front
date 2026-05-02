@@ -88,7 +88,7 @@ export default function MobileShell(_props: MacActions) {
       </AnimatePresence>
       <AnimatePresence>{!lockScreenSeen && <LockScreen key="lock" />}</AnimatePresence>
 
-      {!anyOverlay && (
+      {lockScreenSeen && !anyOverlay && (
         <motion.div
           drag="y"
           dragConstraints={{ top: 0, bottom: 200 }}
@@ -116,7 +116,7 @@ export default function MobileShell(_props: MacActions) {
       </AnimatePresence>
       <AnimatePresence>{controlCenterOpen && <ControlCenter key="cc" />}</AnimatePresence>
 
-      {!anyOverlay && (
+      {lockScreenSeen && !anyOverlay && (
         <motion.div
           drag="y"
           dragConstraints={{ top: 0, bottom: 200 }}
