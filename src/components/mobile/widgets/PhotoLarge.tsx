@@ -26,6 +26,7 @@ export default function PhotoLarge() {
             key={src}
             src={src}
             alt=""
+            loading="lazy"
             className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700"
             style={{ opacity: idx === i ? 1 : 0 }}
           />
