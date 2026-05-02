@@ -95,7 +95,7 @@ export default function MobileShell(_props: MacActions) {
           dragElastic={0.2}
           dragSnapToOrigin
           onDragEnd={(_, info) => {
-            if (info.offset.y > 30 || info.velocity.y > 300) setOverlay("cc");
+            if (info.offset.y > 30 && info.velocity.y > 100) setOverlay("cc");
           }}
           className="absolute top-0 right-0 w-1/2 h-12 z-50"
           style={{ touchAction: "pan-y" }}
@@ -123,7 +123,7 @@ export default function MobileShell(_props: MacActions) {
           dragElastic={0.2}
           dragSnapToOrigin
           onDragEnd={(_, info) => {
-            if (info.offset.y > 30 || info.velocity.y > 300) setOverlay("nc");
+            if (info.offset.y > 30 && info.velocity.y > 100) setOverlay("nc");
           }}
           className="absolute top-0 left-0 w-1/2 h-12 z-50"
           style={{ touchAction: "pan-y" }}
