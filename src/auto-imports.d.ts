@@ -41,6 +41,7 @@ declare global {
   const SEO: typeof import('./components/SEO')['default']
   const SEOProvider: typeof import('./components/SEO')['SEOProvider']
   const Safari: typeof import('./components/apps/Safari')['default']
+  const SettingsMobile: typeof import('./components/mobile/apps/SettingsMobile')['default']
   const Shell: typeof import('./components/Shell')['default']
   const Spotlight: typeof import('./components/Spotlight')['default']
   const StatusBar: typeof import('./components/mobile/shell/StatusBar')['default']
