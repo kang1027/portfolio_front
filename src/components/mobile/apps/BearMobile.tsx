@@ -6,6 +6,7 @@ import { useStore } from "~/stores";
 import { bear } from "~/configs";
 import AppContainer from "./AppContainer";
 import AppNavBar from "./AppNavBar";
+import EdgeBackGesture from "../shell/EdgeBackGesture";
 
 const NAV_TOP_PT = "calc(var(--mobile-safe-top, 12px) + 36px + 52px)";
 
@@ -163,6 +164,7 @@ export default function BearMobile() {
           </button>
         }
       />
+      {pushStack.length > 0 && <EdgeBackGesture onBack={pop} />}
       <AnimatePresence mode="wait">
         <motion.div
           key={viewKey}
