@@ -19,6 +19,7 @@ import StubApp from "./apps/StubApp";
 import BearMobile from "./apps/BearMobile";
 import SettingsMobile from "./apps/SettingsMobile";
 import ControlCenter from "./controls/ControlCenter";
+import NotificationCenter from "./controls/NotificationCenter";
 
 const SAFE_IDS = MOBILE_SAFE_APP_IDS as readonly string[];
 const STUB_IDS = MOBILE_STUB_APP_IDS as readonly string[];
@@ -30,6 +31,7 @@ export default function MobileShell(_props: MacActions) {
     lockScreenSeen,
     activeApp,
     controlCenterOpen,
+    notificationCenterOpen,
     setOverlay
   } = useStore(
     useShallow((s) => ({
@@ -38,6 +40,7 @@ export default function MobileShell(_props: MacActions) {
       lockScreenSeen: s.lockScreenSeen,
       activeApp: s.activeApp,
       controlCenterOpen: s.controlCenterOpen,
+      notificationCenterOpen: s.notificationCenterOpen,
       setOverlay: s.setOverlay
     }))
   );
@@ -105,6 +108,34 @@ export default function MobileShell(_props: MacActions) {
               onClick={() => setOverlay(null)}
             />
             <ControlCenter />
+          </>
+        )}
+      </AnimatePresence>
+
+      <motion.div
+        drag="y"
+        dragConstraints={{ top: 0, bottom: 200 }}
+        dragElastic={0.2}
+        dragSnapToOrigin
+        onDragEnd={(_, info) => {
+          if (info.offset.y > 30 || info.velocity.y > 300) setOverlay("nc");
+        }}
+        className="absolute top-0 left-0 w-1/2 h-12 z-50"
+        style={{ touchAction: "pan-y" }}
+      />
+
+      <AnimatePresence>
+        {notificationCenterOpen && (
+          <>
+            <motion.div
+              key="nc-bg"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="absolute inset-0 bg-black/30 z-40"
+              onClick={() => setOverlay(null)}
+            />
+            <NotificationCenter />
           </>
         )}
       </AnimatePresence>
