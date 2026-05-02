@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useShallow } from "zustand/react/shallow";
 import { useStore } from "~/stores";
 import { PAGE_COUNT } from "~/configs/mobile";
@@ -16,23 +16,27 @@ export default function HomeScreen() {
     }))
   );
   const [width, setWidth] = useState(() => window.innerWidth);
-  const skipTransitionRef = useRef(false);
+  const [skipTransition, setSkipTransition] = useState(false);
 
   useEffect(() => {
-    const r = () => {
-      skipTransitionRef.current = true;
+    const onResize = () => {
+      setSkipTransition(true);
       setWidth(window.innerWidth);
-      requestAnimationFrame(() => {
-        skipTransitionRef.current = false;
-      });
     };
-    window.addEventListener("resize", r);
-    window.addEventListener("orientationchange", r);
+    window.addEventListener("resize", onResize);
+    window.addEventListener("orientationchange", onResize);
     return () => {
-      window.removeEventListener("resize", r);
-      window.removeEventListener("orientationchange", r);
+      window.removeEventListener("resize", onResize);
+      window.removeEventListener("orientationchange", onResize);
     };
   }, []);
+
+  useEffect(() => {
+    if (skipTransition) {
+      const id = requestAnimationFrame(() => setSkipTransition(false));
+      return () => cancelAnimationFrame(id);
+    }
+  }, [skipTransition]);
 
   return (
     <>
@@ -40,7 +44,7 @@ export default function HomeScreen() {
         className="absolute inset-0 flex"
         animate={{ x: -currentPage * width }}
         transition={
-          skipTransitionRef.current
+          skipTransition
             ? { duration: 0 }
             : { type: "spring", stiffness: 250, damping: 30 }
         }
