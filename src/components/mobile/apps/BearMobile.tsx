@@ -149,6 +149,13 @@ export default function BearMobile() {
     lastDepthRef.current = pushStack.length;
   }, [pushStack.length]);
 
+  const [animating, setAnimating] = useState(false);
+  const handlePop = () => {
+    if (animating) return;
+    setAnimating(true);
+    pop();
+  };
+
   const top = pushStack[pushStack.length - 1] ?? null;
 
   let title = "Bear";
@@ -175,7 +182,7 @@ export default function BearMobile() {
           pushStack.length > 0 ? (
             <button
               type="button"
-              onClick={pop}
+              onClick={handlePop}
               aria-label="뒤로 가기"
               className="flex items-center gap-1 text-blue-500 text-sm"
             >
@@ -195,8 +202,12 @@ export default function BearMobile() {
           </button>
         }
       />
-      {pushStack.length > 0 && <EdgeBackGesture onBack={pop} />}
-      <AnimatePresence mode="wait" custom={direction}>
+      {pushStack.length > 0 && <EdgeBackGesture onBack={handlePop} />}
+      <AnimatePresence
+        mode="wait"
+        custom={direction}
+        onExitComplete={() => setAnimating(false)}
+      >
         <motion.div
           key={viewKey}
           custom={direction}
