@@ -14,7 +14,7 @@ export default function WeatherSmall() {
         <div className="text-white text-3xl font-light">
           {w ? `${Math.round(w.temperature)}°` : "--°"}
         </div>
-        <div className="text-white text-xs">{w?.description ?? ""}</div>
+        <div className="text-white text-xs">{w?.description ?? "—"}</div>
       </div>
     </WidgetFrame>
   );
