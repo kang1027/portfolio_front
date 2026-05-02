@@ -1,9 +1,14 @@
 import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
 import { useDynamicIslandAlerts } from "../hooks/useDynamicIslandAlerts";
 
 export default function DynamicIsland() {
   const alert = useDynamicIslandAlerts();
   const expanded = !!alert;
+
+  // Track artwork URL → resets failure when URL changes
+  const [failedArt, setFailedArt] = useState<string | null>(null);
+  const artOk = alert?.art && alert.art !== failedArt;
 
   return (
     <motion.div
@@ -16,6 +21,7 @@ export default function DynamicIsland() {
       transition={{ type: "spring", stiffness: 320, damping: 28 }}
       className="absolute top-2.5 bg-black z-50 overflow-hidden flex items-center"
       style={{ left: "50%", x: "-50%" }}
+      aria-live="polite"
     >
       <AnimatePresence mode="wait">
         {expanded && alert && (
@@ -24,18 +30,24 @@ export default function DynamicIsland() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ delay: 0.15, duration: 0.2 }}
+            transition={{ delay: 0.1, duration: 0.15 }}
             className="w-full flex items-center gap-2 px-3 text-white"
           >
-            {alert.art && (
+            {artOk ? (
               <img
                 src={alert.art}
+                key={alert.art}
                 className="w-7 h-7 rounded-md object-cover bg-white/10"
                 alt=""
-                onError={(e) => {
-                  (e.currentTarget as HTMLImageElement).style.display = "none";
-                }}
+                onError={() => setFailedArt(alert.art ?? null)}
               />
+            ) : (
+              <div className="w-7 h-7 rounded-md bg-white/10 flex items-center justify-center">
+                <span
+                  className="i-fa-solid:music text-xs text-pink-400"
+                  aria-hidden="true"
+                />
+              </div>
             )}
             <div className="flex-1 min-w-0">
               <div className="text-xs font-semibold truncate">{alert.title}</div>
