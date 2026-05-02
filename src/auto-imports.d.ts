@@ -71,6 +71,7 @@ declare global {
   const useDebugValue: typeof import('react')['useDebugValue']
   const useDeferredValue: typeof import('react')['useDeferredValue']
   const useDeviceMode: typeof import('./components/mobile/hooks/useDeviceMode')['useDeviceMode']
+  const useDynamicIslandAlerts: typeof import('./components/mobile/hooks/useDynamicIslandAlerts')['useDynamicIslandAlerts']
   const useEffect: typeof import('react')['useEffect']
   const useId: typeof import('react')['useId']
   const useImperativeHandle: typeof import('react')['useImperativeHandle']
