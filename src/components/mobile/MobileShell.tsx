@@ -9,6 +9,7 @@ import DynamicIsland from "./shell/DynamicIsland";
 import HomeIndicator from "./shell/HomeIndicator";
 import LockScreen from "./lockscreen/LockScreen";
 import HomeScreen from "./home/HomeScreen";
+import GenericAppMobile from "./apps/GenericAppMobile";
 
 export default function MobileShell(_props: MacActions) {
   const { dark, wallpaperOverride, lockScreenSeen, activeApp, mobileCloseApp } = useStore(
@@ -33,12 +34,23 @@ export default function MobileShell(_props: MacActions) {
           <HomeScreen />
         </div>
       )}
-      {activeApp && (
+      {activeApp && activeApp !== "bear" && activeApp !== "settings" && (
+        <GenericAppMobile id={activeApp} />
+      )}
+      {activeApp === "bear" && (
         <div className="absolute inset-0 z-30 flex flex-col items-center justify-center bg-neutral-900/95 text-white gap-4">
-          <div className="text-xl font-semibold">App: {activeApp}</div>
-          <div className="text-sm text-white/60">
-            Coming in Sprint 4 (GenericAppMobile)
-          </div>
+          <div className="text-xl font-semibold">Bear (Sprint 5)</div>
+          <button
+            onClick={mobileCloseApp}
+            className="px-4 py-2 rounded-lg bg-white/10 backdrop-blur"
+          >
+            Close
+          </button>
+        </div>
+      )}
+      {activeApp === "settings" && (
+        <div className="absolute inset-0 z-30 flex flex-col items-center justify-center bg-neutral-900/95 text-white gap-4">
+          <div className="text-xl font-semibold">Settings (Sprint 6)</div>
           <button
             onClick={mobileCloseApp}
             className="px-4 py-2 rounded-lg bg-white/10 backdrop-blur"
