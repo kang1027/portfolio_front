@@ -1,5 +1,5 @@
 import "~/styles/mobile.css";
-import { AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { useShallow } from "zustand/react/shallow";
 import { useStore } from "~/stores";
 import { apps, wallpapers } from "~/configs";
@@ -18,17 +18,27 @@ import GenericAppMobile from "./apps/GenericAppMobile";
 import StubApp from "./apps/StubApp";
 import BearMobile from "./apps/BearMobile";
 import SettingsMobile from "./apps/SettingsMobile";
+import ControlCenter from "./controls/ControlCenter";
 
 const SAFE_IDS = MOBILE_SAFE_APP_IDS as readonly string[];
 const STUB_IDS = MOBILE_STUB_APP_IDS as readonly string[];
 
 export default function MobileShell(_props: MacActions) {
-  const { dark, wallpaperOverride, lockScreenSeen, activeApp } = useStore(
+  const {
+    dark,
+    wallpaperOverride,
+    lockScreenSeen,
+    activeApp,
+    controlCenterOpen,
+    setOverlay
+  } = useStore(
     useShallow((s) => ({
       dark: s.dark,
       wallpaperOverride: s.wallpaperOverride,
       lockScreenSeen: s.lockScreenSeen,
-      activeApp: s.activeApp
+      activeApp: s.activeApp,
+      controlCenterOpen: s.controlCenterOpen,
+      setOverlay: s.setOverlay
     }))
   );
   const bg = wallpaperOverride ?? (dark ? wallpapers.night : wallpapers.day);
@@ -70,6 +80,34 @@ export default function MobileShell(_props: MacActions) {
         )}
       </AnimatePresence>
       <AnimatePresence>{!lockScreenSeen && <LockScreen key="lock" />}</AnimatePresence>
+
+      <motion.div
+        drag="y"
+        dragConstraints={{ top: 0, bottom: 200 }}
+        dragElastic={0.2}
+        dragSnapToOrigin
+        onDragEnd={(_, info) => {
+          if (info.offset.y > 30 || info.velocity.y > 300) setOverlay("cc");
+        }}
+        className="absolute top-0 right-0 w-1/2 h-12 z-50"
+        style={{ touchAction: "pan-y" }}
+      />
+
+      <AnimatePresence>
+        {controlCenterOpen && (
+          <>
+            <motion.div
+              key="cc-bg"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="absolute inset-0 bg-black/30 z-40"
+              onClick={() => setOverlay(null)}
+            />
+            <ControlCenter />
+          </>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
