@@ -1,7 +1,7 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
 
-import Desktop from "~/pages/Desktop";
+import Shell from "~/components/Shell";
 import Login from "~/pages/Login";
 import Boot from "~/pages/Boot";
 import AdminSetup from "~/pages/AdminSetup";
@@ -80,7 +80,7 @@ export default function App() {
       ) : showAdminSetup ? (
         <AdminSetup onComplete={handleSetupComplete} onSkip={handleSetupSkip} />
       ) : login ? (
-        <Desktop
+        <Shell
           setLogin={setLogin}
           shutMac={shutMac}
           sleepMac={sleepMac}
