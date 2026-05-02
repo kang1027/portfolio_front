@@ -9,6 +9,10 @@ export default function MusicMedium() {
 
   useEffect(() => nowPlayingService.subscribe(setNp), []);
 
+  useEffect(() => {
+    setArtFailed(false);
+  }, [np?.track?.artwork]);
+
   const track = np?.track;
   const hasTrack = !!track;
   const title = track?.title ?? "재생 중인 곡 없음";
