@@ -14,7 +14,7 @@ export default function EdgeBackGesture({ onBack }: Props) {
       onDragEnd={(_, info) => {
         if (info.offset.x > 60 || info.velocity.x > 400) onBack();
       }}
-      className="absolute left-0 w-5 z-30"
+      className="absolute left-0 w-11 z-30"
       style={{
         top: "calc(var(--mobile-safe-top, 12px) + 36px + 52px)",
         bottom: "calc(var(--mobile-safe-bottom, 0px) + 12px)",
