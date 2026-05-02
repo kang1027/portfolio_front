@@ -4,6 +4,7 @@ import { wallpapers } from "~/configs";
 import type { MacActions } from "~/types";
 import StatusBar from "./shell/StatusBar";
 import DynamicIsland from "./shell/DynamicIsland";
+import HomeIndicator from "./shell/HomeIndicator";
 
 export default function MobileShell(_props: MacActions) {
   const { dark, wallpaperOverride } = useStore((s) => ({
@@ -17,7 +18,8 @@ export default function MobileShell(_props: MacActions) {
       <div className="mobile-stage" style={{ backgroundImage: `url(${bg})` }} />
       <StatusBar />
       <DynamicIsland />
-      {/* HomeIndicator / LockScreen mount here */}
+      <HomeIndicator onSwipeUp={() => {}} />
+      {/* LockScreen mount here */}
     </div>
   );
 }
