@@ -1,5 +1,5 @@
 import { motion, AnimatePresence, useDragControls } from "framer-motion";
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { useShallow } from "zustand/react/shallow";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -140,6 +140,15 @@ export default function BearMobile() {
     }))
   );
   const dragControls = useDragControls();
+
+  const lastDepthRef = useRef(pushStack.length);
+  const [direction, setDirection] = useState(1);
+  useEffect(() => {
+    if (pushStack.length > lastDepthRef.current) setDirection(1);
+    else if (pushStack.length < lastDepthRef.current) setDirection(-1);
+    lastDepthRef.current = pushStack.length;
+  }, [pushStack.length]);
+
   const top = pushStack[pushStack.length - 1] ?? null;
 
   let title = "Bear";
@@ -187,12 +196,18 @@ export default function BearMobile() {
         }
       />
       {pushStack.length > 0 && <EdgeBackGesture onBack={pop} />}
-      <AnimatePresence mode="wait">
+      <AnimatePresence mode="wait" custom={direction}>
         <motion.div
           key={viewKey}
-          initial={{ x: 60, opacity: 0 }}
-          animate={{ x: 0, opacity: 1 }}
-          exit={{ x: -60, opacity: 0 }}
+          custom={direction}
+          variants={{
+            enter: (d: number) => ({ x: d * 60, opacity: 0 }),
+            center: { x: 0, opacity: 1 },
+            exit: (d: number) => ({ x: -d * 60, opacity: 0 })
+          }}
+          initial="enter"
+          animate="center"
+          exit="exit"
           transition={{ type: "spring", stiffness: 350, damping: 32 }}
           className="absolute inset-0"
         >
