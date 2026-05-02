@@ -10,15 +10,15 @@ import HomeIndicator from "./shell/HomeIndicator";
 import LockScreen from "./lockscreen/LockScreen";
 import HomeScreen from "./home/HomeScreen";
 import GenericAppMobile from "./apps/GenericAppMobile";
+import StubApp from "./apps/StubApp";
 
 export default function MobileShell(_props: MacActions) {
-  const { dark, wallpaperOverride, lockScreenSeen, activeApp, mobileCloseApp } = useStore(
+  const { dark, wallpaperOverride, lockScreenSeen, activeApp } = useStore(
     useShallow((s) => ({
       dark: s.dark,
       wallpaperOverride: s.wallpaperOverride,
       lockScreenSeen: s.lockScreenSeen,
-      activeApp: s.activeApp,
-      mobileCloseApp: s.mobileCloseApp
+      activeApp: s.activeApp
     }))
   );
   const bg = wallpaperOverride ?? (dark ? wallpapers.night : wallpapers.day);
@@ -34,31 +34,15 @@ export default function MobileShell(_props: MacActions) {
           <HomeScreen />
         </div>
       )}
-      {activeApp && activeApp !== "bear" && activeApp !== "settings" && (
-        <GenericAppMobile id={activeApp} />
-      )}
-      {activeApp === "bear" && (
-        <div className="absolute inset-0 z-30 flex flex-col items-center justify-center bg-neutral-900/95 text-white gap-4">
-          <div className="text-xl font-semibold">Bear (Sprint 5)</div>
-          <button
-            onClick={mobileCloseApp}
-            className="px-4 py-2 rounded-lg bg-white/10 backdrop-blur"
-          >
-            Close
-          </button>
-        </div>
-      )}
-      {activeApp === "settings" && (
-        <div className="absolute inset-0 z-30 flex flex-col items-center justify-center bg-neutral-900/95 text-white gap-4">
-          <div className="text-xl font-semibold">Settings (Sprint 6)</div>
-          <button
-            onClick={mobileCloseApp}
-            className="px-4 py-2 rounded-lg bg-white/10 backdrop-blur"
-          >
-            Close
-          </button>
-        </div>
-      )}
+      <AnimatePresence>
+        {activeApp && activeApp !== "bear" && activeApp !== "settings" && (
+          <GenericAppMobile key={activeApp} id={activeApp} />
+        )}
+        {activeApp === "bear" && <StubApp key="bear" name="Bear" sprintNote="Sprint 5" />}
+        {activeApp === "settings" && (
+          <StubApp key="settings" name="Settings" sprintNote="Sprint 6" />
+        )}
+      </AnimatePresence>
       <AnimatePresence>{!lockScreenSeen && <LockScreen key="lock" />}</AnimatePresence>
     </div>
   );
