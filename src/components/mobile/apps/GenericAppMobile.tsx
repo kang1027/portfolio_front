@@ -30,7 +30,12 @@ export default function GenericAppMobile({ id }: Props) {
           </button>
         }
       />
-      <div className="absolute inset-0 pt-13 overflow-auto">{app.content}</div>
+      <div
+        className="absolute inset-0 overflow-auto"
+        style={{ paddingTop: "calc(var(--mobile-safe-top, 12px) + 36px + 52px)" }}
+      >
+        {app.content}
+      </div>
     </AppContainer>
   );
 }
