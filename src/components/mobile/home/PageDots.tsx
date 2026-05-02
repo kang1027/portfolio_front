@@ -5,7 +5,7 @@ interface Props {
 
 export default function PageDots({ count, current }: Props) {
   return (
-    <div className="absolute bottom-28 left-1/2 -translate-x-1/2 flex gap-1.5 z-20 pointer-events-none">
+    <div className="absolute bottom-32 left-1/2 -translate-x-1/2 flex gap-1.5 z-20 pointer-events-none">
       {Array.from({ length: count }).map((_, i) => (
         <span
           key={i}
