@@ -66,7 +66,40 @@ class NowPlayingService {
     // cleanup 함수 반환
     return () => {
       this.listeners.delete(listener);
+      // 구독자가 모두 사라지면 WS 연결과 재연결 타이머를 정리한다.
+      if (this.listeners.size === 0) {
+        this.disconnect();
+      }
     };
+  }
+
+  private disconnect(): void {
+    this.shouldReconnect = false;
+    this.autoConnected = false;
+    this.isConnecting = false;
+
+    if (this.reconnectTimeout) {
+      clearTimeout(this.reconnectTimeout);
+      this.reconnectTimeout = null;
+    }
+
+    if (this.ws) {
+      this.ws.onclose = null;
+      this.ws.onerror = null;
+      this.ws.onmessage = null;
+      this.ws.onopen = null;
+      try {
+        if (
+          this.ws.readyState === WebSocket.OPEN ||
+          this.ws.readyState === WebSocket.CONNECTING
+        ) {
+          this.ws.close();
+        }
+      } catch {
+        // ignore close errors
+      }
+      this.ws = null;
+    }
   }
 
   private attemptConnection(): void {
