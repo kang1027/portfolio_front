@@ -2,7 +2,7 @@ import { motion, AnimatePresence, useDragControls } from "framer-motion";
 import { type ReactNode } from "react";
 import { useShallow } from "zustand/react/shallow";
 import { useStore } from "~/stores";
-import { wallpapers } from "~/configs";
+import { user, wallpapers, websites } from "~/configs";
 import AppContainer from "./AppContainer";
 import AppNavBar from "./AppNavBar";
 import EdgeBackGesture from "../shell/EdgeBackGesture";
@@ -192,6 +192,15 @@ function SoundsSection() {
 }
 
 function AboutSection() {
+  const githubLink =
+    websites.favorites.sites.find((s) => s.id === "my-github")?.link ??
+    "https://github.com/kang1027";
+  const emailLink =
+    websites.favorites.sites.find((s) => s.id === "my-email")?.link ??
+    "mailto:kang3171611@naver.com";
+  const githubHandle = githubLink.replace(/^https?:\/\/github\.com\//, "@");
+  const emailDisplay = emailLink.replace(/^mailto:/, "");
+  const displayName = user.name ?? "강동현";
   return (
     <div
       className="absolute inset-0 overflow-y-auto px-4 py-6 text-center text-black dark:text-white"
@@ -199,27 +208,28 @@ function AboutSection() {
         paddingTop: "calc(var(--mobile-safe-top, 12px) + 36px + 52px + 24px)"
       }}
     >
-      <div className="w-24 h-24 mx-auto rounded-full overflow-hidden mb-3">
-        <img src="/img/photos/1.png?v2" alt="" className="w-full h-full object-cover" />
+      <div className="w-24 h-24 mx-auto rounded-full overflow-hidden mb-3 bg-white/10">
+        <img
+          src="/img/photos/1.png?v2"
+          alt={displayName}
+          className="w-full h-full object-cover"
+        />
       </div>
-      <div className="text-xl font-semibold">강동현</div>
+      <div className="text-xl font-semibold">{displayName}</div>
       <div className="text-sm text-c-500 mb-6">Full-stack Developer @ (주)오파크</div>
       <div className="bg-white dark:bg-neutral-800 rounded-xl divide-y divide-black/5 dark:divide-white/5 text-left">
         <a
-          href="https://github.com/kang1027"
+          href={githubLink}
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center justify-between px-4 py-3"
         >
           <span>GitHub</span>
-          <span className="text-c-500">@kang1027</span>
+          <span className="text-c-500">{githubHandle}</span>
         </a>
-        <a
-          href="mailto:kang3171611@naver.com"
-          className="flex items-center justify-between px-4 py-3"
-        >
+        <a href={emailLink} className="flex items-center justify-between px-4 py-3">
           <span>Email</span>
-          <span className="text-c-500">kang3171611@naver.com</span>
+          <span className="text-c-500">{emailDisplay}</span>
         </a>
       </div>
     </div>
