@@ -5,9 +5,10 @@ interface Props {
   title: string;
   img: string;
   link?: string;
+  hideLabel?: boolean;
 }
 
-export default function AppIcon({ id, title, img, link }: Props) {
+export default function AppIcon({ id, title, img, link, hideLabel = false }: Props) {
   const mobileOpenApp = useStore((s) => s.mobileOpenApp);
 
   const handleClick = () => {
@@ -31,10 +32,12 @@ export default function AppIcon({ id, title, img, link }: Props) {
             <span className={`${img.slice(5)} text-3xl text-white`} />
           </div>
         ) : (
-          <img src={img} alt={title} className="w-full h-full object-cover" />
+          <img src={img} alt="" className="w-full h-full object-cover" />
         )}
       </div>
-      {title && <span className="text-xs text-white drop-shadow-md">{title}</span>}
+      {!hideLabel && title && (
+        <span className="text-xs text-white drop-shadow-md">{title}</span>
+      )}
     </button>
   );
 }
