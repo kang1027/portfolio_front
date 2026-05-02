@@ -3,7 +3,11 @@ import { AnimatePresence } from "framer-motion";
 import { useShallow } from "zustand/react/shallow";
 import { useStore } from "~/stores";
 import { apps, wallpapers } from "~/configs";
-import { MOBILE_SAFE_APP_IDS, MOBILE_STUB_APP_IDS } from "~/configs/mobile";
+import {
+  MOBILE_SAFE_APP_IDS,
+  MOBILE_STUB_APP_IDS,
+  MOBILE_STUB_APPS
+} from "~/configs/mobile";
 import type { MacActions } from "~/types";
 import StatusBar from "./shell/StatusBar";
 import DynamicIsland from "./shell/DynamicIsland";
@@ -46,13 +50,17 @@ export default function MobileShell(_props: MacActions) {
         </div>
       )}
       <AnimatePresence>
-        {activeApp === "bear" && <StubApp key="bear" name="Bear" sprintNote="Sprint 5" />}
-        {activeApp === "settings" && (
-          <StubApp key="settings" name="Settings" sprintNote="Sprint 6" />
+        {MOBILE_STUB_APPS.map(
+          ({ id, name, sprintNote }) =>
+            activeApp === id && <StubApp key={id} name={name} sprintNote={sprintNote} />
         )}
-        {isSafe && activeApp && <GenericAppMobile key={activeApp} id={activeApp} />}
-        {showFallbackStub && activeApp && (
-          <StubApp key={activeApp} name={fallbackTitle} sprintNote="future sprint" />
+        {activeApp && isSafe && <GenericAppMobile key={activeApp} id={activeApp} />}
+        {showFallbackStub && (
+          <StubApp
+            key={activeApp ?? "fallback"}
+            name={fallbackTitle}
+            sprintNote="future sprint"
+          />
         )}
       </AnimatePresence>
       <AnimatePresence>{!lockScreenSeen && <LockScreen key="lock" />}</AnimatePresence>
