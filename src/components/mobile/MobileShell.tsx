@@ -48,6 +48,7 @@ export default function MobileShell(_props: MacActions) {
     }))
   );
   const bg = wallpaperOverride ?? (dark ? wallpapers.night : wallpapers.day);
+  const anyOverlay = controlCenterOpen || notificationCenterOpen || appSwitcherOpen;
 
   const isStub = activeApp ? STUB_IDS.includes(activeApp) : false;
   const isSafe = activeApp ? SAFE_IDS.includes(activeApp) : false;
@@ -87,17 +88,19 @@ export default function MobileShell(_props: MacActions) {
       </AnimatePresence>
       <AnimatePresence>{!lockScreenSeen && <LockScreen key="lock" />}</AnimatePresence>
 
-      <motion.div
-        drag="y"
-        dragConstraints={{ top: 0, bottom: 200 }}
-        dragElastic={0.2}
-        dragSnapToOrigin
-        onDragEnd={(_, info) => {
-          if (info.offset.y > 30 || info.velocity.y > 300) setOverlay("cc");
-        }}
-        className="absolute top-0 right-0 w-1/2 h-12 z-50"
-        style={{ touchAction: "pan-y" }}
-      />
+      {!anyOverlay && (
+        <motion.div
+          drag="y"
+          dragConstraints={{ top: 0, bottom: 200 }}
+          dragElastic={0.2}
+          dragSnapToOrigin
+          onDragEnd={(_, info) => {
+            if (info.offset.y > 30 || info.velocity.y > 300) setOverlay("cc");
+          }}
+          className="absolute top-0 right-0 w-1/2 h-12 z-50"
+          style={{ touchAction: "pan-y" }}
+        />
+      )}
 
       <AnimatePresence>
         {controlCenterOpen && (
@@ -113,17 +116,19 @@ export default function MobileShell(_props: MacActions) {
       </AnimatePresence>
       <AnimatePresence>{controlCenterOpen && <ControlCenter key="cc" />}</AnimatePresence>
 
-      <motion.div
-        drag="y"
-        dragConstraints={{ top: 0, bottom: 200 }}
-        dragElastic={0.2}
-        dragSnapToOrigin
-        onDragEnd={(_, info) => {
-          if (info.offset.y > 30 || info.velocity.y > 300) setOverlay("nc");
-        }}
-        className="absolute top-0 left-0 w-1/2 h-12 z-50"
-        style={{ touchAction: "pan-y" }}
-      />
+      {!anyOverlay && (
+        <motion.div
+          drag="y"
+          dragConstraints={{ top: 0, bottom: 200 }}
+          dragElastic={0.2}
+          dragSnapToOrigin
+          onDragEnd={(_, info) => {
+            if (info.offset.y > 30 || info.velocity.y > 300) setOverlay("nc");
+          }}
+          className="absolute top-0 left-0 w-1/2 h-12 z-50"
+          style={{ touchAction: "pan-y" }}
+        />
+      )}
 
       <AnimatePresence>
         {notificationCenterOpen && (
