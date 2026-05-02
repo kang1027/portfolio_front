@@ -16,6 +16,7 @@ import LockScreen from "./lockscreen/LockScreen";
 import HomeScreen from "./home/HomeScreen";
 import GenericAppMobile from "./apps/GenericAppMobile";
 import StubApp from "./apps/StubApp";
+import BearMobile from "./apps/BearMobile";
 
 const SAFE_IDS = MOBILE_SAFE_APP_IDS as readonly string[];
 const STUB_IDS = MOBILE_STUB_APP_IDS as readonly string[];
@@ -33,7 +34,8 @@ export default function MobileShell(_props: MacActions) {
 
   const isStub = activeApp ? STUB_IDS.includes(activeApp) : false;
   const isSafe = activeApp ? SAFE_IDS.includes(activeApp) : false;
-  const showFallbackStub = !!activeApp && !isStub && !isSafe;
+  const isBear = activeApp === "bear";
+  const showFallbackStub = !!activeApp && !isStub && !isSafe && !isBear;
   const fallbackTitle = showFallbackStub
     ? apps.find((a) => a.id === activeApp)?.title ?? activeApp ?? ""
     : "";
@@ -50,6 +52,7 @@ export default function MobileShell(_props: MacActions) {
         </div>
       )}
       <AnimatePresence>
+        {activeApp === "bear" && <BearMobile key="bear" />}
         {MOBILE_STUB_APPS.map(
           ({ id, name, sprintNote }) =>
             activeApp === id && <StubApp key={id} name={name} sprintNote={sprintNote} />

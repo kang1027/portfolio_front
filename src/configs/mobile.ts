@@ -4,7 +4,6 @@ export const PAGE_COUNT = 2;
 export const MOBILE_SAFE_APP_IDS = ["contact", "facetime"] as const;
 
 export const MOBILE_STUB_APPS = [
-  { id: "bear", name: "Bear", sprintNote: "Sprint 5" },
   { id: "settings", name: "Settings", sprintNote: "Sprint 6" }
 ] as const;
 
