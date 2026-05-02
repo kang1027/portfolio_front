@@ -15,8 +15,17 @@ export default function StatusBar() {
   const [time, setTime] = useState(() => fmt(new Date()));
 
   useEffect(() => {
-    const id = setInterval(() => setTime(fmt(new Date())), 30 * 1000);
-    return () => clearInterval(id);
+    let intervalId: ReturnType<typeof setInterval> | undefined;
+    const tick = () => setTime(fmt(new Date()));
+    const msToNextMinute = (60 - new Date().getSeconds()) * 1000;
+    const timeoutId = setTimeout(() => {
+      tick();
+      intervalId = setInterval(tick, 60_000);
+    }, msToNextMinute);
+    return () => {
+      clearTimeout(timeoutId);
+      if (intervalId) clearInterval(intervalId);
+    };
   }, []);
 
   return (
