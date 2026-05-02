@@ -92,6 +92,7 @@ const TopBar = (props: TopBarProps) => {
     setVolume: state.setVolume,
     setBrightness: state.setBrightness
   }));
+  const setForcedMode = useStore((state) => state.setForcedMode);
 
   useInterval(() => {
     setState({
@@ -201,6 +202,13 @@ const TopBar = (props: TopBarProps) => {
         <TopBarItem hideOnMobile={true}>
           <Battery />
         </TopBarItem>
+        <button
+          className="hidden sm:inline-flex hover:bg-c-200/50 rounded px-1"
+          onClick={() => setForcedMode("mobile")}
+          aria-label="Preview mobile shell"
+        >
+          <span className="i-fa-solid:mobile-screen text-base" />
+        </button>
         <TopBarItem
           hideOnMobile={true}
           forceHover={state.showWifiMenu}
