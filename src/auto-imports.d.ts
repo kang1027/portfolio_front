@@ -42,6 +42,7 @@ declare global {
   const Shell: typeof import('./components/Shell')['default']
   const Spotlight: typeof import('./components/Spotlight')['default']
   const StatusBar: typeof import('./components/mobile/shell/StatusBar')['default']
+  const StubApp: typeof import('./components/mobile/apps/StubApp')['default']
   const Terminal: typeof import('./components/apps/Terminal')['default']
   const TopBar: typeof import('./components/menus/TopBar')['default']
   const Typora: typeof import('./components/apps/Typora')['default']
