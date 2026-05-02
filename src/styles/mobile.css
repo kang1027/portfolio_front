@@ -19,3 +19,8 @@
   background-size: cover;
   background-position: center;
 }
+
+:root {
+  --mobile-safe-top: env(safe-area-inset-top, 12px);
+  --mobile-safe-bottom: env(safe-area-inset-bottom, 0px);
+}
