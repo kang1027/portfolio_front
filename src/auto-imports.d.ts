@@ -33,8 +33,6 @@ declare global {
   const VSCode: typeof import('./components/apps/VSCode')['default']
   const WeatherWidget: typeof import('./components/WeatherWidget')['default']
   const WifiMenu: typeof import('./components/menus/WifiMenu')['default']
-  const Window: typeof import('./components/Window')['default']
-  const controlCenterMenuTsxTmp20055: typeof import('./components/menus/ControlCenterMenu.tsx.tmp.20055.1766745072789')['default']
   const createRef: typeof import('react')['createRef']
   const forwardRef: typeof import('react')['forwardRef']
   const lazy: typeof import('react')['lazy']
