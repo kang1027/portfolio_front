@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useShallow } from "zustand/react/shallow";
 import { useStore } from "~/stores";
 
 const fmt = (d: Date) => {
@@ -8,10 +9,9 @@ const fmt = (d: Date) => {
 };
 
 export default function StatusBar() {
-  const { wifi, bluetooth } = useStore((s) => ({
-    wifi: s.wifi,
-    bluetooth: s.bluetooth
-  }));
+  const { wifi, bluetooth } = useStore(
+    useShallow((s) => ({ wifi: s.wifi, bluetooth: s.bluetooth }))
+  );
   const [time, setTime] = useState(() => fmt(new Date()));
 
   useEffect(() => {
