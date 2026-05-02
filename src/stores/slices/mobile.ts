@@ -21,8 +21,8 @@ export interface MobileSlice {
   setCurrentPage: (p: 0 | 1) => void;
 
   activeApp: string | null;
-  openApp: (id: string) => void;
-  closeApp: () => void;
+  mobileOpenApp: (id: string) => void;
+  mobileCloseApp: () => void;
 
   pushStack: PushFrame[];
   push: (f: PushFrame) => void;
@@ -48,8 +48,10 @@ const getInitialMode = (): DeviceMode => {
   try {
     const v = window.localStorage.getItem("forcedMode");
     if (v === "desktop" || v === "mobile" || v === "auto") return v;
-  } catch {}
-  return "auto";
+    return "auto";
+  } catch {
+    return "auto";
+  }
 };
 
 export const createMobileSlice: StateCreator<MobileSlice> = (set) => ({
@@ -73,8 +75,8 @@ export const createMobileSlice: StateCreator<MobileSlice> = (set) => ({
   setCurrentPage: (p) => set({ currentPage: p }),
 
   activeApp: null,
-  openApp: (id) => set({ activeApp: id, pushStack: [] }),
-  closeApp: () => set({ activeApp: null, pushStack: [] }),
+  mobileOpenApp: (id) => set({ activeApp: id, pushStack: [] }),
+  mobileCloseApp: () => set({ activeApp: null, pushStack: [] }),
 
   pushStack: [],
   push: (f) => set((s) => ({ pushStack: [...s.pushStack, f] })),

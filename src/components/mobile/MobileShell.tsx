@@ -1,4 +1,5 @@
 import type { MacActions } from "~/types";
+import { useStore } from "~/stores";
 
 export default function MobileShell(_props: MacActions) {
   const setForcedMode = useStore((s) => s.setForcedMode);

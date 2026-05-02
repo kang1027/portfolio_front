@@ -1,3 +1,6 @@
+import { useEffect, useState } from "react";
+import { useStore } from "~/stores";
+
 const MOBILE_BREAKPOINT = 768;
 
 const detectAuto = (): "desktop" | "mobile" => {
