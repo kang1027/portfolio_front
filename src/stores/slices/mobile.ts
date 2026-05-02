@@ -17,8 +17,8 @@ export interface MobileSlice {
   lockScreenSeen: boolean;
   unlockScreen: () => void;
 
-  currentPage: 0 | 1;
-  setCurrentPage: (p: 0 | 1) => void;
+  currentPage: number;
+  setCurrentPage: (p: number) => void;
 
   activeApp: string | null;
   mobileOpenApp: (id: string) => void;
