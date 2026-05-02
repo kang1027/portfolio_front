@@ -100,6 +100,8 @@ class NowPlayingService {
       }
       this.ws = null;
     }
+
+    this.lastData = null;
   }
 
   private attemptConnection(): void {
