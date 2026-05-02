@@ -17,7 +17,8 @@ export default function StatusBar() {
   useEffect(() => {
     let intervalId: ReturnType<typeof setInterval> | undefined;
     const tick = () => setTime(fmt(new Date()));
-    const msToNextMinute = (60 - new Date().getSeconds()) * 1000;
+    const now = new Date();
+    const msToNextMinute = (60 - now.getSeconds()) * 1000 - now.getMilliseconds();
     const timeoutId = setTimeout(() => {
       tick();
       intervalId = setInterval(tick, 60_000);
