@@ -101,19 +101,17 @@ export default function MobileShell(_props: MacActions) {
 
       <AnimatePresence>
         {controlCenterOpen && (
-          <>
-            <motion.div
-              key="cc-bg"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="absolute inset-0 bg-black/30 z-40"
-              onClick={() => setOverlay(null)}
-            />
-            <ControlCenter />
-          </>
+          <motion.div
+            key="cc-bg"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="absolute inset-0 bg-black/30 z-40"
+            onClick={() => setOverlay(null)}
+          />
         )}
       </AnimatePresence>
+      <AnimatePresence>{controlCenterOpen && <ControlCenter key="cc" />}</AnimatePresence>
 
       <motion.div
         drag="y"
@@ -129,18 +127,18 @@ export default function MobileShell(_props: MacActions) {
 
       <AnimatePresence>
         {notificationCenterOpen && (
-          <>
-            <motion.div
-              key="nc-bg"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="absolute inset-0 bg-black/30 z-40"
-              onClick={() => setOverlay(null)}
-            />
-            <NotificationCenter />
-          </>
+          <motion.div
+            key="nc-bg"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="absolute inset-0 bg-black/30 z-40"
+            onClick={() => setOverlay(null)}
+          />
         )}
+      </AnimatePresence>
+      <AnimatePresence>
+        {notificationCenterOpen && <NotificationCenter key="nc" />}
       </AnimatePresence>
 
       <AnimatePresence>{appSwitcherOpen && <AppSwitcher key="sw" />}</AnimatePresence>
