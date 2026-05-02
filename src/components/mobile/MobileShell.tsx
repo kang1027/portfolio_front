@@ -8,13 +8,15 @@ import StatusBar from "./shell/StatusBar";
 import DynamicIsland from "./shell/DynamicIsland";
 import HomeIndicator from "./shell/HomeIndicator";
 import LockScreen from "./lockscreen/LockScreen";
+import HomeScreen from "./home/HomeScreen";
 
 export default function MobileShell(_props: MacActions) {
-  const { dark, wallpaperOverride, lockScreenSeen } = useStore(
+  const { dark, wallpaperOverride, lockScreenSeen, activeApp } = useStore(
     useShallow((s) => ({
       dark: s.dark,
       wallpaperOverride: s.wallpaperOverride,
-      lockScreenSeen: s.lockScreenSeen
+      lockScreenSeen: s.lockScreenSeen,
+      activeApp: s.activeApp
     }))
   );
   const bg = wallpaperOverride ?? (dark ? wallpapers.night : wallpapers.day);
@@ -25,6 +27,7 @@ export default function MobileShell(_props: MacActions) {
       <StatusBar />
       <DynamicIsland />
       <HomeIndicator onSwipeUp={() => {}} />
+      {lockScreenSeen && !activeApp && <HomeScreen />}
       <AnimatePresence>{!lockScreenSeen && <LockScreen key="lock" />}</AnimatePresence>
     </div>
   );
