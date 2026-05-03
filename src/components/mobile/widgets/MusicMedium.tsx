@@ -103,32 +103,33 @@ export default function MusicMedium() {
           </>
         )}
 
-        <div className="relative h-full px-3 py-2.5 flex flex-col gap-1.5">
-          {/* 상단: art + meta + LIVE dot */}
-          <div className="flex items-center gap-2.5">
-            {showArt ? (
-              <button
-                type="button"
-                onClick={openTrackUrl}
-                disabled={!trackUrl}
-                aria-label={trackUrl ? "트랙 페이지 열기" : "앨범 커버"}
-                className={`w-12 h-12 shrink-0 rounded-lg overflow-hidden bg-white/5 shadow-md shadow-black/40 ${trackUrl ? "active:scale-95 transition-transform" : ""}`}
-              >
-                <img
-                  src={art}
-                  alt=""
-                  className="w-full h-full object-cover"
-                  onError={() => setArtFailed(true)}
-                />
-              </button>
-            ) : (
-              <div className="w-12 h-12 shrink-0 rounded-lg bg-white/10 flex items-center justify-center shadow-md shadow-black/40">
-                <span className="i-fa-solid:music text-lg text-white/60" />
-              </div>
-            )}
-            <div className="flex-1 min-w-0">
+        {/* 가로 split: 좌측 큰 art / 우측 vertical-center stack */}
+        <div className="relative h-full px-3 py-3 flex items-center gap-3">
+          {showArt ? (
+            <button
+              type="button"
+              onClick={openTrackUrl}
+              disabled={!trackUrl}
+              aria-label={trackUrl ? "트랙 페이지 열기" : "앨범 커버"}
+              className={`w-24 h-24 shrink-0 rounded-xl overflow-hidden bg-white/5 shadow-lg shadow-black/40 ${trackUrl ? "active:scale-95 transition-transform" : ""}`}
+            >
+              <img
+                src={art}
+                alt=""
+                className="w-full h-full object-cover"
+                onError={() => setArtFailed(true)}
+              />
+            </button>
+          ) : (
+            <div className="w-24 h-24 shrink-0 rounded-xl bg-white/10 flex items-center justify-center shadow-lg shadow-black/40">
+              <span className="i-fa-solid:music text-3xl text-white/60" />
+            </div>
+          )}
+
+          <div className="flex-1 min-w-0 flex flex-col justify-center gap-2">
+            <div className="min-w-0">
               <div className="flex items-center gap-1.5">
-                <span className="text-white text-sm font-semibold truncate flex-1">
+                <span className="text-white text-sm font-semibold truncate flex-1 leading-tight">
                   {title}
                 </span>
                 {hasTrack && (
@@ -138,69 +139,69 @@ export default function MusicMedium() {
                   />
                 )}
               </div>
-              {artist && <div className="text-white/65 text-xs truncate">{artist}</div>}
+              {artist && (
+                <div className="text-white/65 text-xs truncate mt-0.5">{artist}</div>
+              )}
             </div>
-          </div>
 
-          {/* 중간: 시간 좌우 + 진행바 한 줄 */}
-          {hasTrack && dispDuration > 0 && (
-            <div className="flex items-center gap-2">
-              <span className="text-[10px] text-white/55 tabular-nums w-8 text-left">
-                {fmt(dispCurrent)}
-              </span>
-              <div className="flex-1 h-1 bg-white/15 rounded-full overflow-hidden">
-                <div
-                  className="h-full bg-white rounded-full transition-all duration-200 ease-linear"
-                  style={{ width: `${progress}%` }}
-                />
+            {hasTrack && dispDuration > 0 && (
+              <div className="flex items-center gap-2">
+                <span className="text-[10px] text-white/55 tabular-nums w-8 text-left">
+                  {fmt(dispCurrent)}
+                </span>
+                <div className="flex-1 h-1 bg-white/15 rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-white rounded-full transition-all duration-200 ease-linear"
+                    style={{ width: `${progress}%` }}
+                  />
+                </div>
+                <span className="text-[10px] text-white/55 tabular-nums w-8 text-right">
+                  {fmt(dispDuration)}
+                </span>
               </div>
-              <span className="text-[10px] text-white/55 tabular-nums w-8 text-right">
-                {fmt(dispDuration)}
-              </span>
-            </div>
-          )}
+            )}
 
-          {/* 하단: 컨트롤 — mt-auto로 바닥 고정, 큰 터치 타겟 */}
-          {hasTrack && (
-            <div className="flex items-center justify-center gap-8 mt-auto">
-              <button
-                type="button"
-                onClick={() => audioPreviewService.skipBackward(10)}
-                aria-label="10초 뒤로"
-                className="text-white/85 hover:text-white active:scale-90 transition-all p-1"
-              >
-                <svg viewBox="0 0 24 24" className="w-6 h-6" fill="currentColor">
-                  <path d="M11 18V6l-8.5 6 8.5 6zm.5-6l8.5 6V6l-8.5 6z" />
-                </svg>
-              </button>
-              <button
-                type="button"
-                onClick={() => audioPreviewService.togglePlay()}
-                aria-label={isPreviewPlaying ? "일시정지" : "30초 미리듣기"}
-                className="text-white active:scale-90 transition-transform p-1"
-              >
-                {isPreviewPlaying ? (
-                  <svg viewBox="0 0 24 24" className="w-9 h-9" fill="currentColor">
-                    <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z" />
+            {hasTrack && (
+              <div className="flex items-center justify-center gap-7">
+                <button
+                  type="button"
+                  onClick={() => audioPreviewService.skipBackward(10)}
+                  aria-label="10초 뒤로"
+                  className="text-white/85 hover:text-white active:scale-90 transition-all p-1"
+                >
+                  <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor">
+                    <path d="M11 18V6l-8.5 6 8.5 6zm.5-6l8.5 6V6l-8.5 6z" />
                   </svg>
-                ) : (
-                  <svg viewBox="0 0 24 24" className="w-9 h-9" fill="currentColor">
-                    <path d="M8 5v14l11-7z" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => audioPreviewService.togglePlay()}
+                  aria-label={isPreviewPlaying ? "일시정지" : "30초 미리듣기"}
+                  className="text-white active:scale-90 transition-transform p-1"
+                >
+                  {isPreviewPlaying ? (
+                    <svg viewBox="0 0 24 24" className="w-7 h-7" fill="currentColor">
+                      <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z" />
+                    </svg>
+                  ) : (
+                    <svg viewBox="0 0 24 24" className="w-7 h-7" fill="currentColor">
+                      <path d="M8 5v14l11-7z" />
+                    </svg>
+                  )}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => audioPreviewService.skipForward(10)}
+                  aria-label="10초 앞으로"
+                  className="text-white/85 hover:text-white active:scale-90 transition-all p-1"
+                >
+                  <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor">
+                    <path d="M4 18l8.5-6L4 6v12zm9-12v12l8.5-6L13 6z" />
                   </svg>
-                )}
-              </button>
-              <button
-                type="button"
-                onClick={() => audioPreviewService.skipForward(10)}
-                aria-label="10초 앞으로"
-                className="text-white/85 hover:text-white active:scale-90 transition-all p-1"
-              >
-                <svg viewBox="0 0 24 24" className="w-6 h-6" fill="currentColor">
-                  <path d="M4 18l8.5-6L4 6v12zm9-12v12l8.5-6L13 6z" />
-                </svg>
-              </button>
-            </div>
-          )}
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </WidgetFrame>
