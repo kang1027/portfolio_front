@@ -40,31 +40,33 @@ export default function ContactMedium() {
   return (
     <WidgetFrame size="small" onClick={() => mobileOpenApp("contact")}>
       <div
-        className="relative w-full h-full p-3 flex flex-col justify-between"
+        className="relative w-full h-full p-3.5 flex flex-col justify-between"
         style={{
           background:
-            "linear-gradient(135deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.06) 100%)"
+            "linear-gradient(135deg, rgba(99,102,241,0.30) 0%, rgba(168,85,247,0.18) 100%)"
         }}
       >
         <div>
-          <div className="text-white text-sm font-semibold">Get in Touch</div>
-          <div className="text-white/70 text-[10px] mt-0.5">메시지 보내기</div>
+          <div className="text-white text-base font-semibold leading-tight">
+            Get in Touch
+          </div>
+          <div className="text-white/70 text-xs mt-1">메시지 보내기</div>
         </div>
-        <div className="grid grid-cols-4 gap-1.5">
+        <div className="grid grid-cols-2 gap-2">
           {SOCIALS.map((s) => (
             <button
               key={s.id}
               type="button"
               onClick={(e) => open(e, s.id, s.fallback)}
               aria-label={s.id}
-              className="aspect-square rounded-lg bg-white/15 hover:bg-white/30 transition-colors flex items-center justify-center"
+              className="aspect-square rounded-xl bg-white/15 hover:bg-white/25 transition-colors flex items-center justify-center"
             >
               {s.icon ? (
-                <span className={`${s.icon} text-base text-white`} aria-hidden="true" />
+                <span className={`${s.icon} text-xl text-white`} aria-hidden="true" />
               ) : (
                 <svg
                   viewBox="0 0 24 24"
-                  className="w-4 h-4 text-white"
+                  className="w-5 h-5 text-white"
                   aria-hidden="true"
                 >
                   <path

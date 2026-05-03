@@ -62,11 +62,11 @@ export default function WeatherSmall() {
   return (
     <WidgetFrame size="small" onClick={() => setExpanded((v) => !v)}>
       <div
-        className="relative w-full h-full p-3 flex flex-col justify-between text-white"
+        className="relative w-full h-full p-3 flex flex-col text-white"
         style={{ background: gradient }}
       >
-        <div className="flex items-center justify-between">
-          <span className="text-xs opacity-90 truncate">{w?.location ?? "—"}</span>
+        <div className="flex items-center justify-between gap-1">
+          <span className="text-xs opacity-90 truncate flex-1">{w?.location ?? "—"}</span>
           {w && (
             <span className="text-[9px] text-green-300 flex items-center gap-1 shrink-0">
               <span className="w-1.5 h-1.5 rounded-full bg-green-300 inline-block" />
@@ -74,18 +74,20 @@ export default function WeatherSmall() {
             </span>
           )}
         </div>
-        {w?.icon && (
-          <img
-            src={getWeatherIcon(w.icon)}
-            alt=""
-            className="absolute right-2 top-7 w-10 h-10 opacity-80 pointer-events-none"
-          />
-        )}
+        <div className="flex-1 flex items-center justify-center my-1 min-h-0">
+          {w?.icon && (
+            <img
+              src={getWeatherIcon(w.icon)}
+              alt=""
+              className="w-14 h-14 opacity-90 drop-shadow-lg pointer-events-none"
+            />
+          )}
+        </div>
         <div>
-          <div className="text-3xl font-light leading-tight">
+          <div className="text-4xl font-light leading-none">
             {w ? `${Math.round(w.temperature)}°` : "--°"}
           </div>
-          <div className="text-[11px] opacity-80 truncate">{w?.description ?? "—"}</div>
+          <div className="text-xs opacity-80 truncate mt-1">{w?.description ?? "—"}</div>
         </div>
         {expanded && hourly.length > 0 && (
           <div className="absolute inset-x-0 bottom-0 bg-black/60 backdrop-blur-xl px-2 py-1.5 flex gap-1.5 overflow-x-auto">
