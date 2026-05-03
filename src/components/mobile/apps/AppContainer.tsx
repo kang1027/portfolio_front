@@ -41,10 +41,15 @@ export default function AppContainer({
           type="button"
           onClick={mobileCloseApp}
           aria-label="Close"
-          className="absolute right-3 w-9 h-9 rounded-full bg-black/60 dark:bg-white/30 backdrop-blur-md flex items-center justify-center z-40 shadow-lg"
+          className="absolute right-3 w-9 h-9 rounded-full bg-black/60 dark:bg-white/30 backdrop-blur-md flex items-center justify-center z-50 shadow-lg pointer-events-auto"
           style={{ top: "calc(var(--mobile-safe-top, 12px) + 8px)" }}
         >
-          <span className="i-fa-solid:xmark text-white text-base" aria-hidden="true" />
+          <svg viewBox="0 0 24 24" className="w-4 h-4 text-white" aria-hidden="true">
+            <path
+              fill="currentColor"
+              d="M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12z"
+            />
+          </svg>
         </button>
       )}
     </motion.div>
