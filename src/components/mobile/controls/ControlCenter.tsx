@@ -37,7 +37,9 @@ export default function ControlCenter() {
       toggleAirdrop: state.toggleAirdrop,
       toggleDark: state.toggleDark,
       setVolume: state.setVolume,
-      setBrightness: state.setBrightness
+      setBrightness: state.setBrightness,
+      mobileOpenApp: state.mobileOpenApp,
+      setOverlay: state.setOverlay
     }))
   );
   return (
@@ -97,6 +99,17 @@ export default function ControlCenter() {
           aria-label="Volume"
         />
       </div>
+      <button
+        type="button"
+        onClick={() => {
+          s.mobileOpenApp("settings");
+          s.setOverlay(null);
+        }}
+        className="mt-3 w-full bg-white/15 hover:bg-white/25 transition-colors rounded-2xl py-3 flex items-center justify-center gap-2 text-white text-sm"
+      >
+        <span className="i-fa-solid:gear text-base" aria-hidden="true" />
+        <span>Settings</span>
+      </button>
     </motion.div>
   );
 }
