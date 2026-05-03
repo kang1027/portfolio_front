@@ -6,6 +6,7 @@ import Login from "~/pages/Login";
 import Boot from "~/pages/Boot";
 import AdminSetup from "~/pages/AdminSetup";
 import SEO, { SEOProvider } from "~/components/SEO";
+import { useDeviceMode } from "~/components/mobile/hooks/useDeviceMode";
 
 import "@unocss/reset/tailwind.css";
 import "uno.css";
@@ -21,6 +22,7 @@ export default function App() {
   const [showAdminSetup, setShowAdminSetup] = useState<boolean>(false);
 
   const dark = useStore((state) => state.dark);
+  const mode = useDeviceMode();
 
   // Apply dark mode class on initial load
   useEffect(() => {
@@ -30,6 +32,13 @@ export default function App() {
       document.documentElement.classList.remove("dark");
     }
   }, [dark]);
+
+  // Auto-skip Login on mobile — LockScreen inside MobileShell handles entry instead
+  useEffect(() => {
+    if (mode === "mobile" && !login && !booting && !showAdminSetup) {
+      setLogin(true);
+    }
+  }, [mode, login, booting, showAdminSetup]);
 
   const shutMac = (e: React.MouseEvent): void => {
     e.stopPropagation();
