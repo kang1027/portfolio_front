@@ -237,11 +237,10 @@ function AboutSection() {
 }
 
 export default function SettingsMobile() {
-  const { pushStack, pop, mobileCloseApp } = useStore(
+  const { pushStack, pop } = useStore(
     useShallow((s) => ({
       pushStack: s.pushStack,
-      pop: s.pop,
-      mobileCloseApp: s.mobileCloseApp
+      pop: s.pop
     }))
   );
   const dragControls = useDragControls();
@@ -284,16 +283,6 @@ export default function SettingsMobile() {
               <span>Settings</span>
             </button>
           ) : null
-        }
-        right={
-          <button
-            type="button"
-            onClick={mobileCloseApp}
-            aria-label="Close"
-            className="w-7 h-7 rounded-full bg-black/10 dark:bg-white/10 flex items-center justify-center"
-          >
-            <span className="i-fa-solid:xmark text-sm" aria-hidden="true" />
-          </button>
         }
       />
       {isSection && <EdgeBackGesture onBack={handlePop} />}

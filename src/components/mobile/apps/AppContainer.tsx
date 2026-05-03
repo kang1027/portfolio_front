@@ -5,9 +5,14 @@ import { useStore } from "~/stores";
 interface Props {
   children: ReactNode;
   dragControls?: DragControls;
+  showCloseButton?: boolean;
 }
 
-export default function AppContainer({ children, dragControls }: Props) {
+export default function AppContainer({
+  children,
+  dragControls,
+  showCloseButton = true
+}: Props) {
   const mobileCloseApp = useStore((s) => s.mobileCloseApp);
 
   return (
@@ -31,6 +36,17 @@ export default function AppContainer({ children, dragControls }: Props) {
       className="absolute inset-0 z-30 bg-white dark:bg-neutral-900 overflow-hidden"
     >
       {children}
+      {showCloseButton && (
+        <button
+          type="button"
+          onClick={mobileCloseApp}
+          aria-label="Close"
+          className="absolute right-3 w-9 h-9 rounded-full bg-black/60 dark:bg-white/30 backdrop-blur-md flex items-center justify-center z-40 shadow-lg"
+          style={{ top: "calc(var(--mobile-safe-top, 12px) + 8px)" }}
+        >
+          <span className="i-fa-solid:xmark text-white text-base" aria-hidden="true" />
+        </button>
+      )}
     </motion.div>
   );
 }
