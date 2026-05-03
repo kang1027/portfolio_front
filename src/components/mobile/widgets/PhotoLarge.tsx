@@ -19,7 +19,7 @@ export default function PhotoLarge() {
   }, []);
 
   return (
-    <WidgetFrame size="large">
+    <WidgetFrame size="medium">
       <div className="relative w-full h-full">
         {PHOTOS.map((src, idx) => (
           <img
