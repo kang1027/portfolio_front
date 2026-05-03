@@ -94,7 +94,7 @@ export default function MobileShell(_props: MacActions) {
           onDragEnd={(_, info) => {
             if (info.offset.y > 30 && info.velocity.y > 100) setOverlay("cc");
           }}
-          className="absolute top-0 right-0 w-1/2 h-12 z-50"
+          className="absolute top-0 right-12 w-[40%] h-12 z-40"
           style={{ touchAction: "pan-y" }}
         />
       )}
@@ -122,7 +122,7 @@ export default function MobileShell(_props: MacActions) {
           onDragEnd={(_, info) => {
             if (info.offset.y > 30 && info.velocity.y > 100) setOverlay("nc");
           }}
-          className="absolute top-0 left-0 w-1/2 h-12 z-50"
+          className="absolute top-0 left-0 w-1/2 h-12 z-40"
           style={{ touchAction: "pan-y" }}
         />
       )}
