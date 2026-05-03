@@ -29,3 +29,11 @@
 .mobile-shell .tap-feedback:active {
   transform: scale(0.97);
 }
+
+.mobile-shell *::-webkit-scrollbar {
+  display: none;
+}
+
+.mobile-shell * {
+  scrollbar-width: none;
+}
