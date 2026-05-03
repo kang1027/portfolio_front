@@ -1,5 +1,10 @@
 import { useEffect, useState } from "react";
-import { weatherService, type WeatherData, type ForecastDay, type HourlyForecast } from "~/services/weatherService";
+import {
+  weatherService,
+  type WeatherData,
+  type ForecastDay,
+  type HourlyForecast
+} from "~/services/weatherService";
 
 export default function WeatherWidget() {
   const [weather, setWeather] = useState<WeatherData | null>(null);
@@ -32,13 +37,13 @@ export default function WeatherWidget() {
 
   // 날씨 타입 결정 (OpenWeather icon code 기반)
   const getWeatherType = (iconCode: string): string => {
-    if (iconCode.startsWith('01')) return 'sunny'; // clear sky
-    if (iconCode.startsWith('02')) return 'partly_cloudy'; // few clouds
-    if (iconCode.startsWith('03') || iconCode.startsWith('04')) return 'cloudy'; // clouds
-    if (iconCode.startsWith('09') || iconCode.startsWith('10')) return 'rainy'; // rain
-    if (iconCode.startsWith('11')) return 'lightning'; // thunderstorm
-    if (iconCode.startsWith('13')) return 'snowy'; // snow
-    return 'cloudy';
+    if (iconCode.startsWith("01")) return "sunny"; // clear sky
+    if (iconCode.startsWith("02")) return "partly_cloudy"; // few clouds
+    if (iconCode.startsWith("03") || iconCode.startsWith("04")) return "cloudy"; // clouds
+    if (iconCode.startsWith("09") || iconCode.startsWith("10")) return "rainy"; // rain
+    if (iconCode.startsWith("11")) return "lightning"; // thunderstorm
+    if (iconCode.startsWith("13")) return "snowy"; // snow
+    return "cloudy";
   };
 
   // SVG 아이콘 경로
@@ -52,20 +57,20 @@ export default function WeatherWidget() {
     const weatherType = getWeatherType(iconCode);
 
     switch (weatherType) {
-      case 'sunny':
-        return 'linear-gradient(135deg, rgba(255, 200, 100, 0.3) 0%, rgba(253, 245, 150, 0.2) 100%)';
-      case 'cloudy':
-        return 'linear-gradient(135deg, rgba(132, 140, 207, 0.25) 0%, rgba(184, 188, 230, 0.15) 100%)';
-      case 'partly_cloudy':
-        return 'linear-gradient(135deg, rgba(100, 150, 255, 0.3) 0%, rgba(215, 253, 255, 0.2) 100%)';
-      case 'rainy':
-        return 'linear-gradient(135deg, rgba(50, 120, 220, 0.3) 0%, rgba(91, 196, 255, 0.2) 100%)';
-      case 'lightning':
-        return 'linear-gradient(135deg, rgba(80, 90, 200, 0.35) 0%, rgba(120, 130, 220, 0.25) 100%)';
-      case 'snowy':
-        return 'linear-gradient(135deg, rgba(200, 210, 240, 0.25) 0%, rgba(220, 230, 255, 0.15) 100%)';
+      case "sunny":
+        return "linear-gradient(135deg, rgba(255, 200, 100, 0.3) 0%, rgba(253, 245, 150, 0.2) 100%)";
+      case "cloudy":
+        return "linear-gradient(135deg, rgba(132, 140, 207, 0.25) 0%, rgba(184, 188, 230, 0.15) 100%)";
+      case "partly_cloudy":
+        return "linear-gradient(135deg, rgba(100, 150, 255, 0.3) 0%, rgba(215, 253, 255, 0.2) 100%)";
+      case "rainy":
+        return "linear-gradient(135deg, rgba(50, 120, 220, 0.3) 0%, rgba(91, 196, 255, 0.2) 100%)";
+      case "lightning":
+        return "linear-gradient(135deg, rgba(80, 90, 200, 0.35) 0%, rgba(120, 130, 220, 0.25) 100%)";
+      case "snowy":
+        return "linear-gradient(135deg, rgba(200, 210, 240, 0.25) 0%, rgba(220, 230, 255, 0.15) 100%)";
       default:
-        return 'linear-gradient(135deg, rgba(132, 140, 207, 0.25) 0%, rgba(184, 188, 230, 0.15) 100%)';
+        return "linear-gradient(135deg, rgba(132, 140, 207, 0.25) 0%, rgba(184, 188, 230, 0.15) 100%)";
     }
   };
 
@@ -73,39 +78,47 @@ export default function WeatherWidget() {
   const getWeatherLabel = (iconCode: string): string => {
     const weatherType = getWeatherType(iconCode);
     const labels: Record<string, string> = {
-      sunny: 'Sunny',
-      cloudy: 'Cloudy',
-      partly_cloudy: 'Partly Cloudy',
-      rainy: 'Rainy',
-      lightning: 'Thunderstorm',
-      snowy: 'Snowy'
+      sunny: "Sunny",
+      cloudy: "Cloudy",
+      partly_cloudy: "Partly Cloudy",
+      rainy: "Rainy",
+      lightning: "Thunderstorm",
+      snowy: "Snowy"
     };
-    return labels[weatherType] || 'Cloudy';
+    return labels[weatherType] || "Cloudy";
   };
 
   // 섭씨 -> 화씨 변환
   const celsiusToFahrenheit = (celsius: number): number => {
-    return Math.round((celsius * 9/5) + 32);
+    return Math.round((celsius * 9) / 5 + 32);
   };
 
   // 현재 날짜 가져오기 (YYYY/MM/DD 형식)
   const getCurrentDate = (): string => {
     const date = new Date();
     const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
     return `${year}/${month}/${day}`;
   };
 
   // 요일 가져오기
   const getCurrentDay = (): string => {
-    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const days = [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday"
+    ];
     return days[new Date().getDay()];
   };
 
   // 날짜 문자열(YYYY-MM-DD)에서 요일 가져오기
   const getDayFromDate = (dateStr: string): string => {
-    const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
     const date = new Date(dateStr);
     return days[date.getDay()];
   };
@@ -116,19 +129,23 @@ export default function WeatherWidget() {
         <div
           className="relative w-[280px] h-[240px] rounded-3xl overflow-hidden shadow-2xl border border-white/20 backdrop-blur-3xl"
           style={{
-            background: 'linear-gradient(135deg, rgba(132, 140, 207, 0.25) 0%, rgba(184, 188, 230, 0.15) 100%)'
+            background:
+              "linear-gradient(135deg, rgba(132, 140, 207, 0.25) 0%, rgba(184, 188, 230, 0.15) 100%)"
           }}
         >
           <div
             className="absolute inset-0 rounded-3xl"
             style={{
-              background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.1) 50%, rgba(255, 255, 255, 0.2) 100%)',
-              backdropFilter: 'blur(20px)',
-              WebkitBackdropFilter: 'blur(20px)'
+              background:
+                "linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.1) 50%, rgba(255, 255, 255, 0.2) 100%)",
+              backdropFilter: "blur(20px)",
+              WebkitBackdropFilter: "blur(20px)"
             }}
           />
           <div className="absolute inset-0 flex items-center justify-center">
-            <div className="text-white text-sm font-['Inter'] font-medium">Loading...</div>
+            <div className="text-white text-sm font-['Inter'] font-medium">
+              Loading...
+            </div>
           </div>
         </div>
       </div>
@@ -141,16 +158,17 @@ export default function WeatherWidget() {
         className="relative w-[280px] h-[240px] rounded-3xl shadow-2xl border border-white/20 backdrop-blur-3xl"
         style={{
           background: getWeatherGradient(weather.icon),
-          overflow: 'visible' // 팝업이 보이도록 변경
+          overflow: "visible" // 팝업이 보이도록 변경
         }}
       >
         {/* Glass Overlay */}
         <div
           className="absolute inset-0 rounded-3xl overflow-hidden"
           style={{
-            background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.1) 50%, rgba(255, 255, 255, 0.2) 100%)',
-            backdropFilter: 'blur(20px)',
-            WebkitBackdropFilter: 'blur(20px)'
+            background:
+              "linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.1) 50%, rgba(255, 255, 255, 0.2) 100%)",
+            backdropFilter: "blur(20px)",
+            WebkitBackdropFilter: "blur(20px)"
           }}
         />
 
@@ -201,7 +219,7 @@ export default function WeatherWidget() {
                 <div
                   className="font-['Inter'] font-bold text-4xl leading-none text-white"
                   style={{
-                    mixBlendMode: 'overlay'
+                    mixBlendMode: "overlay"
                   }}
                 >
                   {weather.temperature}°
@@ -209,7 +227,7 @@ export default function WeatherWidget() {
                 <div
                   className="font-['Inter'] font-medium text-sm text-white/70"
                   style={{
-                    mixBlendMode: 'overlay'
+                    mixBlendMode: "overlay"
                   }}
                 >
                   {celsiusToFahrenheit(weather.temperature)}°F
@@ -232,20 +250,21 @@ export default function WeatherWidget() {
               <div
                 className="absolute"
                 style={{
-                  minWidth: '400px',
+                  minWidth: "400px",
                   zIndex: 9999,
                   left: `${mousePos.x}px`,
                   top: `${mousePos.y - 120}px`, // 마우스 위 120px
-                  transform: 'translateX(-50%)', // 가운데 정렬
-                  pointerEvents: 'none' // 팝업이 마우스 이벤트를 방해하지 않도록
+                  transform: "translateX(-50%)", // 가운데 정렬
+                  pointerEvents: "none" // 팝업이 마우스 이벤트를 방해하지 않도록
                 }}
               >
                 <div
                   className="rounded-2xl overflow-hidden shadow-2xl border border-white/20"
                   style={{
-                    background: 'linear-gradient(135deg, rgba(40, 40, 50, 0.95) 0%, rgba(30, 30, 40, 0.9) 100%)',
-                    backdropFilter: 'blur(20px)',
-                    WebkitBackdropFilter: 'blur(20px)'
+                    background:
+                      "linear-gradient(135deg, rgba(40, 40, 50, 0.95) 0%, rgba(30, 30, 40, 0.9) 100%)",
+                    backdropFilter: "blur(20px)",
+                    WebkitBackdropFilter: "blur(20px)"
                   }}
                 >
                   <div className="px-4 py-3">
@@ -255,7 +274,10 @@ export default function WeatherWidget() {
                     {hourly.length > 0 ? (
                       <div className="flex gap-4 overflow-x-auto pb-2">
                         {hourly.map((item, index) => (
-                          <div key={index} className="flex flex-col items-center gap-1 min-w-[50px]">
+                          <div
+                            key={index}
+                            className="flex flex-col items-center gap-1 min-w-[50px]"
+                          >
                             {/* Time */}
                             <div className="font-['Inter'] font-medium text-[10px] text-white/70">
                               {item.time}
@@ -307,7 +329,7 @@ export default function WeatherWidget() {
                 <div
                   className="font-['Inter'] font-bold text-xs text-white"
                   style={{
-                    mixBlendMode: 'overlay'
+                    mixBlendMode: "overlay"
                   }}
                 >
                   {item.temp}°

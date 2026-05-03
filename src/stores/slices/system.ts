@@ -9,6 +9,7 @@ export interface SystemSlice {
   bluetooth: boolean;
   airdrop: boolean;
   fullscreen: boolean;
+  wallpaperOverride: string | null;
   toggleDark: () => void;
   toggleWIFI: () => void;
   toggleBluetooth: () => void;
@@ -16,6 +17,7 @@ export interface SystemSlice {
   toggleFullScreen: (v: boolean) => void;
   setVolume: (v: number) => void;
   setBrightness: (v: number) => void;
+  setWallpaperOverride: (w: string | null) => void;
 }
 
 // Determine if it should be dark mode based on current time
@@ -26,6 +28,15 @@ const getInitialDarkMode = (): boolean => {
   return currentHour >= 18 || currentHour < 6;
 };
 
+const getInitialWallpaper = (): string | null => {
+  if (typeof window === "undefined") return null;
+  try {
+    return window.localStorage.getItem("wallpaperOverride");
+  } catch {
+    return null;
+  }
+};
+
 export const createSystemSlice: StateCreator<SystemSlice> = (set) => ({
   dark: getInitialDarkMode(),
   volume: 100,
@@ -34,6 +45,14 @@ export const createSystemSlice: StateCreator<SystemSlice> = (set) => ({
   bluetooth: true,
   airdrop: true,
   fullscreen: false,
+  wallpaperOverride: getInitialWallpaper(),
+  setWallpaperOverride: (w) => {
+    try {
+      if (w !== null) window.localStorage.setItem("wallpaperOverride", w);
+      else window.localStorage.removeItem("wallpaperOverride");
+    } catch {}
+    set({ wallpaperOverride: w });
+  },
   toggleDark: () =>
     set((state) => {
       if (!state.dark) document.documentElement.classList.add("dark");

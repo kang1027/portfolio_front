@@ -1,0 +1,39 @@
+.mobile-shell {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  background: #000;
+  color: #fff;
+  overflow: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui, sans-serif;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: pan-y;
+  --mobile-safe-top: env(safe-area-inset-top, 12px);
+  --mobile-safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.mobile-stage {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+}
+
+.mobile-shell .tap-feedback {
+  transition: transform 120ms ease-out;
+}
+
+.mobile-shell .tap-feedback:active {
+  transform: scale(0.97);
+}
+
+.mobile-shell *::-webkit-scrollbar {
+  display: none;
+}
+
+.mobile-shell * {
+  scrollbar-width: none;
+}

@@ -44,9 +44,10 @@ export default function Desktop(props: MacActions) {
   const [spotlightBtnRef, setSpotlightBtnRef] =
     useState<React.RefObject<HTMLDivElement> | null>(null);
 
-  const { dark, brightness } = useStore((state) => ({
+  const { dark, brightness, wallpaperOverride } = useStore((state) => ({
     dark: state.dark,
-    brightness: state.brightness
+    brightness: state.brightness,
+    wallpaperOverride: state.wallpaperOverride
   }));
 
   // 페이지 로드 시 이미지 및 마크다운 파일 미리 로딩
@@ -272,7 +273,7 @@ export default function Desktop(props: MacActions) {
     <div
       className="size-full overflow-hidden bg-center bg-cover"
       style={{
-        backgroundImage: `url(${dark ? wallpapers.night : wallpapers.day})`,
+        backgroundImage: `url(${wallpaperOverride ?? (dark ? wallpapers.night : wallpapers.day)})`,
         filter: `brightness( ${(brightness as number) * 0.7 + 50}% )`
       }}
     >
@@ -301,7 +302,10 @@ export default function Desktop(props: MacActions) {
       <ContactWidget onOpenContact={() => openApp("contact")} />
 
       {/* Desktop Apps */}
-      <div className="window-bound z-10 absolute pointer-events-none" style={{ top: minMarginY }}>
+      <div
+        className="window-bound z-10 absolute pointer-events-none"
+        style={{ top: minMarginY }}
+      >
         {renderAppWindows()}
       </div>
 

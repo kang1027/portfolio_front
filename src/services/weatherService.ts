@@ -29,6 +29,16 @@ type WeatherCallback = (data: WeatherData | null) => void;
 type ForecastCallback = (data: ForecastDay[]) => void;
 type HourlyCallback = (data: HourlyForecast[]) => void;
 
+interface ForecastApiItem {
+  dt_txt: string;
+  weather: { icon: string }[];
+  main: { temp: number; temp_min: number; temp_max: number };
+}
+
+interface ForecastApiResponse {
+  list: ForecastApiItem[];
+}
+
 class WeatherService {
   private subscribers: Set<WeatherCallback> = new Set();
   private forecastSubscribers: Set<ForecastCallback> = new Set();
@@ -37,6 +47,7 @@ class WeatherService {
   private forecastData: ForecastDay[] = [];
   private hourlyData: HourlyForecast[] = [];
   private updateInterval: NodeJS.Timeout | null = null;
+  private isFetching = false;
   private readonly WEATHER_API_KEY = import.meta.env.VITE_OPENWEATHER_API_KEY;
   private readonly WEATHER_API_URL = "https://api.openweathermap.org/data/2.5/weather";
   private readonly FORECAST_API_URL = "https://api.openweathermap.org/data/2.5/forecast";
@@ -46,7 +57,31 @@ class WeatherService {
   private readonly LONGITUDE = 127.1527;
 
   constructor() {
+    // 구독자가 생기기 전까지는 네트워크 요청을 시작하지 않는다.
+  }
+
+  private ensureFetching() {
+    if (this.isFetching) return;
+    this.isFetching = true;
     this.startFetching();
+  }
+
+  private maybeStopFetching() {
+    if (
+      this.subscribers.size === 0 &&
+      this.forecastSubscribers.size === 0 &&
+      this.hourlySubscribers.size === 0
+    ) {
+      this.stopFetching();
+    }
+  }
+
+  private stopFetching() {
+    if (this.updateInterval) {
+      clearInterval(this.updateInterval);
+      this.updateInterval = null;
+    }
+    this.isFetching = false;
   }
 
   private async fetchWeather() {
@@ -109,10 +144,10 @@ class WeatherService {
         throw new Error(`Forecast API error: ${response.status}`);
       }
 
-      const data = await response.json();
+      const data: ForecastApiResponse = await response.json();
 
       // Hourly 데이터 처리 (앞으로 24시간, 3시간 간격 8개)
-      this.hourlyData = data.list.slice(0, 8).map((item: any) => ({
+      this.hourlyData = data.list.slice(0, 8).map((item) => ({
         time: item.dt_txt.split(" ")[1].substring(0, 5), // HH:MM
         datetime: item.dt_txt,
         icon: item.weather[0].icon,
@@ -120,9 +155,9 @@ class WeatherService {
       }));
 
       // 5일 예보 데이터 처리 (3시간 단위 40개 -> 하루 단위 5개)
-      const dailyData: { [key: string]: any[] } = {};
+      const dailyData: Record<string, ForecastApiItem[]> = {};
 
-      data.list.forEach((item: any) => {
+      data.list.forEach((item) => {
         const date = item.dt_txt.split(" ")[0]; // YYYY-MM-DD
         if (!dailyData[date]) {
           dailyData[date] = [];
@@ -144,12 +179,8 @@ class WeatherService {
             date,
             icon: noonData.weather[0].icon,
             temp: Math.round(noonData.main.temp),
-            tempMin: Math.round(
-              Math.min(...dayData.map((d: any) => d.main.temp_min))
-            ),
-            tempMax: Math.round(
-              Math.max(...dayData.map((d: any) => d.main.temp_max))
-            )
+            tempMin: Math.round(Math.min(...dayData.map((d) => d.main.temp_min))),
+            tempMax: Math.round(Math.max(...dayData.map((d) => d.main.temp_max)))
           };
         });
 
@@ -227,6 +258,7 @@ class WeatherService {
 
   subscribe(callback: WeatherCallback): () => void {
     this.subscribers.add(callback);
+    this.ensureFetching();
 
     // Immediately notify with current data
     if (this.currentWeather) {
@@ -235,11 +267,13 @@ class WeatherService {
 
     return () => {
       this.subscribers.delete(callback);
+      this.maybeStopFetching();
     };
   }
 
   subscribeForecast(callback: ForecastCallback): () => void {
     this.forecastSubscribers.add(callback);
+    this.ensureFetching();
 
     // Immediately notify with current data
     if (this.forecastData.length > 0) {
@@ -248,11 +282,13 @@ class WeatherService {
 
     return () => {
       this.forecastSubscribers.delete(callback);
+      this.maybeStopFetching();
     };
   }
 
   subscribeHourly(callback: HourlyCallback): () => void {
     this.hourlySubscribers.add(callback);
+    this.ensureFetching();
 
     // Immediately notify with current data
     if (this.hourlyData.length > 0) {
@@ -261,6 +297,7 @@ class WeatherService {
 
     return () => {
       this.hourlySubscribers.delete(callback);
+      this.maybeStopFetching();
     };
   }
 
@@ -283,10 +320,7 @@ class WeatherService {
   }
 
   cleanup() {
-    if (this.updateInterval) {
-      clearInterval(this.updateInterval);
-      this.updateInterval = null;
-    }
+    this.stopFetching();
     this.subscribers.clear();
     this.forecastSubscribers.clear();
     this.hourlySubscribers.clear();

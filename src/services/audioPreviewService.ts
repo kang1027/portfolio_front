@@ -22,11 +22,11 @@ class AudioPreviewService {
 
   constructor() {
     this.audio = new Audio();
-    this.audio.addEventListener('timeupdate', this.handleTimeUpdate);
-    this.audio.addEventListener('loadedmetadata', this.handleLoadedMetadata);
-    this.audio.addEventListener('ended', this.handleEnded);
-    this.audio.addEventListener('play', this.handlePlay);
-    this.audio.addEventListener('pause', this.handlePause);
+    this.audio.addEventListener("timeupdate", this.handleTimeUpdate);
+    this.audio.addEventListener("loadedmetadata", this.handleLoadedMetadata);
+    this.audio.addEventListener("ended", this.handleEnded);
+    this.audio.addEventListener("play", this.handlePlay);
+    this.audio.addEventListener("pause", this.handlePause);
   }
 
   private handleTimeUpdate = () => {
@@ -57,7 +57,7 @@ class AudioPreviewService {
   };
 
   private notifyListeners() {
-    this.listeners.forEach(listener => listener({ ...this.state }));
+    this.listeners.forEach((listener) => listener({ ...this.state }));
   }
 
   // 재생 URL 설정 (곡이 바뀔 때)

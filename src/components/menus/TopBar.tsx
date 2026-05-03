@@ -1,5 +1,6 @@
 import React from "react";
 import { format } from "date-fns";
+import { useShallow } from "zustand/react/shallow";
 import { isFullScreen } from "~/utils";
 import { music } from "~/configs";
 import type { MacActions } from "~/types";
@@ -92,6 +93,12 @@ const TopBar = (props: TopBarProps) => {
     setVolume: state.setVolume,
     setBrightness: state.setBrightness
   }));
+  const { forcedMode, setForcedMode } = useStore(
+    useShallow((state) => ({
+      forcedMode: state.forcedMode,
+      setForcedMode: state.setForcedMode
+    }))
+  );
 
   useInterval(() => {
     setState({
@@ -201,6 +208,20 @@ const TopBar = (props: TopBarProps) => {
         <TopBarItem hideOnMobile={true}>
           <Battery />
         </TopBarItem>
+        <button
+          className={`hidden md:inline-flex hover:bg-c-200/50 rounded px-1 ${
+            forcedMode === "mobile" ? "text-blue-500" : ""
+          }`}
+          onClick={() => setForcedMode(forcedMode === "mobile" ? "auto" : "mobile")}
+          aria-label={
+            forcedMode === "mobile" ? "Disable mobile preview" : "Preview mobile shell"
+          }
+          title={
+            forcedMode === "mobile" ? "Disable mobile preview" : "Preview mobile shell"
+          }
+        >
+          <span className="i-fa-solid:mobile-screen text-base" />
+        </button>
         <TopBarItem
           hideOnMobile={true}
           forceHover={state.showWifiMenu}
