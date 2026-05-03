@@ -30,7 +30,7 @@ export default function NotificationCenter() {
       exit={{ y: -20, opacity: 0 }}
       transition={{ type: "spring", stiffness: 280, damping: 28 }}
       className="absolute left-0 right-0 m-3 z-45"
-      style={{ top: "var(--mobile-safe-top, 12px)" }}
+      style={{ top: "calc(var(--mobile-safe-top, 12px) + 44px)" }}
       onClick={(e) => e.stopPropagation()}
     >
       {FAKE.map((n) => (
