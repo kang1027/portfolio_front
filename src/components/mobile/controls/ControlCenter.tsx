@@ -50,7 +50,7 @@ export default function ControlCenter() {
       exit={{ y: -20, opacity: 0 }}
       transition={{ type: "spring", stiffness: 280, damping: 28 }}
       className="absolute right-0 w-[88%] max-w-[420px] m-3 rounded-3xl p-4 z-45 bg-black/60 backdrop-blur-2xl"
-      style={{ top: "var(--mobile-safe-top, 12px)" }}
+      style={{ top: "calc(var(--mobile-safe-top, 12px) + 44px)" }}
       onClick={(e) => e.stopPropagation()}
     >
       <div className="grid grid-cols-4 gap-2">
