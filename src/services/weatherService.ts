@@ -29,6 +29,16 @@ type WeatherCallback = (data: WeatherData | null) => void;
 type ForecastCallback = (data: ForecastDay[]) => void;
 type HourlyCallback = (data: HourlyForecast[]) => void;
 
+interface ForecastApiItem {
+  dt_txt: string;
+  weather: { icon: string }[];
+  main: { temp: number; temp_min: number; temp_max: number };
+}
+
+interface ForecastApiResponse {
+  list: ForecastApiItem[];
+}
+
 class WeatherService {
   private subscribers: Set<WeatherCallback> = new Set();
   private forecastSubscribers: Set<ForecastCallback> = new Set();
@@ -134,10 +144,10 @@ class WeatherService {
         throw new Error(`Forecast API error: ${response.status}`);
       }
 
-      const data = await response.json();
+      const data: ForecastApiResponse = await response.json();
 
       // Hourly 데이터 처리 (앞으로 24시간, 3시간 간격 8개)
-      this.hourlyData = data.list.slice(0, 8).map((item: any) => ({
+      this.hourlyData = data.list.slice(0, 8).map((item) => ({
         time: item.dt_txt.split(" ")[1].substring(0, 5), // HH:MM
         datetime: item.dt_txt,
         icon: item.weather[0].icon,
@@ -145,9 +155,9 @@ class WeatherService {
       }));
 
       // 5일 예보 데이터 처리 (3시간 단위 40개 -> 하루 단위 5개)
-      const dailyData: { [key: string]: any[] } = {};
+      const dailyData: Record<string, ForecastApiItem[]> = {};
 
-      data.list.forEach((item: any) => {
+      data.list.forEach((item) => {
         const date = item.dt_txt.split(" ")[0]; // YYYY-MM-DD
         if (!dailyData[date]) {
           dailyData[date] = [];
@@ -169,8 +179,8 @@ class WeatherService {
             date,
             icon: noonData.weather[0].icon,
             temp: Math.round(noonData.main.temp),
-            tempMin: Math.round(Math.min(...dayData.map((d: any) => d.main.temp_min))),
-            tempMax: Math.round(Math.max(...dayData.map((d: any) => d.main.temp_max)))
+            tempMin: Math.round(Math.min(...dayData.map((d) => d.main.temp_min))),
+            tempMax: Math.round(Math.max(...dayData.map((d) => d.main.temp_max)))
           };
         });
 
