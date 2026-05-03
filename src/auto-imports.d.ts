@@ -27,6 +27,7 @@ declare global {
   const DynamicIsland: typeof import('./components/mobile/shell/DynamicIsland')['default']
   const EdgeBackGesture: typeof import('./components/mobile/shell/EdgeBackGesture')['default']
   const FaceTime: typeof import('./components/apps/FaceTime')['default']
+  const FaceTimeMobile: typeof import('./components/mobile/apps/FaceTimeMobile')['default']
   const GenericAppMobile: typeof import('./components/mobile/apps/GenericAppMobile')['default']
   const HomeIndicator: typeof import('./components/mobile/shell/HomeIndicator')['default']
   const HomeScreen: typeof import('./components/mobile/home/HomeScreen')['default']
