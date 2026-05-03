@@ -49,7 +49,7 @@ export default function ControlCenter() {
       animate={{ y: 0, opacity: 1 }}
       exit={{ y: -20, opacity: 0 }}
       transition={{ type: "spring", stiffness: 280, damping: 28 }}
-      className="absolute right-0 w-[88%] max-w-[420px] m-3 rounded-3xl p-4 z-45 bg-black/60 backdrop-blur-2xl"
+      className="absolute inset-x-0 mx-auto w-[88%] max-w-[420px] rounded-3xl p-4 z-45 bg-black/60 backdrop-blur-2xl"
       style={{ top: "calc(var(--mobile-safe-top, 12px) + 44px)" }}
       onClick={(e) => e.stopPropagation()}
     >
