@@ -34,15 +34,6 @@ export interface MobileSlice {
   setOverlay: (which: "cc" | "nc" | "sw" | null) => void;
 }
 
-const getInitialLock = (): boolean => {
-  if (typeof window === "undefined") return false;
-  try {
-    return window.localStorage.getItem("lockSeen") === "1";
-  } catch {
-    return false;
-  }
-};
-
 const getInitialMode = (): DeviceMode => {
   if (typeof window === "undefined") return "auto";
   try {
@@ -63,13 +54,8 @@ export const createMobileSlice: StateCreator<MobileSlice> = (set) => ({
     set({ forcedMode: m });
   },
 
-  lockScreenSeen: getInitialLock(),
-  unlockScreen: () => {
-    try {
-      window.localStorage.setItem("lockSeen", "1");
-    } catch {}
-    set({ lockScreenSeen: true });
-  },
+  lockScreenSeen: false,
+  unlockScreen: () => set({ lockScreenSeen: true }),
 
   currentPage: 0,
   setCurrentPage: (p) => set({ currentPage: p }),
