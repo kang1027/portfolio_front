@@ -112,7 +112,7 @@ export default function MobileShell(_props: MacActions) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="absolute inset-0 bg-black/30 z-40"
+            className="absolute inset-0 bg-black/50 backdrop-blur-sm z-40"
             onClick={() => setOverlay(null)}
           />
         )}
@@ -140,7 +140,7 @@ export default function MobileShell(_props: MacActions) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="absolute inset-0 bg-black/30 z-40"
+            className="absolute inset-0 bg-black/50 backdrop-blur-sm z-40"
             onClick={() => setOverlay(null)}
           />
         )}
