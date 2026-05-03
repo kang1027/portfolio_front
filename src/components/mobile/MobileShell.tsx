@@ -35,7 +35,9 @@ export default function MobileShell(_props: MacActions) {
     controlCenterOpen,
     notificationCenterOpen,
     appSwitcherOpen,
-    setOverlay
+    setOverlay,
+    forcedMode,
+    setForcedMode
   } = useStore(
     useShallow((s) => ({
       dark: s.dark,
@@ -45,7 +47,9 @@ export default function MobileShell(_props: MacActions) {
       controlCenterOpen: s.controlCenterOpen,
       notificationCenterOpen: s.notificationCenterOpen,
       appSwitcherOpen: s.appSwitcherOpen,
-      setOverlay: s.setOverlay
+      setOverlay: s.setOverlay,
+      forcedMode: s.forcedMode,
+      setForcedMode: s.setForcedMode
     }))
   );
   const bg = wallpaperOverride ?? (dark ? wallpapers.night : wallpapers.day);
@@ -150,6 +154,23 @@ export default function MobileShell(_props: MacActions) {
       </AnimatePresence>
 
       <AnimatePresence>{appSwitcherOpen && <AppSwitcher key="sw" />}</AnimatePresence>
+
+      {forcedMode === "mobile" && (
+        <button
+          type="button"
+          onClick={() => setForcedMode("auto")}
+          className="absolute bottom-2 right-2 z-50 px-3 py-1.5 rounded-full bg-black/60 backdrop-blur-md text-white text-xs flex items-center gap-1 shadow-lg"
+          aria-label="Exit mobile preview"
+        >
+          <svg viewBox="0 0 24 24" className="w-3 h-3" aria-hidden="true">
+            <path
+              fill="currentColor"
+              d="M20 18h-7v-1h7zm0-3h-7v-1h7zm0-3h-7v-1h7zm0-3h-7V8h7zM4 4h16v2H4zm0 14h7v-9H4z"
+            />
+          </svg>
+          <span>Exit preview</span>
+        </button>
+      )}
     </div>
   );
 }
