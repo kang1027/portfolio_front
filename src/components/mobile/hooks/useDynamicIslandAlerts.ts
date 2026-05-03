@@ -25,7 +25,7 @@ export function useDynamicIslandAlerts(): IslandAlert | null {
               kind: "music",
               title: np.track.title ?? "",
               subtitle: np.track.artist ?? "",
-              art: "artwork" in np.track ? np.track.artwork : undefined
+              art: np.track.artwork || undefined
             }
           : null;
       setAlert((prev) => (sameAlert(prev, next) ? prev : next));
