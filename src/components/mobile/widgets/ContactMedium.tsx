@@ -5,22 +5,22 @@ import WidgetFrame from "./WidgetFrame";
 const SOCIALS = [
   {
     id: "my-email",
-    icon: "i-fa-solid:envelope",
+    icon: "i-fa-solid:envelope" as string | null,
     fallback: "mailto:kang3171611@naver.com"
   },
   {
     id: "my-github",
-    icon: "i-fa-brands:github",
+    icon: "i-fa-brands:github" as string | null,
     fallback: "https://github.com/kang1027"
   },
   {
     id: "my-instagram",
-    icon: "i-fa-brands:instagram",
+    icon: "i-fa-brands:instagram" as string | null,
     fallback: "https://instagram.com/donghyeon179"
   },
   {
     id: "my-x",
-    icon: "i-fa-brands:x-twitter",
+    icon: null as string | null,
     fallback: "https://x.com/mentis1027"
   }
 ];
@@ -59,7 +59,20 @@ export default function ContactMedium() {
               aria-label={s.id}
               className="aspect-square rounded-lg bg-white/15 hover:bg-white/30 transition-colors flex items-center justify-center"
             >
-              <span className={`${s.icon} text-base text-white`} aria-hidden="true" />
+              {s.icon ? (
+                <span className={`${s.icon} text-base text-white`} aria-hidden="true" />
+              ) : (
+                <svg
+                  viewBox="0 0 24 24"
+                  className="w-4 h-4 text-white"
+                  aria-hidden="true"
+                >
+                  <path
+                    fill="currentColor"
+                    d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"
+                  />
+                </svg>
+              )}
             </button>
           ))}
         </div>
