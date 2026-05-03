@@ -7,7 +7,7 @@ export const MOBILE_HIDDEN_FROM_GRID_IDS = [
   "launchpad"
 ] as const;
 export const PAGE_COUNT = 2;
-export const MOBILE_SAFE_APP_IDS = ["contact", "facetime"] as const;
+export const MOBILE_SAFE_APP_IDS = ["contact"] as const;
 
 export const MOBILE_STUB_APPS = [] as readonly {
   id: string;

@@ -18,6 +18,7 @@ import GenericAppMobile from "./apps/GenericAppMobile";
 import StubApp from "./apps/StubApp";
 import BearMobile from "./apps/BearMobile";
 import SettingsMobile from "./apps/SettingsMobile";
+import FaceTimeMobile from "./apps/FaceTimeMobile";
 import ControlCenter from "./controls/ControlCenter";
 import NotificationCenter from "./controls/NotificationCenter";
 import AppSwitcher from "./controls/AppSwitcher";
@@ -54,7 +55,9 @@ export default function MobileShell(_props: MacActions) {
   const isSafe = activeApp ? SAFE_IDS.includes(activeApp) : false;
   const isBear = activeApp === "bear";
   const isSettings = activeApp === "settings";
-  const showFallbackStub = !!activeApp && !isStub && !isSafe && !isBear && !isSettings;
+  const isFacetime = activeApp === "facetime";
+  const showFallbackStub =
+    !!activeApp && !isStub && !isSafe && !isBear && !isSettings && !isFacetime;
   const fallbackTitle = showFallbackStub
     ? apps.find((a) => a.id === activeApp)?.title ?? activeApp ?? ""
     : "";
@@ -73,6 +76,7 @@ export default function MobileShell(_props: MacActions) {
       <AnimatePresence>
         {activeApp === "bear" && <BearMobile key="bear" />}
         {activeApp === "settings" && <SettingsMobile key="settings" />}
+        {activeApp === "facetime" && <FaceTimeMobile key="facetime" />}
         {MOBILE_STUB_APPS.map(
           ({ id, name, sprintNote }) =>
             activeApp === id && <StubApp key={id} name={name} sprintNote={sprintNote} />
