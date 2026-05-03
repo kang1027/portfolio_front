@@ -3,11 +3,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useShallow } from "zustand/react/shallow";
 import { useStore } from "~/stores";
 import { apps, wallpapers } from "~/configs";
-import {
-  MOBILE_SAFE_APP_IDS,
-  MOBILE_STUB_APP_IDS,
-  MOBILE_STUB_APPS
-} from "~/configs/mobile";
+import { MOBILE_SAFE_APP_IDS } from "~/configs/mobile";
 import type { MacActions } from "~/types";
 import StatusBar from "./shell/StatusBar";
 import DynamicIsland from "./shell/DynamicIsland";
@@ -24,7 +20,6 @@ import NotificationCenter from "./controls/NotificationCenter";
 import AppSwitcher from "./controls/AppSwitcher";
 
 const SAFE_IDS = MOBILE_SAFE_APP_IDS as readonly string[];
-const STUB_IDS = MOBILE_STUB_APP_IDS as readonly string[];
 
 export default function MobileShell(_props: MacActions) {
   const {
@@ -54,13 +49,12 @@ export default function MobileShell(_props: MacActions) {
   );
   const bg = wallpaperOverride ?? (dark ? wallpapers.night : wallpapers.day);
 
-  const isStub = activeApp ? STUB_IDS.includes(activeApp) : false;
   const isSafe = activeApp ? SAFE_IDS.includes(activeApp) : false;
   const isBear = activeApp === "bear";
   const isSettings = activeApp === "settings";
   const isFacetime = activeApp === "facetime";
   const showFallbackStub =
-    !!activeApp && !isStub && !isSafe && !isBear && !isSettings && !isFacetime;
+    !!activeApp && !isSafe && !isBear && !isSettings && !isFacetime;
   const fallbackTitle = showFallbackStub
     ? apps.find((a) => a.id === activeApp)?.title ?? activeApp ?? ""
     : "";
@@ -80,10 +74,6 @@ export default function MobileShell(_props: MacActions) {
         {activeApp === "bear" && <BearMobile key="bear" />}
         {activeApp === "settings" && <SettingsMobile key="settings" />}
         {activeApp === "facetime" && <FaceTimeMobile key="facetime" />}
-        {MOBILE_STUB_APPS.map(
-          ({ id, name, sprintNote }) =>
-            activeApp === id && <StubApp key={id} name={name} sprintNote={sprintNote} />
-        )}
         {activeApp && isSafe && <GenericAppMobile key={activeApp} id={activeApp} />}
         {showFallbackStub && (
           <StubApp
