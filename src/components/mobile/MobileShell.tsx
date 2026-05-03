@@ -19,7 +19,7 @@ import ControlCenter from "./controls/ControlCenter";
 import NotificationCenter from "./controls/NotificationCenter";
 import AppSwitcher from "./controls/AppSwitcher";
 
-const SAFE_IDS = MOBILE_SAFE_APP_IDS as readonly string[];
+const SAFE_IDS = MOBILE_SAFE_APP_IDS;
 
 export default function MobileShell(_props: MacActions) {
   const {
