@@ -87,64 +87,89 @@ export default function MusicMedium() {
 
   return (
     <WidgetFrame size="medium">
-      <div className="relative h-full p-3 flex gap-3">
-        {hasTrack && (
-          <span className="absolute top-2 right-2 text-[9px] text-green-400 flex items-center gap-1">
-            <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
-            LIVE
-          </span>
-        )}
-        {showArt ? (
-          <button
-            type="button"
-            onClick={openTrackUrl}
-            disabled={!trackUrl}
-            aria-label={trackUrl ? "트랙 페이지 열기" : "앨범 커버"}
-            className={`w-20 h-20 shrink-0 rounded-xl overflow-hidden bg-white/5 ${trackUrl ? "active:scale-95 transition-transform" : ""}`}
-          >
+      <div className="relative h-full overflow-hidden">
+        {/* album art blur 배경 — 깊이감 */}
+        {showArt && (
+          <>
             <img
               src={art}
               alt=""
-              className="w-full h-full object-cover"
+              aria-hidden="true"
+              className="absolute inset-0 w-full h-full object-cover scale-110"
+              style={{ filter: "blur(40px) brightness(0.45) saturate(1.3)" }}
               onError={() => setArtFailed(true)}
             />
-          </button>
-        ) : (
-          <div className="w-20 h-20 shrink-0 rounded-xl bg-white/10 flex items-center justify-center">
-            <span className="i-fa-solid:music text-2xl text-white/60" />
-          </div>
+            <div className="absolute inset-0 bg-gradient-to-br from-black/30 via-black/20 to-black/40" />
+          </>
         )}
 
-        <div className="flex-1 min-w-0 flex flex-col justify-between">
-          <div className="min-w-0 pr-10">
-            <div className="text-white text-sm font-semibold truncate">{title}</div>
-            {artist && <div className="text-white/70 text-xs truncate">{artist}</div>}
+        <div className="relative h-full px-3 py-2.5 flex flex-col gap-1.5">
+          {/* 상단: art + meta + LIVE dot */}
+          <div className="flex items-center gap-2.5">
+            {showArt ? (
+              <button
+                type="button"
+                onClick={openTrackUrl}
+                disabled={!trackUrl}
+                aria-label={trackUrl ? "트랙 페이지 열기" : "앨범 커버"}
+                className={`w-12 h-12 shrink-0 rounded-lg overflow-hidden bg-white/5 shadow-md shadow-black/40 ${trackUrl ? "active:scale-95 transition-transform" : ""}`}
+              >
+                <img
+                  src={art}
+                  alt=""
+                  className="w-full h-full object-cover"
+                  onError={() => setArtFailed(true)}
+                />
+              </button>
+            ) : (
+              <div className="w-12 h-12 shrink-0 rounded-lg bg-white/10 flex items-center justify-center shadow-md shadow-black/40">
+                <span className="i-fa-solid:music text-lg text-white/60" />
+              </div>
+            )}
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-1.5">
+                <span className="text-white text-sm font-semibold truncate flex-1">
+                  {title}
+                </span>
+                {hasTrack && (
+                  <span
+                    className="shrink-0 w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse shadow shadow-green-400/60"
+                    aria-label="LIVE"
+                  />
+                )}
+              </div>
+              {artist && <div className="text-white/65 text-xs truncate">{artist}</div>}
+            </div>
           </div>
 
+          {/* 중간: 시간 좌우 + 진행바 한 줄 */}
           {hasTrack && dispDuration > 0 && (
-            <div className="space-y-0.5">
-              <div className="w-full h-1 bg-white/20 rounded-full overflow-hidden">
+            <div className="flex items-center gap-2">
+              <span className="text-[10px] text-white/55 tabular-nums w-8 text-left">
+                {fmt(dispCurrent)}
+              </span>
+              <div className="flex-1 h-1 bg-white/15 rounded-full overflow-hidden">
                 <div
-                  className="h-full bg-white/80 rounded-full transition-all duration-200 ease-linear"
+                  className="h-full bg-white rounded-full transition-all duration-200 ease-linear"
                   style={{ width: `${progress}%` }}
                 />
               </div>
-              <div className="flex justify-between text-[10px] text-white/60">
-                <span>{fmt(dispCurrent)}</span>
-                <span>{fmt(dispDuration)}</span>
-              </div>
+              <span className="text-[10px] text-white/55 tabular-nums w-8 text-right">
+                {fmt(dispDuration)}
+              </span>
             </div>
           )}
 
+          {/* 하단: 컨트롤 — mt-auto로 바닥 고정, 큰 터치 타겟 */}
           {hasTrack && (
-            <div className="flex items-center justify-center gap-5">
+            <div className="flex items-center justify-center gap-8 mt-auto">
               <button
                 type="button"
                 onClick={() => audioPreviewService.skipBackward(10)}
                 aria-label="10초 뒤로"
-                className="text-white/90 active:scale-90 transition-transform"
+                className="text-white/85 hover:text-white active:scale-90 transition-all p-1"
               >
-                <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor">
+                <svg viewBox="0 0 24 24" className="w-6 h-6" fill="currentColor">
                   <path d="M11 18V6l-8.5 6 8.5 6zm.5-6l8.5 6V6l-8.5 6z" />
                 </svg>
               </button>
@@ -152,14 +177,14 @@ export default function MusicMedium() {
                 type="button"
                 onClick={() => audioPreviewService.togglePlay()}
                 aria-label={isPreviewPlaying ? "일시정지" : "30초 미리듣기"}
-                className="text-white active:scale-90 transition-transform"
+                className="text-white active:scale-90 transition-transform p-1"
               >
                 {isPreviewPlaying ? (
-                  <svg viewBox="0 0 24 24" className="w-7 h-7" fill="currentColor">
+                  <svg viewBox="0 0 24 24" className="w-9 h-9" fill="currentColor">
                     <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z" />
                   </svg>
                 ) : (
-                  <svg viewBox="0 0 24 24" className="w-7 h-7" fill="currentColor">
+                  <svg viewBox="0 0 24 24" className="w-9 h-9" fill="currentColor">
                     <path d="M8 5v14l11-7z" />
                   </svg>
                 )}
@@ -168,9 +193,9 @@ export default function MusicMedium() {
                 type="button"
                 onClick={() => audioPreviewService.skipForward(10)}
                 aria-label="10초 앞으로"
-                className="text-white/90 active:scale-90 transition-transform"
+                className="text-white/85 hover:text-white active:scale-90 transition-all p-1"
               >
-                <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor">
+                <svg viewBox="0 0 24 24" className="w-6 h-6" fill="currentColor">
                   <path d="M4 18l8.5-6L4 6v12zm9-12v12l8.5-6L13 6z" />
                 </svg>
               </button>
