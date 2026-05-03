@@ -1,5 +1,5 @@
 import { motion, type DragControls, type PanInfo } from "framer-motion";
-import type { ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { useStore } from "~/stores";
 
 interface Props {
@@ -8,12 +8,27 @@ interface Props {
   showCloseButton?: boolean;
 }
 
+const getViewportHeight = () =>
+  typeof window !== "undefined" ? window.innerHeight : 800;
+
 export default function AppContainer({
   children,
   dragControls,
   showCloseButton = true
 }: Props) {
   const mobileCloseApp = useStore((s) => s.mobileCloseApp);
+  const [viewportH, setViewportH] = useState<number>(getViewportHeight);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const handle = () => setViewportH(window.innerHeight);
+    window.addEventListener("resize", handle);
+    window.addEventListener("orientationchange", handle);
+    return () => {
+      window.removeEventListener("resize", handle);
+      window.removeEventListener("orientationchange", handle);
+    };
+  }, []);
 
   return (
     <motion.div
@@ -24,10 +39,7 @@ export default function AppContainer({
       drag={dragControls ? "y" : false}
       dragControls={dragControls}
       dragListener={false}
-      dragConstraints={{
-        top: 0,
-        bottom: typeof window !== "undefined" ? window.innerHeight : 800
-      }}
+      dragConstraints={{ top: 0, bottom: viewportH }}
       dragElastic={0.2}
       dragSnapToOrigin
       onDragEnd={(_, info: PanInfo) => {
