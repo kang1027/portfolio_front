@@ -22,7 +22,13 @@ export default function MusicMedium() {
 
   return (
     <WidgetFrame size="medium">
-      <div className="flex items-center gap-3 p-3 h-full">
+      <div className="flex items-center gap-3 p-3 h-full relative">
+        {hasTrack && (
+          <span className="absolute top-2 right-2 text-[9px] text-green-400 flex items-center gap-1">
+            <span className="w-1.5 h-1.5 rounded-full bg-green-400 inline-block animate-pulse" />
+            LIVE
+          </span>
+        )}
         {showArt ? (
           <img
             src={art}
