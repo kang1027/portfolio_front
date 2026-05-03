@@ -109,9 +109,12 @@ export default function ControlCenterMenu({
   useClickOutside(controlCenterRef, toggleControlCenter, [btnRef]);
 
   // 표시할 곡 정보 결정
-  const displayTitle = useLiveData && nowPlaying?.track ? nowPlaying.track.title : music.title;
-  const displayArtist = useLiveData && nowPlaying?.track ? nowPlaying.track.artist : music.artist;
-  const displayArtwork = useLiveData && nowPlaying?.track ? nowPlaying.track.artwork : music.cover;
+  const displayTitle =
+    useLiveData && nowPlaying?.track ? nowPlaying.track.title : music.title;
+  const displayArtist =
+    useLiveData && nowPlaying?.track ? nowPlaying.track.artist : music.artist;
+  const displayArtwork =
+    useLiveData && nowPlaying?.track ? nowPlaying.track.artwork : music.cover;
 
   // 재생/일시정지 토글
   const togglePlay = () => {
@@ -205,7 +208,10 @@ export default function ControlCenterMenu({
           <div className="cc-text truncate">{displayArtist}</div>
         </div>
         {isPlaying ? (
-          <span className="i-bi:pause-fill text-2xl cursor-pointer" onClick={togglePlay} />
+          <span
+            className="i-bi:pause-fill text-2xl cursor-pointer"
+            onClick={togglePlay}
+          />
         ) : (
           <span className="i-bi:play-fill text-2xl cursor-pointer" onClick={togglePlay} />
         )}

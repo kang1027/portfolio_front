@@ -92,7 +92,8 @@ const apps: AppsData[] = [
     x: 0,
     y: 0,
     img: "img/icons/mail.jpg",
-    content: <Contact />
+    content: <Contact />,
+    contentMobile: <Contact />
   },
   {
     id: "github",

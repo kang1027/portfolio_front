@@ -26,6 +26,8 @@ class NowPlayingService {
   private reconnectDelay: number = 3000; // 3초 후 재연결
   private isConnecting: boolean = false; // 연결 중 상태 추적
   private shouldReconnect: boolean = true; // 재연결 여부 플래그
+  private reconnectAttempts: number = 0; // 누적 재연결 시도 횟수
+  private readonly MAX_RECONNECT_ATTEMPTS: number = 5; // 콘솔 도배 방지용 상한
   private listeners: Set<NowPlayingListener> = new Set();
   private lastData: NowPlayingResponse | null = null;
   private autoConnected: boolean = false; // 자동 연결 여부
@@ -57,6 +59,7 @@ class NowPlayingService {
     if (!this.autoConnected) {
       this.autoConnected = true;
       this.shouldReconnect = true;
+      this.reconnectAttempts = 0;
       this.attemptConnection();
     } else if (this.lastData !== null) {
       // 이미 데이터가 있으면 즉시 전달
@@ -66,7 +69,43 @@ class NowPlayingService {
     // cleanup 함수 반환
     return () => {
       this.listeners.delete(listener);
+      // 구독자가 모두 사라지면 WS 연결과 재연결 타이머를 정리한다.
+      if (this.listeners.size === 0) {
+        this.disconnect();
+      }
     };
+  }
+
+  private disconnect(): void {
+    this.shouldReconnect = false;
+    this.autoConnected = false;
+    this.isConnecting = false;
+    this.reconnectAttempts = 0;
+
+    if (this.reconnectTimeout) {
+      clearTimeout(this.reconnectTimeout);
+      this.reconnectTimeout = null;
+    }
+
+    if (this.ws) {
+      this.ws.onclose = null;
+      this.ws.onerror = null;
+      this.ws.onmessage = null;
+      this.ws.onopen = null;
+      try {
+        if (
+          this.ws.readyState === WebSocket.OPEN ||
+          this.ws.readyState === WebSocket.CONNECTING
+        ) {
+          this.ws.close();
+        }
+      } catch {
+        // ignore close errors
+      }
+      this.ws = null;
+    }
+
+    this.lastData = null;
   }
 
   private attemptConnection(): void {
@@ -98,6 +137,7 @@ class NowPlayingService {
 
       this.ws.onopen = () => {
         this.isConnecting = false;
+        this.reconnectAttempts = 0; // 성공 시 카운터 리셋
       };
 
       this.ws.onmessage = (event) => {
@@ -119,26 +159,30 @@ class NowPlayingService {
       this.ws.onclose = () => {
         this.isConnecting = false;
         this.ws = null;
-
-        // shouldReconnect가 true일 때만 재연결
-        if (this.shouldReconnect) {
-          this.reconnectTimeout = setTimeout(() => {
-            this.attemptConnection();
-          }, this.reconnectDelay);
-        }
+        this.scheduleReconnect();
       };
     } catch (error) {
       console.error("Failed to create WebSocket:", error);
       this.isConnecting = false;
       this.notifyListeners(null);
-
-      // 연결 실패 시 재시도 (shouldReconnect가 true일 때만)
-      if (this.shouldReconnect) {
-        this.reconnectTimeout = setTimeout(() => {
-          this.attemptConnection();
-        }, this.reconnectDelay);
-      }
+      this.scheduleReconnect();
     }
+  }
+
+  private scheduleReconnect(): void {
+    if (!this.shouldReconnect) return;
+    if (this.reconnectAttempts >= this.MAX_RECONNECT_ATTEMPTS) {
+      // 한 번만 안내하고 추가 재시도 중단 — 콘솔 도배 방지
+      console.warn(
+        `NowPlayingService: 재연결 ${this.MAX_RECONNECT_ATTEMPTS}회 실패, 자동 재연결 중단`
+      );
+      this.shouldReconnect = false;
+      return;
+    }
+    this.reconnectAttempts++;
+    this.reconnectTimeout = setTimeout(() => {
+      this.attemptConnection();
+    }, this.reconnectDelay);
   }
 }
 

@@ -24,6 +24,7 @@ declare global {
   const SEO: typeof import('./components/SEO')['default']
   const SEOProvider: typeof import('./components/SEO')['SEOProvider']
   const Safari: typeof import('./components/apps/Safari')['default']
+  const Shell: typeof import('./components/Shell')['default']
   const Spotlight: typeof import('./components/Spotlight')['default']
   const Terminal: typeof import('./components/apps/Terminal')['default']
   const TopBar: typeof import('./components/menus/TopBar')['default']
@@ -31,8 +32,6 @@ declare global {
   const VSCode: typeof import('./components/apps/VSCode')['default']
   const WeatherWidget: typeof import('./components/WeatherWidget')['default']
   const WifiMenu: typeof import('./components/menus/WifiMenu')['default']
-  const Window: typeof import('./components/Window')['default']
-  const controlCenterMenuTsxTmp20055: typeof import('./components/menus/ControlCenterMenu.tsx.tmp.20055.1766745072789')['default']
   const createRef: typeof import('react')['createRef']
   const forwardRef: typeof import('react')['forwardRef']
   const lazy: typeof import('react')['lazy']
@@ -59,10 +58,4 @@ declare global {
   const useSyncExternalStore: typeof import('react')['useSyncExternalStore']
   const useTransition: typeof import('react')['useTransition']
   const useWindowSize: typeof import('./hooks/useWindowSize')['useWindowSize']
-}
-// for type re-export
-declare global {
-  // @ts-ignore
-  export type { Terminal } from './components/apps/Terminal'
-  import('./components/apps/Terminal')
 }

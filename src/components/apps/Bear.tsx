@@ -169,8 +169,9 @@ const Content = ({ contentID, contentURL }: ContentProps) => {
               className="max-w-full h-auto"
               loading="lazy"
               onError={(e) => {
-                console.error('Image failed to load:', props.src);
-                e.currentTarget.style.display = 'none';
+                // eslint-disable-next-line react/prop-types
+                console.error("Image failed to load:", props.src);
+                e.currentTarget.style.display = "none";
               }}
             />
           ),
@@ -181,7 +182,7 @@ const Content = ({ contentID, contentURL }: ContentProps) => {
               rel="noopener noreferrer"
               className="text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
             />
-          ),
+          )
         }}
       >
         {storeMd[contentID]}

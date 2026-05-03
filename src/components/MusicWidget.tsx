@@ -114,9 +114,24 @@ export default function MusicWidget() {
 
   // 표시할 곡 정보 결정
   const shouldShowFallback = apiFailed && !useLiveData;
-  const displayTitle = useLiveData && nowPlaying?.track ? nowPlaying.track.title : (shouldShowFallback ? music.title : "");
-  const displayArtist = useLiveData && nowPlaying?.track ? nowPlaying.track.artist : (shouldShowFallback ? music.artist : "");
-  const displayArtwork = useLiveData && nowPlaying?.track ? nowPlaying.track.artwork : (shouldShowFallback ? music.cover : "");
+  const displayTitle =
+    useLiveData && nowPlaying?.track
+      ? nowPlaying.track.title
+      : shouldShowFallback
+        ? music.title
+        : "";
+  const displayArtist =
+    useLiveData && nowPlaying?.track
+      ? nowPlaying.track.artist
+      : shouldShowFallback
+        ? music.artist
+        : "";
+  const displayArtwork =
+    useLiveData && nowPlaying?.track
+      ? nowPlaying.track.artwork
+      : shouldShowFallback
+        ? music.cover
+        : "";
   const trackUrl = useLiveData && nowPlaying?.track?.url ? nowPlaying.track.url : null;
 
   // 초기 로드 시 프리뷰 URL 설정
@@ -128,12 +143,13 @@ export default function MusicWidget() {
 
   // Progress percentage 계산
   const progressPercent = duration > 0 ? (currentTime / duration) * 100 : 0;
-  const previewProgressPercent = previewDuration > 0 ? (previewCurrentTime / previewDuration) * 100 : 0;
+  const previewProgressPercent =
+    previewDuration > 0 ? (previewCurrentTime / previewDuration) * 100 : 0;
 
   // Apple Music 링크 열기
   const openTrackUrl = () => {
     if (trackUrl) {
-      window.open(trackUrl, '_blank');
+      window.open(trackUrl, "_blank");
     }
   };
 
@@ -181,7 +197,9 @@ export default function MusicWidget() {
         {/* Live Description */}
         {!isLoading && useLiveData && nowPlaying && (
           <div className="absolute top-3 right-3 px-3 py-1.5 bg-black/30 backdrop-blur-sm rounded-lg">
-            <span className="text-white/70 text-xs">지금 제가 듣고 있어요! 같이 들어볼까요?</span>
+            <span className="text-white/70 text-xs">
+              지금 제가 듣고 있어요! 같이 들어볼까요?
+            </span>
           </div>
         )}
 
@@ -189,7 +207,9 @@ export default function MusicWidget() {
         {!isLoading && (shouldShowFallback || (useLiveData && displayArtwork)) && (
           <div
             className={`absolute left-7 top-[55%] -translate-y-1/2 w-[170px] h-[170px] rounded-2xl overflow-hidden shadow-xl z-0 ${
-              trackUrl ? 'cursor-pointer hover:scale-105 transition-transform' : 'pointer-events-none'
+              trackUrl
+                ? "cursor-pointer hover:scale-105 transition-transform"
+                : "pointer-events-none"
             }`}
             onClick={trackUrl ? openTrackUrl : undefined}
           >
@@ -204,132 +224,132 @@ export default function MusicWidget() {
         {/* Song Info */}
         {!isLoading && (shouldShowFallback || useLiveData) && (
           <div className="absolute right-7 top-[35%] -translate-y-1/2 w-[280px] z-10">
-          {/* Title with marquee effect */}
-          <div className="relative mb-1 h-8 overflow-hidden">
-            {isTitleOverflow ? (
-              // 긴 제목: 무한 스크롤
-              <div
-                className={`flex whitespace-nowrap ${
-                  trackUrl ? 'cursor-pointer hover:text-white/80 transition-colors' : ''
-                }`}
-                onClick={trackUrl ? openTrackUrl : undefined}
-              >
-                <h2
-                  ref={titleRef}
-                  className="text-white text-2xl font-semibold tracking-tight inline-block marquee-title-infinite"
+            {/* Title with marquee effect */}
+            <div className="relative mb-1 h-8 overflow-hidden">
+              {isTitleOverflow ? (
+                // 긴 제목: 무한 스크롤
+                <div
+                  className={`flex whitespace-nowrap ${
+                    trackUrl ? "cursor-pointer hover:text-white/80 transition-colors" : ""
+                  }`}
+                  onClick={trackUrl ? openTrackUrl : undefined}
                 >
-                  {displayTitle}
-                  <span className="inline-block mx-8"></span>
-                  {displayTitle}
-                  <span className="inline-block mx-8"></span>
-                  {displayTitle}
-                </h2>
-              </div>
-            ) : (
-              // 짧은 제목: 고정
-              <div
-                className={`text-right whitespace-nowrap ${
-                  trackUrl ? 'cursor-pointer hover:text-white/80 transition-colors' : ''
-                }`}
-                onClick={trackUrl ? openTrackUrl : undefined}
-              >
-                <h2
-                  ref={titleRef}
-                  className="text-white text-2xl font-semibold tracking-tight inline-block"
+                  <h2
+                    ref={titleRef}
+                    className="text-white text-2xl font-semibold tracking-tight inline-block marquee-title-infinite"
+                  >
+                    {displayTitle}
+                    <span className="inline-block mx-8"></span>
+                    {displayTitle}
+                    <span className="inline-block mx-8"></span>
+                    {displayTitle}
+                  </h2>
+                </div>
+              ) : (
+                // 짧은 제목: 고정
+                <div
+                  className={`text-right whitespace-nowrap ${
+                    trackUrl ? "cursor-pointer hover:text-white/80 transition-colors" : ""
+                  }`}
+                  onClick={trackUrl ? openTrackUrl : undefined}
                 >
-                  {displayTitle}
-                </h2>
-              </div>
-            )}
-          </div>
+                  <h2
+                    ref={titleRef}
+                    className="text-white text-2xl font-semibold tracking-tight inline-block"
+                  >
+                    {displayTitle}
+                  </h2>
+                </div>
+              )}
+            </div>
 
-          {/* Artist */}
-          <div className="text-right">
-            <p
-              className={`text-white/70 text-lg font-medium truncate ${
-                trackUrl ? 'cursor-pointer hover:text-white/50 transition-colors' : ''
-              }`}
-              onClick={trackUrl ? openTrackUrl : undefined}
-            >
-              {displayArtist}
-            </p>
+            {/* Artist */}
+            <div className="text-right">
+              <p
+                className={`text-white/70 text-lg font-medium truncate ${
+                  trackUrl ? "cursor-pointer hover:text-white/50 transition-colors" : ""
+                }`}
+                onClick={trackUrl ? openTrackUrl : undefined}
+              >
+                {displayArtist}
+              </p>
+            </div>
           </div>
-        </div>
         )}
 
         {/* Time Display & Progress Bar */}
         {!isLoading && (shouldShowFallback || useLiveData) && (
-        <div className="absolute right-7 top-[52%] -translate-y-1/2 w-[300px] z-10 pointer-events-none">
-          <div className="flex justify-between items-center text-white/60 text-sm font-medium mb-2">
-            <span>{formatTime(currentTime)}</span>
-            <span>{formatTime(duration || 0)}</span>
-          </div>
+          <div className="absolute right-7 top-[52%] -translate-y-1/2 w-[300px] z-10 pointer-events-none">
+            <div className="flex justify-between items-center text-white/60 text-sm font-medium mb-2">
+              <span>{formatTime(currentTime)}</span>
+              <span>{formatTime(duration || 0)}</span>
+            </div>
 
-          {/* Progress Bar */}
-          <div className="w-full h-1.5 bg-white/20 rounded-full overflow-hidden">
-            <div
-              className="h-full bg-white/80 rounded-full transition-all duration-300 ease-linear"
-              style={{ width: `${progressPercent}%` }}
-            />
+            {/* Progress Bar */}
+            <div className="w-full h-1.5 bg-white/20 rounded-full overflow-hidden">
+              <div
+                className="h-full bg-white/80 rounded-full transition-all duration-300 ease-linear"
+                style={{ width: `${progressPercent}%` }}
+              />
+            </div>
           </div>
-        </div>
         )}
 
         {/* Controls */}
         {!isLoading && (shouldShowFallback || useLiveData) && (
-        <div className="absolute bottom-7 right-7 flex items-center gap-4 z-20">
-          <button
-            onClick={skipBackward}
-            className="text-white/90 hover:text-white transition-all hover:scale-110"
-            title="10초 뒤로"
-          >
-            <svg className="w-9 h-9" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M11 18V6l-8.5 6 8.5 6zm.5-6l8.5 6V6l-8.5 6z" />
-            </svg>
-          </button>
-
-          <div className="flex flex-col items-center gap-1.5">
+          <div className="absolute bottom-7 right-7 flex items-center gap-4 z-20">
             <button
-              onClick={togglePlay}
-              className="text-white/90 hover:text-white transition-all hover:scale-110 relative group"
-              title="미리듣기"
+              onClick={skipBackward}
+              className="text-white/90 hover:text-white transition-all hover:scale-110"
+              title="10초 뒤로"
             >
-              {isPlaying ? (
-                <svg className="w-11 h-11" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z" />
-                </svg>
-              ) : (
-                <svg className="w-11 h-11" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M8 5v14l11-7z" />
-                </svg>
-              )}
-              {/* Tooltip */}
-              <div className="absolute -top-10 left-1/2 -translate-x-1/2 px-3 py-1.5 bg-black/80 text-white text-xs rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-                곡 미리듣기 (30초)
-              </div>
+              <svg className="w-9 h-9" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M11 18V6l-8.5 6 8.5 6zm.5-6l8.5 6V6l-8.5 6z" />
+              </svg>
             </button>
 
-            {/* Preview Progress Bar */}
-            {showPreviewBar && (
-              <div className="w-20 h-0.5 bg-white/20 rounded-full overflow-hidden">
-                <div
-                  className="h-full bg-white/80 rounded-full transition-all duration-100"
-                  style={{ width: `${previewProgressPercent}%` }}
-                />
-              </div>
-            )}
-          </div>
+            <div className="flex flex-col items-center gap-1.5">
+              <button
+                onClick={togglePlay}
+                className="text-white/90 hover:text-white transition-all hover:scale-110 relative group"
+                title="미리듣기"
+              >
+                {isPlaying ? (
+                  <svg className="w-11 h-11" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z" />
+                  </svg>
+                ) : (
+                  <svg className="w-11 h-11" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M8 5v14l11-7z" />
+                  </svg>
+                )}
+                {/* Tooltip */}
+                <div className="absolute -top-10 left-1/2 -translate-x-1/2 px-3 py-1.5 bg-black/80 text-white text-xs rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                  곡 미리듣기 (30초)
+                </div>
+              </button>
 
-          <button
-            onClick={skipForward}
-            className="text-white/90 hover:text-white transition-all hover:scale-110"
-            title="10초 앞으로"
-          >
-            <svg className="w-9 h-9" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M4 18l8.5-6L4 6v12zm9-12v12l8.5-6L13 6z" />
-            </svg>
-          </button>
-        </div>
+              {/* Preview Progress Bar */}
+              {showPreviewBar && (
+                <div className="w-20 h-0.5 bg-white/20 rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-white/80 rounded-full transition-all duration-100"
+                    style={{ width: `${previewProgressPercent}%` }}
+                  />
+                </div>
+              )}
+            </div>
+
+            <button
+              onClick={skipForward}
+              className="text-white/90 hover:text-white transition-all hover:scale-110"
+              title="10초 앞으로"
+            >
+              <svg className="w-9 h-9" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M4 18l8.5-6L4 6v12zm9-12v12l8.5-6L13 6z" />
+              </svg>
+            </button>
+          </div>
         )}
       </div>
 
