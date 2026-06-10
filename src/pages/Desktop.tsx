@@ -29,6 +29,7 @@ interface DesktopState {
 }
 
 export default function Desktop(props: MacActions) {
+  const safariRequest = useStore((store) => store.safariRequest);
   const [state, setState] = useState({
     showApps: {},
     appsZ: {},
@@ -195,16 +196,7 @@ export default function Desktop(props: MacActions) {
     });
   };
 
-  const openApp = (id: string): void => {
-    // add it to the shown app list
-    const showApps = state.showApps;
-    showApps[id] = true;
-
-    // move to the top (use a maximum z-index)
-    const appsZ = state.appsZ;
-    const maxZ = state.maxZ + 1;
-    appsZ[id] = maxZ;
-
+  const openApp = useCallback((id: string): void => {
     // get the title of the currently opened app
     const currentApp = apps.find((app) => {
       return app.id === id;
@@ -213,28 +205,46 @@ export default function Desktop(props: MacActions) {
       throw new TypeError(`App ${id} is undefined.`);
     }
 
-    setState({
-      ...state,
-      showApps: showApps,
-      appsZ: appsZ,
-      maxZ: maxZ,
-      currentTitle: currentApp.title
-    });
+    setState((prevState) => {
+      const maxZ = prevState.maxZ + 1;
+      const minApps = {
+        ...prevState.minApps
+      };
 
-    const minApps = state.minApps;
-    // if the app has already been shown but minimized
-    if (minApps[id]) {
-      // move to window's last position
-      const r = document.querySelector(`#window-${id}`) as HTMLElement;
-      r.style.transform = `translate(${r.style.getPropertyValue(
-        "--window-transform-x"
-      )}, ${r.style.getPropertyValue("--window-transform-y")}) scale(1)`;
-      r.style.transition = "ease-in 0.3s";
-      // remove it from the minimized app list
-      minApps[id] = false;
-      setState({ ...state, minApps });
-    }
-  };
+      // if the app has already been shown but minimized
+      if (minApps[id]) {
+        // move to window's last position
+        const r = document.querySelector(`#window-${id}`) as HTMLElement;
+        r.style.transform = `translate(${r.style.getPropertyValue(
+          "--window-transform-x"
+        )}, ${r.style.getPropertyValue("--window-transform-y")}) scale(1)`;
+        r.style.transition = "ease-in 0.3s";
+        // remove it from the minimized app list
+        minApps[id] = false;
+      }
+
+      return {
+        ...prevState,
+        showApps: {
+          ...prevState.showApps,
+          [id]: true
+        },
+        appsZ: {
+          ...prevState.appsZ,
+          [id]: maxZ
+        },
+        minApps,
+        maxZ,
+        currentTitle: currentApp.title
+      };
+    });
+  }, []);
+
+  useEffect(() => {
+    if (!safariRequest) return;
+
+    openApp("safari");
+  }, [openApp, safariRequest]);
 
   const renderAppWindows = () => {
     return apps.map((app) => {

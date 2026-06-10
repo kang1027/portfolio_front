@@ -3,15 +3,17 @@ import { createDockSlice, type DockSlice } from "./slices/dock";
 import { createSystemSlice, type SystemSlice } from "./slices/system";
 import { createUserSlice, type UserSlice } from "./slices/user";
 import { createMobileSlice, type MobileSlice } from "./slices/mobile";
+import { createBrowserSlice, type BrowserSlice } from "./slices/browser";
 
-export const useStore = create<DockSlice & SystemSlice & UserSlice & MobileSlice>(
-  (...a) => ({
-    ...createDockSlice(...a),
-    ...createSystemSlice(...a),
-    ...createUserSlice(...a),
-    ...createMobileSlice(...a)
-  })
-);
+export const useStore = create<
+  DockSlice & SystemSlice & UserSlice & MobileSlice & BrowserSlice
+>((...a) => ({
+  ...createDockSlice(...a),
+  ...createSystemSlice(...a),
+  ...createUserSlice(...a),
+  ...createMobileSlice(...a),
+  ...createBrowserSlice(...a)
+}));
 
 // Dev only: E2E/콘솔에서 store 직접 조작용. prod 빌드에선 dead-code-eliminate.
 if (typeof window !== "undefined" && import.meta.env.DEV) {
