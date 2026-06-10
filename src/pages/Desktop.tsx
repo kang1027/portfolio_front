@@ -29,7 +29,6 @@ interface DesktopState {
 }
 
 export default function Desktop(props: MacActions) {
-  const safariRequest = useStore((store) => store.safariRequest);
   const [state, setState] = useState({
     showApps: {},
     appsZ: {},
@@ -239,12 +238,6 @@ export default function Desktop(props: MacActions) {
       };
     });
   }, []);
-
-  useEffect(() => {
-    if (!safariRequest) return;
-
-    openApp("safari");
-  }, [openApp, safariRequest]);
 
   const renderAppWindows = () => {
     return apps.map((app) => {

@@ -35,26 +35,14 @@ interface MarkdownLinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement
   node?: unknown;
 }
 
-const shouldOpenInSafari = (href: string): boolean => /^https?:\/\//.test(href);
-
 const MarkdownLink = ({ node, href, ...props }: MarkdownLinkProps) => {
-  const openSafariUrl = useStore((state) => state.openSafariUrl);
-  const url = href ?? "";
-  const openInSafari = shouldOpenInSafari(url);
-
   return (
     <a
       {...props}
       href={href}
-      target={openInSafari ? undefined : "_blank"}
+      target="_blank"
       rel="noopener noreferrer"
       className="text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
-      onClick={(event) => {
-        if (!openInSafari) return;
-
-        event.preventDefault();
-        openSafariUrl(url);
-      }}
     />
   );
 };
@@ -112,18 +100,8 @@ const Sidebar = ({ cur, setMidBar }: SidebarProps) => {
 };
 
 const Middlebar = ({ items, cur, setContent }: MiddlebarProps) => {
-  const openSafariUrl = useStore((state) => state.openSafariUrl);
-
-  const openLink = (event: React.MouseEvent<HTMLAnchorElement>, url: string): void => {
-    event.preventDefault();
+  const stopOpeningArticle = (event: React.MouseEvent<HTMLAnchorElement>): void => {
     event.stopPropagation();
-
-    if (shouldOpenInSafari(url)) {
-      openSafariUrl(url);
-      return;
-    }
-
-    window.open(url, "_blank", "noopener,noreferrer");
   };
 
   return (
@@ -148,8 +126,9 @@ const Middlebar = ({ items, cur, setContent }: MiddlebarProps) => {
                 <a
                   pos="absolute top-1 right-4"
                   href={item.link}
-                  onClick={(event) => openLink(event, item.link as string)}
+                  target="_blank"
                   rel="noopener noreferrer"
+                  onClick={stopOpeningArticle}
                 >
                   <span className="i-ant-design:link-outlined text-c-500" />
                 </a>
