@@ -202,7 +202,6 @@ const NoInternetPage = () => {
 
 const Safari = ({ width }: SafariProps) => {
   const wifi = useStore((state) => state.wifi);
-  const safariRequest = useStore((state) => state.safariRequest);
 
   const normalizeURL = useCallback((rawUrl: string): string => {
     let url = rawUrl;
@@ -218,12 +217,9 @@ const Safari = ({ width }: SafariProps) => {
     return url;
   }, []);
 
-  const [state, setState] = useState<SafariState>(() => {
-    const initialUrl = safariRequest ? normalizeURL(safariRequest.url) : "";
-    return {
-      goURL: initialUrl,
-      currentURL: initialUrl
-    };
+  const [state, setState] = useState<SafariState>({
+    goURL: "",
+    currentURL: ""
   });
 
   const setGoURL = useCallback(
@@ -237,12 +233,6 @@ const Safari = ({ width }: SafariProps) => {
     },
     [normalizeURL]
   );
-
-  useEffect(() => {
-    if (!safariRequest) return;
-
-    setGoURL(safariRequest.url);
-  }, [safariRequest, setGoURL]);
 
   const resetURL = (): void => {
     setState({
