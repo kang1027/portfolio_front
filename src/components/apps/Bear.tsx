@@ -31,6 +31,34 @@ interface BearState extends ContentProps {
   midbarList: BearMdData[];
 }
 
+interface MarkdownLinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
+  node?: unknown;
+}
+
+const shouldOpenInSafari = (href: string): boolean => /^https?:\/\//.test(href);
+
+const MarkdownLink = ({ node, href, ...props }: MarkdownLinkProps) => {
+  const openSafariUrl = useStore((state) => state.openSafariUrl);
+  const url = href ?? "";
+  const openInSafari = shouldOpenInSafari(url);
+
+  return (
+    <a
+      {...props}
+      href={href}
+      target={openInSafari ? undefined : "_blank"}
+      rel="noopener noreferrer"
+      className="text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
+      onClick={(event) => {
+        if (!openInSafari) return;
+
+        event.preventDefault();
+        openSafariUrl(url);
+      }}
+    />
+  );
+};
+
 const Highlighter = (dark: boolean): any => {
   interface codeProps {
     node: any;
@@ -84,6 +112,20 @@ const Sidebar = ({ cur, setMidBar }: SidebarProps) => {
 };
 
 const Middlebar = ({ items, cur, setContent }: MiddlebarProps) => {
+  const openSafariUrl = useStore((state) => state.openSafariUrl);
+
+  const openLink = (event: React.MouseEvent<HTMLAnchorElement>, url: string): void => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (shouldOpenInSafari(url)) {
+      openSafariUrl(url);
+      return;
+    }
+
+    window.open(url, "_blank", "noopener,noreferrer");
+  };
+
   return (
     <ul>
       {items.map((item: BearMdData, index: number) => (
@@ -106,8 +148,8 @@ const Middlebar = ({ items, cur, setContent }: MiddlebarProps) => {
                 <a
                   pos="absolute top-1 right-4"
                   href={item.link}
-                  target="_blank"
-                  rel="noreferrer"
+                  onClick={(event) => openLink(event, item.link as string)}
+                  rel="noopener noreferrer"
                 >
                   <span className="i-ant-design:link-outlined text-c-500" />
                 </a>
@@ -175,14 +217,7 @@ const Content = ({ contentID, contentURL }: ContentProps) => {
               }}
             />
           ),
-          a: ({ node, ...props }) => (
-            <a
-              {...props}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
-            />
-          )
+          a: MarkdownLink
         }}
       >
         {storeMd[contentID]}

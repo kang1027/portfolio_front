@@ -137,12 +137,10 @@ const NoInternetPage = () => {
 
 const Safari = ({ width }: SafariProps) => {
   const wifi = useStore((state) => state.wifi);
-  const [state, setState] = useState<SafariState>({
-    goURL: "",
-    currentURL: ""
-  });
+  const safariRequest = useStore((state) => state.safariRequest);
 
-  const setGoURL = (url: string) => {
+  const normalizeURL = useCallback((rawUrl: string): string => {
+    let url = rawUrl;
     const isValid = checkURL(url);
 
     if (isValid) {
@@ -152,9 +150,39 @@ const Safari = ({ width }: SafariProps) => {
       url = `https://www.bing.com/search?q=${url}`;
     }
 
+    return url;
+  }, []);
+
+  const [state, setState] = useState<SafariState>(() => {
+    const initialUrl = safariRequest ? normalizeURL(safariRequest.url) : "";
+    return {
+      goURL: initialUrl,
+      currentURL: initialUrl
+    };
+  });
+
+  const setGoURL = useCallback(
+    (url: string) => {
+      const nextUrl = normalizeURL(url);
+
+      setState({
+        goURL: nextUrl,
+        currentURL: nextUrl
+      });
+    },
+    [normalizeURL]
+  );
+
+  useEffect(() => {
+    if (!safariRequest) return;
+
+    setGoURL(safariRequest.url);
+  }, [safariRequest, setGoURL]);
+
+  const resetURL = (): void => {
     setState({
-      goURL: url,
-      currentURL: url
+      goURL: "",
+      currentURL: ""
     });
   };
 
@@ -172,10 +200,7 @@ const Safari = ({ width }: SafariProps) => {
       {/* browser topbar */}
       <div className={`h-10 grid ${grid} items-center bg-c-white`}>
         <div className="flex px-2">
-          <button
-            className={`safari-btn w-7 ${buttonColor}`}
-            onClick={() => setGoURL("")}
-          >
+          <button className={`safari-btn w-7 ${buttonColor}`} onClick={resetURL}>
             <span className="i-jam:chevron-left text-xl" />
           </button>
           <button className="safari-btn w-7 text-c-400">
