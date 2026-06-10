@@ -21,6 +21,71 @@ interface NavSectionProps extends NavProps {
   section: SiteSectionData;
 }
 
+interface BlockedEmbedPageProps {
+  url: string;
+  openExternalURL: (url: string) => void;
+}
+
+const blockedEmbedHosts = [
+  "aave.com",
+  "admob.google.com",
+  "appstoreconnect.apple.com",
+  "claude.ai",
+  "clerk.com",
+  "cloudflare.com",
+  "discord.com",
+  "firebase.google.com",
+  "github.com",
+  "gmx.io",
+  "hyperliquid.xyz",
+  "instagram.com",
+  "notion.so",
+  "play.google.com",
+  "trello.com",
+  "x.com"
+];
+
+const getURLHost = (url: string): string => {
+  try {
+    return new URL(url).hostname.replace(/^www\./, "");
+  } catch {
+    return "";
+  }
+};
+
+const isEmbedBlockedURL = (url: string): boolean => {
+  const host = getURLHost(url);
+
+  return blockedEmbedHosts.some((blockedHost) => {
+    return host === blockedHost || host.endsWith(`.${blockedHost}`);
+  });
+};
+
+const BlockedEmbedPage = ({ url, openExternalURL }: BlockedEmbedPageProps) => {
+  const host = getURLHost(url) || url;
+
+  return (
+    <div className="safari-content w-full flex-center bg-c-100 text-c-700">
+      <div className="w-full max-w-md px-8 text-center">
+        <div className="mx-auto size-14 rounded-2xl flex-center bg-c-200 text-c-700">
+          <span className="i-ion:open-outline text-3xl" />
+        </div>
+        <div className="mt-5 text-2xl font-bold text-c-900">새 창에서 열어야 함</div>
+        <div className="mt-3 text-sm leading-6 text-c-600">
+          {host}가 내장 브라우저 표시를 막고 있음.
+        </div>
+        <button
+          type="button"
+          className="mt-6 h-9 px-5 rounded-md bg-blue-500 text-white text-sm font-semibold hover:bg-blue-600"
+          onClick={() => openExternalURL(url)}
+        >
+          새 창 열기
+        </button>
+      </div>
+    </div>
+  );
+};
+
 const NavSection = ({ width, section, setGoURL }: NavSectionProps) => {
   const grid = width < 640 ? "grid-cols-4" : "grid-cols-9";
 
@@ -191,9 +256,22 @@ const Safari = ({ width }: SafariProps) => {
     if (keyCode === "Enter") setGoURL((e.target as HTMLInputElement).value);
   };
 
+  const openExternalURL = (url: string): void => {
+    if (url === "") return;
+
+    window.open(url, "_blank", "noopener,noreferrer");
+  };
+
+  const copyCurrentURL = (): void => {
+    if (state.goURL === "") return;
+
+    navigator.clipboard?.writeText(state.goURL).catch(() => {});
+  };
+
   const buttonColor = state.goURL === "" ? "text-c-400" : "text-c-700";
   const grid = (width as number) < 640 ? "grid-cols-2" : "grid-cols-3";
   const hideLast = (width as number) < 640 ? "hidden" : "flex";
+  const isEmbedBlocked = isEmbedBlockedURL(state.goURL);
 
   return (
     <div className="w-full h-full">
@@ -225,10 +303,13 @@ const Safari = ({ width }: SafariProps) => {
           />
         </div>
         <div className={`${hideLast} justify-end space-x-2 px-2`}>
-          <button className={`safari-btn w-9 ${buttonColor}`}>
+          <button
+            className={`safari-btn w-9 ${buttonColor}`}
+            onClick={() => openExternalURL(state.goURL)}
+          >
             <span className="i-ion:share-outline" />
           </button>
-          <button className="safari-btn w-9 text-c-700">
+          <button className={`safari-btn w-9 ${buttonColor}`} onClick={copyCurrentURL}>
             <span className="i-ion:copy-outline" />
           </button>
         </div>
@@ -238,6 +319,8 @@ const Safari = ({ width }: SafariProps) => {
       {wifi ? (
         state.goURL === "" ? (
           <NavPage setGoURL={setGoURL} width={width as number} />
+        ) : isEmbedBlocked ? (
+          <BlockedEmbedPage url={state.goURL} openExternalURL={openExternalURL} />
         ) : (
           <iframe
             title={"Safari clone browser"}
