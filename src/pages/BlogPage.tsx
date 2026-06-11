@@ -4,7 +4,6 @@ import SEO from "~/components/SEO";
 import {
   blogGroups,
   blogPosts,
-  blogPostsByYear,
   getBlogGroup,
   getBlogPost,
   getBlogPostsByGroup,
@@ -73,13 +72,7 @@ function BlogPostRow({ post, compact = false }: { post: BlogPost; compact?: bool
           ? shortDateFormatter.format(new Date(post.date))
           : fullDateFormatter.format(new Date(post.date))}
       </time>
-      <span className="blog-post-copy">
-        <span className="blog-post-title">{post.title}</span>
-        {!compact && <span className="blog-post-summary">{post.summary}</span>}
-      </span>
-      {!compact && post.project && (
-        <span className="blog-post-group">{post.project}</span>
-      )}
+      <span className="blog-post-title">{post.title}</span>
     </a>
   );
 }
@@ -88,8 +81,6 @@ function BlogSideRail({ theme, onToggleTheme }: BlogThemeProps) {
   return (
     <aside className="blog-side" aria-label="견현사제">
       <nav className="blog-side-nav" aria-label="블로그 내비게이션">
-        <a href="#threads">갈래</a>
-        <a href="#archive">날짜</a>
         <a href="/">포트폴리오</a>
         <BlogThemeToggle theme={theme} onToggleTheme={onToggleTheme} />
       </nav>
@@ -140,58 +131,22 @@ function BlogFooter() {
 
 function BlogThreadSections() {
   return (
-    <section id="threads" className="blog-section" aria-label="갈래별 글">
-      <header className="blog-section-header">
-        <h2>갈래로 모아 읽기</h2>
-      </header>
-      <div className="blog-thread-list">
-        {blogGroups.map((group) => {
-          const posts = getBlogPostsByGroup(group.id);
-          if (posts.length === 0) return null;
+    <section id="threads" aria-label="갈래별 글">
+      {blogGroups.map((group) => {
+        const posts = getBlogPostsByGroup(group.id);
+        if (posts.length === 0) return null;
 
-          return (
-            <section
-              key={group.id}
-              id={`thread-${group.id}`}
-              className="blog-thread-block"
-            >
-              <header>
-                <h3>{group.title}</h3>
-                <p>{group.description}</p>
-              </header>
-              <div className="blog-thread-posts">
-                {posts.map((post) => (
-                  <BlogPostRow key={post.slug} post={post} />
-                ))}
-              </div>
-            </section>
-          );
-        })}
-      </div>
-    </section>
-  );
-}
-
-function BlogArchiveSection() {
-  return (
-    <section id="archive" className="blog-section blog-archive" aria-label="날짜순 글">
-      <header className="blog-section-header">
-        <h2>날짜순으로 훑기</h2>
-      </header>
-      {blogPostsByYear.map((yearGroup) => (
-        <section
-          key={yearGroup.year}
-          id={`year-${yearGroup.year}`}
-          className="blog-year-block"
-        >
-          <h3>{yearGroup.year}</h3>
-          <div>
-            {yearGroup.posts.map((post) => (
-              <BlogPostRow key={post.slug} post={post} compact />
-            ))}
-          </div>
-        </section>
-      ))}
+        return (
+          <section key={group.id} id={`thread-${group.id}`} className="blog-thread-block">
+            <h2>{group.title}</h2>
+            <div className="blog-thread-posts">
+              {posts.map((post) => (
+                <BlogPostRow key={post.slug} post={post} />
+              ))}
+            </div>
+          </section>
+        );
+      })}
     </section>
   );
 }
@@ -209,7 +164,6 @@ function BlogIndex({ theme, onToggleTheme }: BlogThemeProps) {
       <BlogSideRail theme={theme} onToggleTheme={onToggleTheme} />
       <div className="blog-content-col">
         <BlogThreadSections />
-        <BlogArchiveSection />
       </div>
     </main>
   );
