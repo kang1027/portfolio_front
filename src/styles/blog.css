@@ -202,11 +202,12 @@
   display: inline-flex;
 }
 
-/* 접힌 레일: 내비는 세로 한 줄로 안쪽에 정렬 */
+/* 리딩 모드: 내비는 레일 옆 검정 영역 좌상단에 띄운다 */
 .blog-public[data-view="reading"] .blog-side-nav {
-  flex-direction: column;
-  align-items: center;
-  gap: 1.2rem;
+  position: absolute;
+  left: calc(100% + 1.75rem);
+  top: clamp(1.5rem, 4vh, 3rem);
+  z-index: 6;
 }
 
 /* 접힌 레일: 인용·작성자는 숨기고 LP만 남긴다 */
@@ -899,8 +900,7 @@ a.blog-vinyl-title:focus-visible {
   }
 
   .blog-public[data-view="reading"] .blog-side-nav {
-    flex-direction: row;
-    align-items: center;
+    position: static;
   }
 
   .blog-public[data-view="reading"] .blog-side-bottom {
