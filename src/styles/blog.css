@@ -1,0 +1,142 @@
+.font-tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
+.blog-public {
+  color-scheme: light dark;
+}
+
+.blog-topbar {
+  @apply sticky top-0 z-50 flex h-14 items-center justify-between border-b border-c-300 bg-c-100/85 px-4 backdrop-blur-xl;
+}
+
+.blog-shell {
+  @apply mx-auto grid min-h-[calc(100vh-3.5rem)] w-full max-w-7xl grid-cols-1;
+}
+
+.blog-library {
+  @apply hidden border-r border-c-300 bg-c-200/60;
+}
+
+.blog-reader {
+  @apply min-w-0 bg-c-50;
+}
+
+.blog-reader-inner {
+  @apply mx-auto w-full max-w-5xl px-5 py-10 sm:px-8 lg:px-12 lg:py-14;
+}
+
+.blog-markdown {
+  @apply text-base leading-8 text-c-700;
+}
+
+.blog-markdown h1,
+.blog-markdown h2,
+.blog-markdown h3,
+.blog-markdown h4 {
+  @apply font-bold leading-tight text-c-900;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+  scroll-margin-top: 5rem;
+}
+
+.blog-markdown h1 {
+  @apply mt-12 border-b border-c-300 pb-4 text-3xl;
+}
+
+.blog-markdown h2 {
+  @apply mt-12 border-b border-c-200 pb-3 text-2xl;
+}
+
+.blog-markdown h3 {
+  @apply mt-9 text-xl;
+}
+
+.blog-markdown h4 {
+  @apply mt-7 text-lg;
+}
+
+.blog-markdown p {
+  @apply mt-5;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+
+.blog-markdown ul,
+.blog-markdown ol {
+  @apply mt-4 pl-6;
+}
+
+.blog-markdown ul {
+  @apply list-disc;
+}
+
+.blog-markdown ol {
+  @apply list-decimal;
+}
+
+.blog-markdown li {
+  @apply mt-2;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+
+.blog-markdown li::marker {
+  @apply text-red-500;
+}
+
+.blog-markdown a {
+  @apply font-semibold text-red-500 underline decoration-red-500/30 underline-offset-4 hover:text-red-600;
+}
+
+.blog-markdown strong {
+  @apply font-bold text-c-900;
+}
+
+.blog-markdown code {
+  @apply rounded border border-c-300 bg-c-100 px-1 py-0.5 text-sm text-c-900;
+}
+
+.blog-markdown pre {
+  @apply mt-5 overflow-x-auto rounded-md border border-c-300 bg-c-100 p-4 text-sm leading-6;
+}
+
+.blog-markdown pre code {
+  @apply border-0 bg-transparent p-0;
+}
+
+.blog-markdown hr {
+  @apply my-10 border-c-300;
+}
+
+.blog-markdown blockquote {
+  @apply mt-6 border-l-4 border-red-500 pl-4 text-c-600;
+}
+
+.bear .blog-markdown h1,
+.bear .blog-markdown h2,
+.bear .blog-markdown h3,
+.bear .blog-markdown h4 {
+  @apply text-c-900;
+}
+
+.bear .blog-markdown h1::before,
+.bear .blog-markdown h2::before,
+.bear .blog-markdown h3::before,
+.bear .blog-markdown h4::before {
+  content: none;
+}
+
+@media (min-width: 1024px) {
+  .blog-shell {
+    @apply grid-cols-[20rem_minmax(0,1fr)];
+  }
+
+  .blog-library {
+    @apply sticky top-14 flex h-[calc(100vh-3.5rem)] min-h-0 flex-col;
+  }
+}

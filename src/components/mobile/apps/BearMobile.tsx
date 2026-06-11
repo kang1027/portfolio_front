@@ -6,23 +6,37 @@ import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
 import rehypeExternalLinks from "rehype-external-links";
 import { useStore } from "~/stores";
+import BlogMeta from "~/components/blog/BlogMeta";
+import MarkdownArticle from "~/components/blog/MarkdownArticle";
 import { bear } from "~/configs";
+import { blogPosts, getBlogPost } from "~/content/blog";
 import AppContainer from "./AppContainer";
 import AppNavBar from "./AppNavBar";
 import EdgeBackGesture from "../shell/EdgeBackGesture";
 import { usePushNavigation } from "../hooks/usePushNavigation";
 
 const NAV_TOP_PT = "calc(var(--mobile-safe-top, 12px) + 36px + 52px)";
+const postingCategory = {
+  id: "posting",
+  title: "Posting",
+  icon: "i-fa-solid:pen-nib"
+};
 
 function CategoriesView() {
   const push = useStore((s) => s.push);
+  const categories = [...bear, postingCategory];
+
   return (
     <ul className="absolute inset-0 overflow-y-auto" style={{ paddingTop: NAV_TOP_PT }}>
-      {bear.map((cat) => (
+      {categories.map((cat) => (
         <li key={cat.id}>
           <button
             type="button"
-            onClick={() => push({ view: "bear-list", categoryId: cat.id })}
+            onClick={() =>
+              cat.id === "posting"
+                ? push({ view: "bear-blog-list" })
+                : push({ view: "bear-list", categoryId: cat.id })
+            }
             className="w-full px-4 py-4 flex items-center gap-3 border-b border-black/5 dark:border-white/5 active:bg-black/5"
           >
             <span className={`${cat.icon} text-xl text-red-500`} />
@@ -33,6 +47,36 @@ function CategoriesView() {
               className="i-fa-solid:chevron-right text-sm text-c-400"
               aria-hidden="true"
             />
+          </button>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+function BlogListView() {
+  const push = useStore((s) => s.push);
+
+  return (
+    <ul className="absolute inset-0 overflow-y-auto" style={{ paddingTop: NAV_TOP_PT }}>
+      {blogPosts.map((post) => (
+        <li key={post.slug}>
+          <button
+            type="button"
+            onClick={() => push({ view: "bear-blog-article", slug: post.slug })}
+            className="w-full px-4 py-3 text-left border-b border-black/5 dark:border-white/5 active:bg-black/5"
+          >
+            <div className="flex items-start gap-3">
+              <span className={`${post.icon} mt-1 text-red-500`} aria-hidden="true" />
+              <div className="min-w-0 flex-1">
+                <div className="text-black dark:text-white font-semibold">
+                  {post.title}
+                </div>
+                <div className="text-c-500 text-sm mt-0.5 line-clamp-2">
+                  {post.summary}
+                </div>
+              </div>
+            </div>
           </button>
         </li>
       ))}
@@ -132,6 +176,43 @@ function ArticleView({ file }: ArticleViewProps) {
   );
 }
 
+function BlogArticleView({ slug }: { slug: string }) {
+  const post = getBlogPost(slug);
+
+  if (!post) {
+    return (
+      <div
+        className="absolute inset-0 overflow-y-auto px-4 text-c-500"
+        style={{ paddingTop: NAV_TOP_PT }}
+      >
+        글을 못 찾았어.
+      </div>
+    );
+  }
+
+  return (
+    <div
+      className="absolute inset-0 overflow-y-auto px-4 pl-9 pb-8 bear"
+      style={{ paddingTop: NAV_TOP_PT }}
+    >
+      <article className="pb-8">
+        <span className={`${post.icon} text-xl text-red-500`} aria-hidden="true" />
+        <h1 className="mt-3 text-2xl font-bold leading-tight text-black dark:text-white">
+          {post.title}
+        </h1>
+        <p className="mt-3 text-sm leading-6 text-c-600">{post.summary}</p>
+        <div className="mt-4">
+          <BlogMeta post={post} compact />
+        </div>
+        <MarkdownArticle
+          content={post.content}
+          className="blog-markdown mt-8 text-black dark:text-white"
+        />
+      </article>
+    </div>
+  );
+}
+
 export default function BearMobile() {
   const { pushStack, pop } = useStore(
     useShallow((s) => ({
@@ -147,7 +228,11 @@ export default function BearMobile() {
   );
 
   const top = pushStack[pushStack.length - 1] ?? null;
-  const isBearFrame = top?.view === "bear-list" || top?.view === "bear-article";
+  const isBearFrame =
+    top?.view === "bear-list" ||
+    top?.view === "bear-article" ||
+    top?.view === "bear-blog-list" ||
+    top?.view === "bear-blog-article";
 
   let title = "Bear";
   let body: ReactNode = <CategoriesView />;
@@ -162,6 +247,15 @@ export default function BearMobile() {
     title = cat?.md.find((m) => m.id === top.mdId)?.title ?? "Article";
     body = <ArticleView file={top.file} />;
     viewKey = `article-${top.mdId}`;
+  } else if (top?.view === "bear-blog-list") {
+    title = "Posting";
+    body = <BlogListView />;
+    viewKey = "blog-list";
+  } else if (top?.view === "bear-blog-article") {
+    const post = getBlogPost(top.slug);
+    title = post?.title ?? "Posting";
+    body = <BlogArticleView slug={top.slug} />;
+    viewKey = `blog-${top.slug}`;
   }
 
   return (

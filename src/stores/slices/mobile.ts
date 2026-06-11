@@ -5,6 +5,8 @@ export type DeviceMode = "desktop" | "mobile" | "auto";
 export type PushFrame =
   | { view: "bear-list"; categoryId: string }
   | { view: "bear-article"; categoryId: string; mdId: string; file: string }
+  | { view: "bear-blog-list" }
+  | { view: "bear-blog-article"; slug: string }
   | {
       view: "settings-section";
       sectionId: "display" | "wallpaper" | "sounds" | "about";

@@ -6,6 +6,9 @@ interface SEOProps {
   image?: string;
   url?: string;
   keywords?: string;
+  type?: "website" | "article";
+  publishedTime?: string;
+  tags?: string[];
 }
 
 export function SEOProvider({ children }: { children: React.ReactNode }) {
@@ -17,7 +20,10 @@ export default function SEO({
   description = "kang1027's portfolio in macOS style. default design is forked by https://github.com/Renovamen/playground-macos",
   image = "https://www.kang1027.com/screenshots/light.png",
   url = "https://www.kang1027.com/",
-  keywords = "portfolio, developer, macOS, kang1027, web development"
+  keywords = "portfolio, developer, macOS, kang1027, web development",
+  type = "website",
+  publishedTime,
+  tags = []
 }: SEOProps) {
   return (
     <Helmet>
@@ -28,7 +34,7 @@ export default function SEO({
       <meta name="keywords" content={keywords} />
 
       {/* Open Graph / Facebook */}
-      <meta property="og:type" content="website" />
+      <meta property="og:type" content={type} />
       <meta property="og:url" content={url} />
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
@@ -38,6 +44,12 @@ export default function SEO({
       <meta property="og:image:alt" content={`${title} Preview`} />
       <meta property="og:locale" content="ko_KR" />
       <meta property="og:site_name" content="kang1027's Portfolio" />
+      {publishedTime && (
+        <meta property="article:published_time" content={publishedTime} />
+      )}
+      {tags.map((tag) => (
+        <meta key={tag} property="article:tag" content={tag} />
+      ))}
 
       {/* Twitter */}
       <meta property="twitter:card" content="summary_large_image" />
