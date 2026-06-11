@@ -1,4 +1,5 @@
 import BlogMeta from "~/components/blog/BlogMeta";
+import BlogVinyl from "~/components/blog/BlogVinyl";
 import MarkdownArticle from "~/components/blog/MarkdownArticle";
 import SEO from "~/components/SEO";
 import {
@@ -104,6 +105,7 @@ function BlogSideRail({ theme, onToggleTheme }: BlogThemeProps) {
       </div>
 
       <div>
+        <BlogVinyl />
         <figure className="blog-hero-quote">
           <blockquote className="blog-hero-copy">
             “어진 사람을 보면 어떻게 그와 같아질까를 생각하며, 어질지 못한 사람을 보면

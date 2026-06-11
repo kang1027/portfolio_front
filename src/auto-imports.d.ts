@@ -10,6 +10,7 @@ declare global {
   const Battery: typeof import('./components/menus/Battery')['default']
   const Bear: typeof import('./components/apps/Bear')['default']
   const BlogMeta: typeof import('./components/blog/BlogMeta')['default']
+  const BlogVinyl: typeof import('./components/blog/BlogVinyl')['default']
   const CalendarWidget: typeof import('./components/CalendarWidget')['default']
   const Contact: typeof import('./components/apps/Contact')['default']
   const ContactWidget: typeof import('./components/ContactWidget')['default']

@@ -83,6 +83,12 @@
   color: var(--blog-accent);
 }
 
+/* 먹색 패널 안에서는 네온사인처럼 번진다 */
+.blog-side .blog-side-nav a:hover,
+.blog-side .blog-side-nav button:hover {
+  text-shadow: 0 0 14px rgb(255 83 71 / 60%);
+}
+
 .blog-corner-nav {
   position: fixed;
   top: clamp(1.25rem, 4vh, 2.5rem);
@@ -121,7 +127,7 @@
   --blog-body: #d6d6d6;
   --blog-muted: #ababab;
   --blog-faint: #878787;
-  --blog-accent: #e0685b;
+  --blog-accent: #ff5347;
 
   position: sticky;
   top: 0;
@@ -140,6 +146,126 @@
   border-right: 1px solid #262626;
 }
 
+/* 먹색 패널 위 필름 그레인 — 레트로 인쇄물 질감 */
+.blog-side::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.5;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.blog-side > * {
+  position: relative;
+}
+
+/* LP 턴테이블 — 지금 듣는 곡 */
+.blog-vinyl {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.blog-vinyl-disc {
+  position: relative;
+  flex-shrink: 0;
+  width: 4.8rem;
+  height: 4.8rem;
+  border-radius: 50%;
+  background-color: #0c0c0c;
+  background-image: repeating-radial-gradient(
+    circle at center,
+    #0d0d0d 0,
+    #0d0d0d 2px,
+    #1f1f1f 2px,
+    #1f1f1f 3px
+  );
+  box-shadow:
+    0 0 0 1px rgb(255 255 255 / 9%),
+    0 4px 14px rgb(0 0 0 / 55%);
+  animation: blog-vinyl-spin 4s linear infinite;
+  animation-play-state: paused;
+}
+
+.blog-vinyl[data-spinning="true"] .blog-vinyl-disc {
+  animation-play-state: running;
+}
+
+.blog-vinyl-disc img {
+  position: absolute;
+  inset: 27%;
+  border-radius: 50%;
+  width: 46%;
+  height: 46%;
+  object-fit: cover;
+}
+
+.blog-vinyl-disc::after {
+  content: "";
+  position: absolute;
+  inset: 46%;
+  border-radius: 50%;
+  background: #141414;
+  box-shadow: 0 0 0 1px rgb(255 255 255 / 18%);
+}
+
+@keyframes blog-vinyl-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .blog-vinyl-disc {
+    animation: none;
+  }
+}
+
+.blog-vinyl-info {
+  min-width: 0;
+}
+
+.blog-vinyl-label {
+  color: var(--blog-faint);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+}
+
+.blog-vinyl-title {
+  display: block;
+  margin-top: 0.25rem;
+  overflow: hidden;
+  color: var(--blog-text);
+  font-family: var(--blog-serif, inherit);
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.4;
+  text-decoration: none;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+a.blog-vinyl-title:hover {
+  color: var(--blog-accent);
+}
+
+a.blog-vinyl-title:focus-visible {
+  outline: 2px solid var(--blog-accent);
+  outline-offset: 4px;
+}
+
+.blog-vinyl-artist,
+.blog-vinyl-idle {
+  margin-top: 0.15rem;
+  overflow: hidden;
+  color: var(--blog-muted);
+  font-size: 0.82rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .blog-side-title-wrap {
   flex: 1;
   display: flex;
@@ -150,7 +276,7 @@
 
 /* 견현사제 붓글씨 — 잉크 알파 마스크에 테마 색을 입힌다 */
 .blog-side-title {
-  height: min(58vh, 34rem);
+  height: min(46vh, 29rem);
   aspect-ratio: 269 / 985;
   margin: 0;
   background-color: var(--blog-text);
