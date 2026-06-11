@@ -264,6 +264,14 @@ const readStoredBlogTheme = (): BlogTheme => {
 export default function BlogPage({ pathname }: BlogPageProps) {
   const [theme, setTheme] = useState<BlogTheme>(readStoredBlogTheme);
 
+  // 앱 셸이 html/body 스크롤을 막고 있어 마운트 전 해시 앵커가 무시된다.
+  // 렌더 후 해시 대상을 직접 스크롤로 복원한다.
+  useEffect(() => {
+    const hash = decodeURIComponent(window.location.hash.slice(1));
+    if (!hash) return;
+    document.getElementById(hash)?.scrollIntoView();
+  }, [pathname]);
+
   const toggleTheme = () => {
     const next: BlogTheme = theme === "dark" ? "light" : "dark";
     setTheme(next);
