@@ -6,7 +6,11 @@ import rehypeRaw from "rehype-raw";
 import rehypeExternalLinks from "rehype-external-links";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { dracula, prism } from "react-syntax-highlighter/dist/esm/styles/prism";
+import BlogMeta from "~/components/blog/BlogMeta";
+import BlogPostCard from "~/components/blog/BlogPostCard";
+import MarkdownArticle from "~/components/blog/MarkdownArticle";
 import bear from "~/configs/bear";
+import { blogPosts, getBlogCategory, getBlogPost, type BlogPost } from "~/content/blog";
 import type { BearMdData } from "~/types";
 
 interface ContentProps {
@@ -22,13 +26,15 @@ interface MiddlebarProps {
 
 interface SidebarProps {
   cur: number;
-  setMidBar: (items: BearMdData[], index: number) => void;
+  setMidBar: (index: number) => void;
 }
 
 interface BearState extends ContentProps {
   curSidebar: number;
   curMidbar: number;
   midbarList: BearMdData[];
+  mode: "markdown" | "blog";
+  selectedPostSlug: string;
 }
 
 interface MarkdownLinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
@@ -74,6 +80,15 @@ const Highlighter = (dark: boolean): any => {
   };
 };
 
+const postingSidebarItem = {
+  id: "posting",
+  title: "Posting",
+  icon: "i-fa-solid:pen-nib"
+};
+
+const sidebarItems = [...bear, postingSidebarItem];
+const postingSidebarIndex = sidebarItems.length - 1;
+
 const Sidebar = ({ cur, setMidBar }: SidebarProps) => {
   return (
     <div text-white>
@@ -82,13 +97,13 @@ const Sidebar = ({ cur, setMidBar }: SidebarProps) => {
         <span className="i-akar-icons:settings-vertical text-xl" />
       </div>
       <ul>
-        {bear.map((item, index) => (
+        {sidebarItems.map((item, index) => (
           <li
             key={`bear-sidebar-${item.id}`}
             className={`pl-6 h-8 hstack cursor-default ${
               cur === index ? "bg-red-500" : "bg-transparent"
             } ${cur === index ? "" : "hover:bg-gray-600"}`}
-            onClick={() => setMidBar(item.md, index)}
+            onClick={() => setMidBar(index)}
           >
             <span className={item.icon} />
             <span className="ml-2">{item.title}</span>
@@ -96,6 +111,87 @@ const Sidebar = ({ cur, setMidBar }: SidebarProps) => {
         ))}
       </ul>
     </div>
+  );
+};
+
+interface BlogMiddlebarProps {
+  selectedSlug: string;
+  onSelect: (post: BlogPost, index: number) => void;
+}
+
+const BlogMiddlebar = ({ selectedSlug, onSelect }: BlogMiddlebarProps) => {
+  return (
+    <div className="h-full overflow-y-auto">
+      <div className="border-b border-c-300 px-4 py-4">
+        <p className="text-xs font-bold uppercase tracking-wide text-red-500">
+          Kang's Notes
+        </p>
+        <h2 className="mt-1 text-lg font-bold text-c-900">Posting</h2>
+        <p className="mt-1 text-xs leading-relaxed text-c-600">작업 판단과 구현 기록</p>
+      </div>
+      <div>
+        {blogPosts.map((post, index) => (
+          <BlogPostCard
+            key={post.slug}
+            post={post}
+            selected={post.slug === selectedSlug}
+            onSelect={() => onSelect(post, index)}
+          />
+        ))}
+      </div>
+    </div>
+  );
+};
+
+const BlogContent = ({ post }: { post: BlogPost | undefined }) => {
+  if (!post) {
+    return (
+      <div className="flex h-full items-center justify-center text-c-500">
+        아직 공개된 글이 없어.
+      </div>
+    );
+  }
+
+  const category = getBlogCategory(post.category);
+
+  return (
+    <article className="h-full overflow-y-auto px-10 py-8 text-c-700 xl:px-16">
+      <div className="mx-auto max-w-3xl">
+        <div className="mb-6 flex items-center justify-between gap-4">
+          <div className="flex min-w-0 items-center gap-2 text-sm font-bold text-red-500">
+            <span className={category.icon} aria-hidden="true" />
+            <span>{category.title}</span>
+          </div>
+          <a
+            href={post.href}
+            className="inline-flex min-h-9 items-center gap-2 rounded px-2 text-sm text-c-500 hover:text-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-red-500"
+          >
+            <span className="i-ant-design:link-outlined" aria-hidden="true" />
+            Permalink
+          </a>
+        </div>
+
+        <h1 className="text-4xl font-bold leading-tight text-c-900 text-balance">
+          {post.title}
+        </h1>
+        <p className="mt-4 text-lg leading-8 text-c-600">{post.summary}</p>
+        <div className="mt-5">
+          <BlogMeta post={post} />
+        </div>
+        <div className="mt-4 flex flex-wrap gap-2">
+          {post.tags.map((tag) => (
+            <span
+              key={tag}
+              className="rounded-full border border-c-300 px-3 py-1 text-xs text-c-600"
+            >
+              #{tag}
+            </span>
+          ))}
+        </div>
+
+        <MarkdownArticle content={post.content} className="blog-markdown mt-10" />
+      </div>
+    </article>
   );
 };
 
@@ -211,16 +307,34 @@ const Bear = () => {
     curMidbar: 0,
     midbarList: bear[0].md,
     contentID: bear[0].md[0].id,
-    contentURL: bear[0].md[0].file
+    contentURL: bear[0].md[0].file,
+    mode: "markdown",
+    selectedPostSlug: blogPosts[0]?.slug ?? ""
   });
 
-  const setMidBar = (items: BearMdData[], index: number) => {
+  const setMidBar = (index: number) => {
+    if (index === postingSidebarIndex) {
+      setState({
+        curSidebar: index,
+        curMidbar: 0,
+        midbarList: [],
+        contentID: "",
+        contentURL: "",
+        mode: "blog",
+        selectedPostSlug: blogPosts[0]?.slug ?? ""
+      });
+      return;
+    }
+
+    const items = bear[index].md;
     setState({
       curSidebar: index,
       curMidbar: 0,
       midbarList: items,
       contentID: items[0].id,
-      contentURL: items[0].file
+      contentURL: items[0].file,
+      mode: "markdown",
+      selectedPostSlug: state.selectedPostSlug
     });
   };
 
@@ -229,9 +343,21 @@ const Bear = () => {
       ...state,
       curMidbar: index,
       contentID: id,
-      contentURL: url
+      contentURL: url,
+      mode: "markdown"
     });
   };
+
+  const setBlogPost = (post: BlogPost, index: number) => {
+    setState({
+      ...state,
+      curMidbar: index,
+      mode: "blog",
+      selectedPostSlug: post.slug
+    });
+  };
+
+  const selectedPost = getBlogPost(state.selectedPostSlug) ?? blogPosts[0];
 
   return (
     <div className="bear font-avenir flex h-full">
@@ -239,14 +365,22 @@ const Bear = () => {
         <Sidebar cur={state.curSidebar} setMidBar={setMidBar} />
       </div>
       <div className="w-60 overflow-auto" bg="gray-50 dark:gray-800" border="r c-300">
-        <Middlebar
-          items={state.midbarList}
-          cur={state.curMidbar}
-          setContent={setContent}
-        />
+        {state.mode === "blog" ? (
+          <BlogMiddlebar selectedSlug={state.selectedPostSlug} onSelect={setBlogPost} />
+        ) : (
+          <Middlebar
+            items={state.midbarList}
+            cur={state.curMidbar}
+            setContent={setContent}
+          />
+        )}
       </div>
       <div className="flex-1 overflow-auto" bg="gray-50 dark:gray-800">
-        <Content contentID={state.contentID} contentURL={state.contentURL} />
+        {state.mode === "blog" ? (
+          <BlogContent post={selectedPost} />
+        ) : (
+          <Content contentID={state.contentID} contentURL={state.contentURL} />
+        )}
       </div>
     </div>
   );
