@@ -3,6 +3,7 @@ title: "OmniNews에서 Reverse RSS를 잡은 이유"
 summary: "RSS 리더를 채널 구독 도구가 아니라, 과거 글까지 찾는 검색 시스템으로 봤다."
 date: "2026-06-10"
 category: "engineering"
+group: "omninews"
 tags: ["omninews", "rss", "search", "rust"]
 icon: "i-fa-solid:newspaper"
 project: "OmniNews"

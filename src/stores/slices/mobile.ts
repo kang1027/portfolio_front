@@ -6,6 +6,7 @@ export type PushFrame =
   | { view: "bear-list"; categoryId: string }
   | { view: "bear-article"; categoryId: string; mdId: string; file: string }
   | { view: "bear-blog-list" }
+  | { view: "bear-blog-group"; groupId: string }
   | { view: "bear-blog-article"; slug: string }
   | {
       view: "settings-section";

@@ -1,10 +1,17 @@
 export type BlogCategoryId = "work" | "engineering" | "essay";
+export type BlogGroupId = "portfolio" | "omninews" | "classicmap" | "personal";
 
 export interface BlogCategory {
   id: BlogCategoryId;
   title: string;
-  icon: string;
   description: string;
+}
+
+export interface BlogGroup {
+  id: BlogGroupId;
+  title: string;
+  description: string;
+  href?: string;
 }
 
 export interface BlogFrontmatter {
@@ -12,6 +19,7 @@ export interface BlogFrontmatter {
   summary: string;
   date: string;
   category: BlogCategoryId;
+  group: BlogGroupId;
   tags: string[];
   icon: string;
   project?: string;
@@ -23,4 +31,10 @@ export interface BlogPost extends BlogFrontmatter {
   content: string;
   href: string;
   readingMinutes: number;
+  year: string;
+}
+
+export interface BlogYearGroup {
+  year: string;
+  posts: BlogPost[];
 }
