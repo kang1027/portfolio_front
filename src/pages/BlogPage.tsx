@@ -101,7 +101,12 @@ function BlogSideRail({ theme, onToggleTheme }: BlogThemeProps) {
           <span>思</span>
           <span>齊</span>
         </span>
-        <h1 className="blog-side-title">見賢思齊</h1>
+        <h1 className="blog-side-title" aria-label="견현사제(見賢思齊)">
+          <span aria-hidden="true">見</span>
+          <span aria-hidden="true">賢</span>
+          <span aria-hidden="true">思</span>
+          <span aria-hidden="true">齊</span>
+        </h1>
       </div>
 
       <div>
