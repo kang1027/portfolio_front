@@ -58,6 +58,8 @@
 
 .blog-brand,
 .blog-site-nav a,
+.blog-sidebar-brand,
+.blog-sidebar-links a,
 .blog-theme-toggle {
   min-height: 2.75rem;
   display: inline-flex;
@@ -72,14 +74,17 @@
   font-weight: 750;
 }
 
-.blog-site-nav {
+.blog-site-nav,
+.blog-sidebar-links {
   display: flex;
   align-items: center;
   gap: clamp(0.75rem, 2vw, 1.5rem);
 }
 
 .blog-site-nav a:hover,
+.blog-sidebar-links a:hover,
 .blog-brand:hover,
+.blog-sidebar-brand:hover,
 .blog-theme-toggle:hover {
   color: var(--blog-accent);
 }
@@ -94,6 +99,8 @@
 
 .blog-brand:focus-visible,
 .blog-site-nav a:focus-visible,
+.blog-sidebar-brand:focus-visible,
+.blog-sidebar-links a:focus-visible,
 .blog-theme-toggle:focus-visible,
 .blog-post-row:focus-visible,
 .blog-archive-row:focus-visible,
@@ -103,21 +110,66 @@
   outline-offset: 4px;
 }
 
+.blog-index-shell {
+  width: min(100%, 118rem);
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: clamp(1.75rem, 4vw, 4rem);
+  display: grid;
+  grid-template-columns: minmax(20rem, 0.9fr) minmax(34rem, 1.1fr);
+  gap: clamp(2rem, 5vw, 5.5rem);
+  align-items: start;
+}
+
 .blog-main {
   width: min(100%, 74rem);
   margin: 0 auto;
   padding: clamp(2.5rem, 5vw, 5rem) clamp(1.25rem, 4vw, 3.5rem) 6rem;
 }
 
-.blog-hero {
-  max-width: 68rem;
+.blog-index-rail {
+  display: grid;
+  grid-template-rows: auto minmax(18rem, 1fr);
+  gap: clamp(2rem, 5vw, 4rem);
+  align-items: start;
 }
 
-.blog-intro-layout {
-  display: grid;
-  grid-template-columns: minmax(10rem, 15rem) minmax(0, 1fr);
-  gap: clamp(2rem, 5vw, 4.5rem);
-  align-items: start;
+.blog-sidebar-panel {
+  width: min(100%, 14rem);
+  min-height: clamp(15rem, 27vh, 22rem);
+  display: flex;
+  flex-direction: column;
+}
+
+.blog-sidebar-brand {
+  color: var(--blog-text);
+  font-weight: 820;
+}
+
+.blog-sidebar-links {
+  flex-wrap: wrap;
+  margin-top: 0.9rem;
+}
+
+.blog-sidebar-links .blog-theme-toggle {
+  padding: 0;
+}
+
+.blog-sidebar-panel .blog-thread-nav {
+  margin-top: auto;
+  padding-top: 1.25rem;
+}
+
+.blog-principle-panel {
+  width: min(100%, 41rem);
+  min-height: clamp(18rem, 29vw, 25rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.blog-content-panel {
+  min-height: calc(100vh - clamp(3.5rem, 8vw, 8rem));
 }
 
 .blog-kicker,
@@ -130,10 +182,10 @@
   text-transform: uppercase;
 }
 
-.blog-hero h1 {
+.blog-principle-panel h1 {
   margin-top: 0.8rem;
   color: var(--blog-text);
-  font-size: clamp(4rem, 11vw, 8rem);
+  font-size: clamp(3.2rem, 7.5vw, 7rem);
   font-weight: 850;
   line-height: 0.94;
   letter-spacing: 0;
@@ -165,17 +217,8 @@
   word-break: keep-all;
 }
 
-.blog-home-layout {
-  display: grid;
-  grid-template-columns: minmax(10rem, 15rem) minmax(0, 1fr);
-  gap: clamp(2rem, 5vw, 4.5rem);
-  margin-top: clamp(3.5rem, 7vw, 6.25rem);
-  align-items: start;
-}
-
 .blog-thread-nav {
-  position: sticky;
-  top: 5.25rem;
+  position: static;
   display: grid;
   gap: 0.2rem;
   border-left: 1px solid var(--blog-line);
@@ -218,7 +261,7 @@
 }
 
 .blog-flow {
-  grid-column: 2;
+  margin-top: clamp(2rem, 4vw, 3.5rem);
   min-width: 0;
 }
 
@@ -569,6 +612,21 @@
   --blog-text: rgb(249 250 251);
 }
 
+@media (max-width: 1020px) {
+  .blog-index-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .blog-sidebar-panel,
+  .blog-principle-panel {
+    width: 100%;
+  }
+
+  .blog-index-rail {
+    grid-template-rows: none;
+  }
+}
+
 @media (max-width: 860px) {
   .blog-site-header {
     align-items: flex-start;
@@ -583,24 +641,9 @@
     justify-content: space-between;
   }
 
-  .blog-intro-layout,
-  .blog-home-layout,
   .blog-thread-block,
   .blog-year-block {
     grid-template-columns: 1fr;
-  }
-
-  .blog-flow {
-    grid-column: auto;
-  }
-
-  .blog-thread-nav {
-    order: 2;
-    position: static;
-  }
-
-  .blog-hero {
-    order: 1;
   }
 
   .blog-post-row {
@@ -619,11 +662,15 @@
 }
 
 @media (max-width: 520px) {
+  .blog-index-shell {
+    padding: 1rem;
+  }
+
   .blog-main {
     padding-inline: 1rem;
   }
 
-  .blog-hero h1,
+  .blog-principle-panel h1,
   .blog-article-header h1,
   .blog-article-shell > h1 {
     font-size: 2.2rem;
