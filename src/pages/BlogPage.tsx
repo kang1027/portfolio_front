@@ -22,6 +22,12 @@ const shortDateFormatter = new Intl.DateTimeFormat("ko-KR", {
   day: "numeric"
 });
 
+const fullDateFormatter = new Intl.DateTimeFormat("ko-KR", {
+  year: "numeric",
+  month: "numeric",
+  day: "numeric"
+});
+
 const normalizeSlug = (pathname: string): string | null => {
   const cleaned = pathname.replace(/\/+$/, "");
   if (cleaned === "/blog") return null;
@@ -44,7 +50,7 @@ function BlogThemeToggle({ theme, onToggleTheme }: BlogThemeProps) {
       aria-pressed={theme === "dark"}
       onClick={onToggleTheme}
     >
-      {theme === "dark" ? "Light" : "Dark"}
+      {theme === "dark" ? "밝게" : "어둡게"}
     </button>
   );
 }
@@ -53,7 +59,7 @@ function BlogTopBar({ theme, onToggleTheme }: BlogThemeProps) {
   return (
     <header className="blog-site-header">
       <a href="/" className="blog-brand">
-        Kang Donghyun
+        강동현
       </a>
       <nav className="blog-site-nav" aria-label="Blog navigation">
         <a href="/blog#threads">갈래</a>
@@ -68,7 +74,9 @@ function BlogPostRow({ post, compact = false }: { post: BlogPost; compact?: bool
   return (
     <a href={post.href} className={compact ? "blog-archive-row" : "blog-post-row"}>
       <time dateTime={post.date} className="blog-post-date">
-        {compact ? shortDateFormatter.format(new Date(post.date)) : post.date}
+        {compact
+          ? shortDateFormatter.format(new Date(post.date))
+          : fullDateFormatter.format(new Date(post.date))}
       </time>
       <span className="blog-post-copy">
         <span className="blog-post-title">{post.title}</span>
@@ -84,13 +92,43 @@ function BlogPostRow({ post, compact = false }: { post: BlogPost; compact?: bool
 function BlogHero() {
   return (
     <section className="blog-hero" aria-label="견현사제">
-      <p className="blog-kicker">견현사제</p>
-      <h1>見賢思齊</h1>
-      <p className="blog-hero-copy">
-        “어진 사람을 보면 어떻게 그와 같아질까를 생각하며, 어질지 못한 사람을 보면 속으로
-        스스로 반성해야 한다.”
-      </p>
+      <div className="blog-hero-head">
+        <h1>見賢思齊</h1>
+        <span className="blog-seal" aria-hidden="true">
+          <span>見</span>
+          <span>賢</span>
+          <span>思</span>
+          <span>齊</span>
+        </span>
+      </div>
+      <figure className="blog-hero-quote">
+        <blockquote className="blog-hero-copy">
+          “어진 사람을 보면 어떻게 그와 같아질까를 생각하며, 어질지 못한 사람을 보면
+          속으로 스스로 반성해야 한다.”
+        </blockquote>
+        <figcaption>— 논어(論語) · 이인편</figcaption>
+      </figure>
     </section>
+  );
+}
+
+function BlogFooter() {
+  return (
+    <footer className="blog-site-footer">
+      <div>
+        <p className="blog-footer-name">강동현</p>
+        <p className="blog-footer-motto">
+          見賢思齊 — 어진 것을 보면 같아지기를 생각하며 만들고 적는 개발자.
+        </p>
+        <nav className="blog-footer-links" aria-label="외부 링크">
+          <a href="/">포트폴리오</a>
+          <a href="https://github.com/kang1027" target="_blank" rel="noopener noreferrer">
+            GitHub
+          </a>
+          <a href="mailto:kang3171611@naver.com">메일</a>
+        </nav>
+      </div>
+    </footer>
   );
 }
 
@@ -98,7 +136,6 @@ function BlogThreadSections() {
   return (
     <section id="threads" className="blog-section" aria-label="갈래별 글">
       <header className="blog-section-header">
-        <p>Threads</p>
         <h2>갈래로 모아 읽기</h2>
       </header>
       <div className="blog-thread-list">
@@ -133,7 +170,6 @@ function BlogArchiveSection() {
   return (
     <section id="archive" className="blog-section blog-archive" aria-label="날짜순 글">
       <header className="blog-section-header">
-        <p>Archive</p>
         <h2>날짜순으로 훑기</h2>
       </header>
       {blogPostsByYear.map((yearGroup) => (
@@ -289,6 +325,7 @@ export default function BlogPage({ pathname }: BlogPageProps) {
     <div className="blog-public" data-blog-theme={theme}>
       <BlogTopBar theme={theme} onToggleTheme={toggleTheme} />
       {slug ? post ? <BlogArticle post={post} /> : <BlogNotFound /> : <BlogIndex />}
+      <BlogFooter />
     </div>
   );
 }

@@ -7,17 +7,19 @@
 }
 
 .blog-public {
-  --blog-bg: #f4f6f8;
-  --blog-surface: #ffffff;
-  --blog-surface-soft: #eef1f4;
-  --blog-line: #d8dde3;
-  --blog-line-strong: #b8c0ca;
-  --blog-text: #141922;
-  --blog-body: #333b47;
-  --blog-muted: #5c6674;
-  --blog-faint: #818b98;
-  --blog-accent: #ef4444;
-  --blog-accent-soft: #fff1f1;
+  /* 문집(文集) 팔레트 — 한지 위 먹과 인주 */
+  --blog-bg: #f5f2ea;
+  --blog-surface: #fdfbf5;
+  --blog-surface-soft: #ede9de;
+  --blog-line: #ddd6c8;
+  --blog-line-strong: #c2b9a6;
+  --blog-text: #1f1c16;
+  --blog-body: #3a362d;
+  --blog-muted: #6b6557;
+  --blog-faint: #8d8675;
+  --blog-accent: #b23b2e;
+  --blog-accent-soft: #f6e8e4;
+  --blog-serif: "Noto Serif KR", "Nanum Myeongjo", "AppleMyungjo", serif;
 
   height: 100%;
   min-height: 100vh;
@@ -28,17 +30,17 @@
 }
 
 .blog-public[data-blog-theme="dark"] {
-  --blog-bg: #15171b;
-  --blog-surface: #1d2026;
-  --blog-surface-soft: #242832;
-  --blog-line: #303641;
-  --blog-line-strong: #48505d;
-  --blog-text: #f1f3f5;
-  --blog-body: #ccd2d9;
-  --blog-muted: #a0a8b3;
-  --blog-faint: #77808d;
-  --blog-accent: #ff5a5f;
-  --blog-accent-soft: #321d22;
+  --blog-bg: #161412;
+  --blog-surface: #1e1b18;
+  --blog-surface-soft: #262221;
+  --blog-line: #322d29;
+  --blog-line-strong: #4a443d;
+  --blog-text: #f0ece3;
+  --blog-body: #cfc9bc;
+  --blog-muted: #a39c8c;
+  --blog-faint: #7c7567;
+  --blog-accent: #d96c5a;
+  --blog-accent-soft: #33211d;
 
   color-scheme: dark;
 }
@@ -71,7 +73,9 @@
 
 .blog-brand {
   color: var(--blog-text);
-  font-weight: 750;
+  font-family: var(--blog-serif, inherit);
+  font-weight: 700;
+  font-size: 1rem;
 }
 
 .blog-site-nav {
@@ -121,47 +125,67 @@
   border-bottom: 1px solid var(--blog-line-strong);
 }
 
+.blog-hero-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: clamp(1rem, 4vw, 2.5rem);
+}
+
 .blog-hero h1 {
-  margin-top: 0.8rem;
   color: var(--blog-text);
+  font-family: var(--blog-serif, inherit);
   font-size: clamp(3rem, 8vw, 5.5rem);
-  font-weight: 850;
-  line-height: 0.97;
-  letter-spacing: 0;
+  font-weight: 900;
+  line-height: 1.05;
+  letter-spacing: 0.04em;
   text-wrap: balance;
   word-break: keep-all;
   overflow-wrap: anywhere;
 }
 
-.blog-kicker,
-.blog-section-header p,
-.blog-thread-label {
-  color: var(--blog-accent);
-  font-size: 0.75rem;
-  font-weight: 800;
-  letter-spacing: 0;
-  text-transform: uppercase;
+/* 낙관(落款) — 인주 도장 */
+.blog-seal {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  flex-shrink: 0;
+  width: clamp(3.6rem, 8vw, 4.6rem);
+  height: clamp(3.6rem, 8vw, 4.6rem);
+  margin-top: 0.5rem;
+  padding: 0.3rem;
+  align-items: center;
+  justify-items: center;
+  background: var(--blog-accent);
+  border-radius: 0.5rem;
+  transform: rotate(-4deg);
+  color: #f8f3e9;
+  font-family: var(--blog-serif, inherit);
+  font-size: clamp(1.1rem, 2.4vw, 1.45rem);
+  font-weight: 700;
+  line-height: 1;
+  box-shadow: 0 2px 10px rgb(0 0 0 / 12%);
+  user-select: none;
 }
 
-.blog-principle-panel h1 {
-  margin-top: 0.8rem;
-  color: var(--blog-text);
-  font-size: clamp(3.2rem, 7.5vw, 7rem);
-  font-weight: 850;
-  line-height: 0.94;
-  letter-spacing: 0;
-  text-wrap: balance;
-  word-break: keep-all;
-  overflow-wrap: anywhere;
+.blog-hero-quote {
+  margin-top: 1.5rem;
+}
+
+.blog-hero-quote figcaption {
+  margin-top: 0.6rem;
+  color: var(--blog-faint);
+  font-family: var(--blog-serif, inherit);
+  font-size: 0.85rem;
 }
 
 .blog-article-header h1,
 .blog-article-shell > h1 {
   margin-top: 0.8rem;
   color: var(--blog-text);
-  font-size: clamp(2.3rem, 4.6vw, 4rem);
-  font-weight: 850;
-  line-height: 1.02;
+  font-family: var(--blog-serif, inherit);
+  font-size: clamp(2.2rem, 4.4vw, 3.6rem);
+  font-weight: 900;
+  line-height: 1.22;
   letter-spacing: 0;
   text-wrap: balance;
   word-break: keep-all;
@@ -178,6 +202,11 @@
   word-break: keep-all;
 }
 
+.blog-hero-copy {
+  margin-top: 0;
+  font-family: var(--blog-serif, inherit);
+}
+
 .blog-section {
   margin-top: clamp(3.5rem, 7vw, 5.5rem);
   scroll-margin-top: 5rem;
@@ -189,11 +218,11 @@
 
 .blog-section-header h2,
 .blog-related h2 {
-  margin-top: 0.4rem;
   color: var(--blog-text);
-  font-size: clamp(1.55rem, 3vw, 2.25rem);
-  font-weight: 820;
-  line-height: 1.15;
+  font-family: var(--blog-serif, inherit);
+  font-size: clamp(1.5rem, 3vw, 2.1rem);
+  font-weight: 700;
+  line-height: 1.3;
   letter-spacing: 0;
 }
 
@@ -214,9 +243,10 @@
 .blog-thread-block h3 {
   margin-top: 0.3rem;
   color: var(--blog-text);
-  font-size: 1.35rem;
-  font-weight: 800;
-  line-height: 1.2;
+  font-family: var(--blog-serif, inherit);
+  font-size: 1.3rem;
+  font-weight: 700;
+  line-height: 1.35;
 }
 
 .blog-thread-block header > p:last-child {
@@ -274,9 +304,10 @@
 .blog-post-title {
   display: block;
   color: var(--blog-text);
-  font-size: 1rem;
-  font-weight: 760;
-  line-height: 1.35;
+  font-family: var(--blog-serif, inherit);
+  font-size: 1.05rem;
+  font-weight: 600;
+  line-height: 1.45;
   transition: color 160ms ease;
   word-break: keep-all;
   overflow-wrap: anywhere;
@@ -309,8 +340,9 @@
 
 .blog-year-block h3 {
   color: var(--blog-text);
-  font-size: 1.45rem;
-  font-weight: 820;
+  font-family: var(--blog-serif, inherit);
+  font-size: 1.4rem;
+  font-weight: 700;
 }
 
 .blog-article-shell {
@@ -371,8 +403,9 @@
 .blog-markdown h3,
 .blog-markdown h4 {
   color: inherit;
-  font-weight: 820;
-  line-height: 1.25;
+  font-family: var(--blog-serif, inherit);
+  font-weight: 700;
+  line-height: 1.35;
   word-break: keep-all;
   overflow-wrap: anywhere;
   scroll-margin-top: 5rem;
@@ -502,6 +535,58 @@
   color: var(--blog-accent);
   font-weight: 760;
   text-decoration: none;
+}
+
+.blog-site-footer {
+  border-top: 1px solid var(--blog-line-strong);
+  padding: 2.4rem 0 3.2rem;
+}
+
+.blog-site-footer > div {
+  width: min(100%, 52rem);
+  margin: 0 auto;
+  padding: 0 clamp(1.25rem, 4vw, 2.5rem);
+}
+
+.blog-footer-name {
+  color: var(--blog-text);
+  font-family: var(--blog-serif, inherit);
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.blog-footer-motto {
+  margin-top: 0.45rem;
+  color: var(--blog-muted);
+  font-family: var(--blog-serif, inherit);
+  font-size: 0.9rem;
+  line-height: 1.7;
+  word-break: keep-all;
+}
+
+.blog-footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.4rem;
+  margin-top: 0.9rem;
+}
+
+.blog-footer-links a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  color: var(--blog-muted);
+  font-size: 0.85rem;
+  text-decoration: none;
+}
+
+.blog-footer-links a:hover {
+  color: var(--blog-accent);
+}
+
+.blog-footer-links a:focus-visible {
+  outline: 2px solid var(--blog-accent);
+  outline-offset: 4px;
 }
 
 .bear .blog-markdown {
