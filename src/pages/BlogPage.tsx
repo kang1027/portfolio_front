@@ -29,8 +29,6 @@ const normalizeSlug = (pathname: string): string | null => {
   return match?.[1] ?? null;
 };
 
-type BlogSidebarView = "threads" | "dates";
-
 function BlogThemeToggle() {
   const dark = useStore((state) => state.dark);
   const toggleDark = useStore((state) => state.toggleDark);
@@ -54,7 +52,7 @@ function BlogTopBar() {
         Kang Donghyun
       </a>
       <nav className="blog-site-nav" aria-label="Blog navigation">
-        <a href="/blog">갈래</a>
+        <a href="/blog#threads">갈래</a>
         <a href="/blog#archive">날짜</a>
         <BlogThemeToggle />
       </nav>
@@ -63,9 +61,6 @@ function BlogTopBar() {
 }
 
 function BlogPostRow({ post, compact = false }: { post: BlogPost; compact?: boolean }) {
-  const group = getBlogGroup(post.group);
-  const contextLabel = post.project ?? group.title;
-
   return (
     <a href={post.href} className={compact ? "blog-archive-row" : "blog-post-row"}>
       <time dateTime={post.date} className="blog-post-date">
@@ -74,113 +69,90 @@ function BlogPostRow({ post, compact = false }: { post: BlogPost; compact?: bool
       <span className="blog-post-copy">
         <span className="blog-post-title">{post.title}</span>
         {!compact && <span className="blog-post-summary">{post.summary}</span>}
-        {compact && post.tags.length > 0 && (
-          <span className="blog-post-tags" aria-label="Tags">
-            {post.tags.slice(0, 4).map((tag) => (
-              <span key={tag}>#{tag}</span>
-            ))}
-          </span>
-        )}
       </span>
-      {!compact && <span className="blog-post-group">{contextLabel}</span>}
+      {!compact && post.project && (
+        <span className="blog-post-group">{post.project}</span>
+      )}
     </a>
   );
 }
 
-function BlogThreadNav() {
+function BlogHero() {
   return (
-    <nav className="blog-thread-nav" aria-label="Writing threads">
-      <p>갈래</p>
-      {blogGroups.map((group) => {
-        const posts = getBlogPostsByGroup(group.id);
-        const count = posts.length;
-        if (count === 0) {
+    <section className="blog-hero" aria-label="견현사제">
+      <p className="blog-kicker">견현사제</p>
+      <h1>見賢思齊</h1>
+      <p className="blog-hero-copy">
+        “어진 사람을 보면 어떻게 그와 같아질까를 생각하며, 어질지 못한 사람을 보면 속으로
+        스스로 반성해야 한다.”
+      </p>
+    </section>
+  );
+}
+
+function BlogThreadSections() {
+  return (
+    <section id="threads" className="blog-section" aria-label="갈래별 글">
+      <header className="blog-section-header">
+        <p>Threads</p>
+        <h2>갈래로 모아 읽기</h2>
+      </header>
+      <div className="blog-thread-list">
+        {blogGroups.map((group) => {
+          const posts = getBlogPostsByGroup(group.id);
+          if (posts.length === 0) return null;
+
           return (
-            <span key={group.id} className="blog-thread-nav-empty" aria-disabled="true">
-              <span>{group.title}</span>
-              <small>{count}</small>
-            </span>
+            <section
+              key={group.id}
+              id={`thread-${group.id}`}
+              className="blog-thread-block"
+            >
+              <header>
+                <h3>{group.title}</h3>
+                <p>{group.description}</p>
+              </header>
+              <div className="blog-thread-posts">
+                {posts.map((post) => (
+                  <BlogPostRow key={post.slug} post={post} />
+                ))}
+              </div>
+            </section>
           );
-        }
-
-        const firstPost = posts[0];
-        return (
-          <a key={group.id} href={firstPost.href}>
-            <span>{group.title}</span>
-            <small>{count}</small>
-          </a>
-        );
-      })}
-      <a href="#archive">
-        <span>Archive</span>
-        <small>{blogPosts.length}</small>
-      </a>
-    </nav>
-  );
-}
-
-function BlogYearNav() {
-  return (
-    <nav className="blog-thread-nav" aria-label="Writing archive">
-      <p>날짜</p>
-      {blogPostsByYear.map((yearGroup) => (
-        <a key={yearGroup.year} href={`#year-${yearGroup.year}`}>
-          <span>{yearGroup.year}</span>
-          <small>{yearGroup.posts.length}</small>
-        </a>
-      ))}
-      <a href="#archive">
-        <span>전체</span>
-        <small>{blogPosts.length}</small>
-      </a>
-    </nav>
-  );
-}
-
-function BlogIndexRail() {
-  const [sidebarView, setSidebarView] = useState<BlogSidebarView>("threads");
-
-  return (
-    <aside className="blog-index-rail">
-      <div className="blog-sidebar-panel">
-        <a href="/" className="blog-sidebar-brand">
-          Kang Donghyun
-        </a>
-        <nav className="blog-sidebar-links" aria-label="Blog navigation">
-          <button
-            type="button"
-            aria-pressed={sidebarView === "threads"}
-            onClick={() => setSidebarView("threads")}
-          >
-            갈래
-          </button>
-          <button
-            type="button"
-            aria-pressed={sidebarView === "dates"}
-            onClick={() => setSidebarView("dates")}
-          >
-            날짜
-          </button>
-          <BlogThemeToggle />
-        </nav>
-        {sidebarView === "threads" ? <BlogThreadNav /> : <BlogYearNav />}
+        })}
       </div>
+    </section>
+  );
+}
 
-      <section className="blog-principle-panel" aria-label="견현사제">
-        <p className="blog-kicker">견현사제</p>
-        <h1>見賢思齊</h1>
-        <p className="blog-hero-copy">
-          "어진 사람을 보면 어떻게 그와 같아질까를 생각하며, 어질지 못한 사람을 보면
-          속으로 스스로 반성해야 한다."
-        </p>
-      </section>
-    </aside>
+function BlogArchiveSection() {
+  return (
+    <section id="archive" className="blog-section blog-archive" aria-label="날짜순 글">
+      <header className="blog-section-header">
+        <p>Archive</p>
+        <h2>날짜순으로 훑기</h2>
+      </header>
+      {blogPostsByYear.map((yearGroup) => (
+        <section
+          key={yearGroup.year}
+          id={`year-${yearGroup.year}`}
+          className="blog-year-block"
+        >
+          <h3>{yearGroup.year}</h3>
+          <div>
+            {yearGroup.posts.map((post) => (
+              <BlogPostRow key={post.slug} post={post} compact />
+            ))}
+          </div>
+        </section>
+      ))}
+    </section>
   );
 }
 
 function BlogIndex() {
   return (
-    <main className="blog-index-shell">
+    <main className="blog-index-main">
       <SEO
         title="Writings | kang1027's Portfolio"
         description="견현사제의 태도로 남기는 강동현의 프로젝트 판단, 구현 노트, 개인 기록."
@@ -188,32 +160,9 @@ function BlogIndex() {
         keywords="kang1027, portfolio, blog, engineering notes, writing"
       />
 
-      <BlogIndexRail />
-
-      <section className="blog-content-panel" aria-label="Blog posts">
-        <div className="blog-flow">
-          <section id="archive" className="blog-section blog-archive">
-            <header className="blog-section-header">
-              <p>Archive</p>
-              <h2>날짜순으로 훑기</h2>
-            </header>
-            {blogPostsByYear.map((yearGroup) => (
-              <section
-                key={yearGroup.year}
-                id={`year-${yearGroup.year}`}
-                className="blog-year-block"
-              >
-                <h3>{yearGroup.year}</h3>
-                <div>
-                  {yearGroup.posts.map((post) => (
-                    <BlogPostRow key={post.slug} post={post} compact />
-                  ))}
-                </div>
-              </section>
-            ))}
-          </section>
-        </div>
-      </section>
+      <BlogHero />
+      <BlogThreadSections />
+      <BlogArchiveSection />
     </main>
   );
 }
@@ -309,11 +258,10 @@ export default function BlogPage({ pathname }: BlogPageProps) {
 
   const slug = normalizeSlug(pathname);
   const post = slug ? getBlogPost(slug) : undefined;
-  const className = slug ? "blog-public" : "blog-public blog-public-index";
 
   return (
-    <div className={className}>
-      {slug && <BlogTopBar />}
+    <div className="blog-public">
+      <BlogTopBar />
       {slug ? post ? <BlogArticle post={post} /> : <BlogNotFound /> : <BlogIndex />}
     </div>
   );
