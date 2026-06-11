@@ -104,7 +104,7 @@ function BlogSideRail({ theme, onToggleTheme }: BlogThemeProps) {
             “어진 사람을 보면 어떻게 그와 같아질까를 생각하며, 어질지 못한 사람을 보면
             속으로 스스로 반성해야 한다.”
           </blockquote>
-          <figcaption>— 논어(論語) · 이인편</figcaption>
+          <figcaption>— 논어(論語) · 이인(里仁)</figcaption>
         </figure>
         <p className="blog-side-author">
           <span>강동현</span>
