@@ -113,10 +113,10 @@
   animation: blog-pane-in 440ms cubic-bezier(0.3, 0, 0.2, 1) both;
 }
 
-/* 레일 폭이 움직이는 전환에서는 패널 콘텐츠가 반 박자 늦게 들어온다 */
+/* 레일 폭이 움직이는 동안 패널 콘텐츠는 숨김 — 자리 잡힌 뒤 슬라이드 인 */
 .blog-public[data-shifting="true"] .blog-pane > * {
-  animation-delay: 200ms;
-  animation-duration: 460ms;
+  animation: none;
+  opacity: 0;
 }
 
 @keyframes blog-pane-in {
@@ -199,15 +199,17 @@
   padding-inline: clamp(0.8rem, 1.5vw, 1.4rem);
 }
 
-/* 레일 폭 전환 안무 — 붓글씨만 모핑하고, 텍스트류는 숨겼다가 자리 잡으면 페이드인 */
+/* 레일 폭 전환 안무 — 붓글씨만 모핑하고, 텍스트류는 즉시 숨겼다가
+   폭이 자리 잡은 뒤 페이드인 (위치·표시 상태가 점프하는 복귀 방향 대비) */
 .blog-side-nav,
 .blog-side-bottom {
-  transition: opacity 150ms ease;
+  transition: opacity 240ms ease 60ms;
 }
 
 .blog-public[data-shifting="true"] .blog-side-nav,
 .blog-public[data-shifting="true"] .blog-side-bottom {
   opacity: 0;
+  transition: none;
   pointer-events: none;
 }
 
