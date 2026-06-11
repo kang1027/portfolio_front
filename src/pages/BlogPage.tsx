@@ -9,7 +9,6 @@ import {
   getBlogGroup,
   getBlogPost,
   getBlogPostsByGroup,
-  type BlogGroup,
   type BlogPost
 } from "~/content/blog";
 
@@ -30,6 +29,8 @@ const normalizeSlug = (pathname: string): string | null => {
   const match = cleaned.match(/^\/blog\/([^/]+)$/);
   return match?.[1] ?? null;
 };
+
+type BlogSidebarView = "threads" | "dates";
 
 function BlogThemeToggle() {
   const dark = useStore((state) => state.dark);
@@ -54,7 +55,7 @@ function BlogTopBar() {
         Kang Donghyun
       </a>
       <nav className="blog-site-nav" aria-label="Blog navigation">
-        <a href="/blog#threads">갈래</a>
+        <a href="/blog">갈래</a>
         <a href="/blog#archive">날짜</a>
         <BlogThemeToggle />
       </nav>
@@ -74,39 +75,16 @@ function BlogPostRow({ post, compact = false }: { post: BlogPost; compact?: bool
       <span className="blog-post-copy">
         <span className="blog-post-title">{post.title}</span>
         {!compact && <span className="blog-post-summary">{post.summary}</span>}
+        {compact && post.tags.length > 0 && (
+          <span className="blog-post-tags" aria-label="Tags">
+            {post.tags.slice(0, 4).map((tag) => (
+              <span key={tag}>#{tag}</span>
+            ))}
+          </span>
+        )}
       </span>
       {!compact && <span className="blog-post-group">{contextLabel}</span>}
     </a>
-  );
-}
-
-function BlogGroupBlock({ group }: { group: BlogGroup }) {
-  const posts = getBlogPostsByGroup(group.id);
-  const groupTitle = group.href ? (
-    <a
-      href={group.href}
-      target={group.href.startsWith("http") ? "_blank" : undefined}
-      rel={group.href.startsWith("http") ? "noopener noreferrer" : undefined}
-    >
-      {group.title}
-    </a>
-  ) : (
-    group.title
-  );
-
-  return (
-    <section id={`thread-${group.id}`} className="blog-thread-block">
-      <header>
-        <p className="blog-thread-label">Thread</p>
-        <h3>{groupTitle}</h3>
-        <p>{group.description}</p>
-      </header>
-      <div className="blog-thread-posts">
-        {posts.map((post) => (
-          <BlogPostRow key={post.slug} post={post} />
-        ))}
-      </div>
-    </section>
   );
 }
 
@@ -115,7 +93,8 @@ function BlogThreadNav() {
     <nav className="blog-thread-nav" aria-label="Writing threads">
       <p>갈래</p>
       {blogGroups.map((group) => {
-        const count = getBlogPostsByGroup(group.id).length;
+        const posts = getBlogPostsByGroup(group.id);
+        const count = posts.length;
         if (count === 0) {
           return (
             <span key={group.id} className="blog-thread-nav-empty" aria-disabled="true">
@@ -125,8 +104,9 @@ function BlogThreadNav() {
           );
         }
 
+        const firstPost = posts[0];
         return (
-          <a key={group.id} href={`#thread-${group.id}`}>
+          <a key={group.id} href={firstPost.href}>
             <span>{group.title}</span>
             <small>{count}</small>
           </a>
@@ -140,7 +120,27 @@ function BlogThreadNav() {
   );
 }
 
+function BlogYearNav() {
+  return (
+    <nav className="blog-thread-nav" aria-label="Writing archive">
+      <p>날짜</p>
+      {blogPostsByYear.map((yearGroup) => (
+        <a key={yearGroup.year} href={`#year-${yearGroup.year}`}>
+          <span>{yearGroup.year}</span>
+          <small>{yearGroup.posts.length}</small>
+        </a>
+      ))}
+      <a href="#archive">
+        <span>전체</span>
+        <small>{blogPosts.length}</small>
+      </a>
+    </nav>
+  );
+}
+
 function BlogIndexRail() {
+  const [sidebarView, setSidebarView] = useState<BlogSidebarView>("threads");
+
   return (
     <aside className="blog-index-rail">
       <div className="blog-sidebar-panel">
@@ -148,11 +148,23 @@ function BlogIndexRail() {
           Kang Donghyun
         </a>
         <nav className="blog-sidebar-links" aria-label="Blog navigation">
-          <a href="/blog#threads">갈래</a>
-          <a href="/blog#archive">날짜</a>
+          <button
+            type="button"
+            aria-pressed={sidebarView === "threads"}
+            onClick={() => setSidebarView("threads")}
+          >
+            갈래
+          </button>
+          <button
+            type="button"
+            aria-pressed={sidebarView === "dates"}
+            onClick={() => setSidebarView("dates")}
+          >
+            날짜
+          </button>
           <BlogThemeToggle />
         </nav>
-        <BlogThreadNav />
+        {sidebarView === "threads" ? <BlogThreadNav /> : <BlogYearNav />}
       </div>
 
       <section className="blog-principle-panel" aria-label="견현사제">
@@ -168,10 +180,6 @@ function BlogIndexRail() {
 }
 
 function BlogIndex() {
-  const groupsWithPosts = blogGroups.filter(
-    (group) => getBlogPostsByGroup(group.id).length > 0
-  );
-
   return (
     <main className="blog-index-shell">
       <SEO
@@ -185,25 +193,17 @@ function BlogIndex() {
 
       <section className="blog-content-panel" aria-label="Blog posts">
         <div className="blog-flow">
-          <section id="threads" className="blog-section">
-            <header className="blog-section-header">
-              <p>Threads</p>
-              <h2>갈래별로 이어서 읽기</h2>
-            </header>
-            <div className="blog-thread-list">
-              {groupsWithPosts.map((group) => (
-                <BlogGroupBlock key={group.id} group={group} />
-              ))}
-            </div>
-          </section>
-
           <section id="archive" className="blog-section blog-archive">
             <header className="blog-section-header">
               <p>Archive</p>
               <h2>날짜순으로 훑기</h2>
             </header>
             {blogPostsByYear.map((yearGroup) => (
-              <section key={yearGroup.year} className="blog-year-block">
+              <section
+                key={yearGroup.year}
+                id={`year-${yearGroup.year}`}
+                className="blog-year-block"
+              >
                 <h3>{yearGroup.year}</h3>
                 <div>
                   {yearGroup.posts.map((post) => (
@@ -312,9 +312,10 @@ export default function BlogPage({ pathname }: BlogPageProps) {
 
   const slug = normalizeSlug(pathname);
   const post = slug ? getBlogPost(slug) : undefined;
+  const className = slug ? "blog-public" : "blog-public blog-public-index";
 
   return (
-    <div className="blog-public">
+    <div className={className}>
       {slug && <BlogTopBar />}
       {slug ? post ? <BlogArticle post={post} /> : <BlogNotFound /> : <BlogIndex />}
     </div>
