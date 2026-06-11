@@ -2,7 +2,7 @@
 title: "포트폴리오 안에 블로그를 넣는 방식"
 summary: "일반 블로그 페이지를 붙이는 대신, Bear 앱 안의 작업 노트처럼 읽히게 만드는 이유."
 date: "2026-06-11"
-group: "interface"
+group: "dev"
 tags: ["portfolio", "ux", "bear"]
 icon: "i-fa-solid:pen-nib"
 project: "Portfolio"

@@ -8,29 +8,29 @@ import type {
 
 export const blogGroups = [
   {
-    id: "principles",
-    title: "원리와 구조",
-    description: "기능 이름보다 먼저 문제의 원리, 데이터 흐름, 구조를 보는 글."
+    id: "dev",
+    title: "설계와 구현",
+    description: "직접 만들며 남긴 설계 판단, 구현 디테일, 디버깅 기록."
   },
   {
-    id: "implementation",
-    title: "구현과 디버깅",
-    description: "직접 만들며 마주친 구현 디테일, 버그, 성능 문제를 남긴 기록."
+    id: "essay",
+    title: "생각과 질문",
+    description: "일과 삶에서 길어 올린 질문을 천천히 따라가는 글."
   },
   {
-    id: "interface",
-    title: "인터페이스와 사용감",
-    description: "화면, 글, 도구가 사용자의 맥락과 감각을 바꾸는 방식."
+    id: "review",
+    title: "읽기와 보기",
+    description: "책, 영화, 시리즈를 보고 남긴 감상."
   },
   {
-    id: "product-judgement",
-    title: "제품 판단",
-    description: "기능을 넣고 빼는 기준, 방향, 우선순위를 정리한 글."
+    id: "meetup",
+    title: "견문과 모임",
+    description: "세미나, 강연, 모임에서 보고 들은 것을 정리한 후기."
   },
   {
-    id: "field-notes",
-    title: "견문과 기록",
-    description: "보고 들은 것, 모임, 일상에서 개발 기준으로 이어진 기록."
+    id: "memoir",
+    title: "해의 회고",
+    description: "한 해를 닫으며 남기는 회고."
   }
 ] as const satisfies readonly BlogGroup[];
 
