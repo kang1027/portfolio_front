@@ -398,7 +398,7 @@ export default function BlogPage({ pathname }: BlogPageProps) {
   }
   useEffect(() => {
     if (!shifting) return;
-    const timer = setTimeout(() => setShifting(false), 560);
+    const timer = setTimeout(() => setShifting(false), 340);
     return () => clearTimeout(timer);
   }, [shifting]);
 
