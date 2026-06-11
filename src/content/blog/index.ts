@@ -97,10 +97,8 @@ const parsePost = (path: string, raw: string): BlogPost => {
   const slug = path.replace("./posts/", "").replace(/\.md$/, "");
   const rawContent = raw.replace(frontmatterPattern, "").trim();
   const content = rawContent.replace(/^# .+(\n|$)/, "").trim();
-  const wordCount = content
-    .replace(/```[\s\S]*?```/g, "")
-    .split(/\s+/)
-    .filter(Boolean).length;
+  // 한국어 기준 분당 약 500자(공백 제외)로 읽기 시간 계산
+  const charCount = content.replace(/```[\s\S]*?```/g, "").replace(/\s+/g, "").length;
 
   return {
     slug,
@@ -120,7 +118,7 @@ const parsePost = (path: string, raw: string): BlogPost => {
         : undefined,
     content,
     href: `/blog/${slug}`,
-    readingMinutes: Math.max(1, Math.ceil(wordCount / 260)),
+    readingMinutes: Math.max(1, Math.ceil(charCount / 500)),
     year: date.slice(0, 4)
   };
 };
