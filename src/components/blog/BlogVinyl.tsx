@@ -17,7 +17,6 @@ export default function BlogVinyl() {
       <div className="blog-vinyl-info" aria-live="polite">
         {track ? (
           <>
-            <p className="blog-vinyl-label">지금 흐르는 곡</p>
             {track.url ? (
               <a
                 href={track.url}
