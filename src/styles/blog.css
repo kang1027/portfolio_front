@@ -26,7 +26,7 @@
   color-scheme: light;
 }
 
-.dark .blog-public {
+.blog-public[data-blog-theme="dark"] {
   --blog-bg: #15171b;
   --blog-surface: #1d2026;
   --blog-surface-soft: #242832;

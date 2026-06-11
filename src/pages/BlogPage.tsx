@@ -29,23 +29,27 @@ const normalizeSlug = (pathname: string): string | null => {
   return match?.[1] ?? null;
 };
 
-function BlogThemeToggle() {
-  const dark = useStore((state) => state.dark);
-  const toggleDark = useStore((state) => state.toggleDark);
+type BlogTheme = "light" | "dark";
 
+interface BlogThemeProps {
+  theme: BlogTheme;
+  onToggleTheme: () => void;
+}
+
+function BlogThemeToggle({ theme, onToggleTheme }: BlogThemeProps) {
   return (
     <button
       type="button"
       className="blog-theme-toggle"
-      aria-pressed={dark}
-      onClick={toggleDark}
+      aria-pressed={theme === "dark"}
+      onClick={onToggleTheme}
     >
-      {dark ? "Light" : "Dark"}
+      {theme === "dark" ? "Light" : "Dark"}
     </button>
   );
 }
 
-function BlogTopBar() {
+function BlogTopBar({ theme, onToggleTheme }: BlogThemeProps) {
   return (
     <header className="blog-site-header">
       <a href="/" className="blog-brand">
@@ -54,7 +58,7 @@ function BlogTopBar() {
       <nav className="blog-site-nav" aria-label="Blog navigation">
         <a href="/blog#threads">갈래</a>
         <a href="/blog#archive">날짜</a>
-        <BlogThemeToggle />
+        <BlogThemeToggle theme={theme} onToggleTheme={onToggleTheme} />
       </nav>
     </header>
   );
@@ -247,21 +251,35 @@ function BlogNotFound() {
   );
 }
 
-export default function BlogPage({ pathname }: BlogPageProps) {
-  useLayoutEffect(() => {
-    const store = useStore.getState();
-    if (store.dark) return;
+const blogThemeStorageKey = "blog-theme";
 
-    useStore.setState({ dark: true });
-    document.documentElement.classList.add("dark");
-  }, []);
+const readStoredBlogTheme = (): BlogTheme => {
+  try {
+    return localStorage.getItem(blogThemeStorageKey) === "light" ? "light" : "dark";
+  } catch {
+    return "dark";
+  }
+};
+
+export default function BlogPage({ pathname }: BlogPageProps) {
+  const [theme, setTheme] = useState<BlogTheme>(readStoredBlogTheme);
+
+  const toggleTheme = () => {
+    const next: BlogTheme = theme === "dark" ? "light" : "dark";
+    setTheme(next);
+    try {
+      localStorage.setItem(blogThemeStorageKey, next);
+    } catch {
+      // 저장 실패해도 화면 토글은 유지
+    }
+  };
 
   const slug = normalizeSlug(pathname);
   const post = slug ? getBlogPost(slug) : undefined;
 
   return (
-    <div className="blog-public">
-      <BlogTopBar />
+    <div className="blog-public" data-blog-theme={theme}>
+      <BlogTopBar theme={theme} onToggleTheme={toggleTheme} />
       {slug ? post ? <BlogArticle post={post} /> : <BlogNotFound /> : <BlogIndex />}
     </div>
   );
