@@ -20,6 +20,7 @@
   --blog-accent: #b23b2e;
   --blog-accent-soft: #f6e8e4;
   --blog-serif: "Noto Serif KR", "Nanum Myeongjo", "AppleMyungjo", serif;
+  --blog-brush: "Yuji Boku", "Noto Serif KR", serif;
 
   height: 100%;
   min-height: 100vh;
@@ -134,12 +135,33 @@
 .blog-side-title {
   writing-mode: vertical-rl;
   color: var(--blog-text);
-  font-family: var(--blog-serif, inherit);
-  font-size: clamp(2.8rem, 13vh, 5.2rem);
-  font-weight: 900;
+  font-family: var(--blog-brush, var(--blog-serif, inherit));
+  font-size: clamp(3.2rem, 15vh, 6rem);
+  font-weight: 400;
   line-height: 1;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.05em;
   word-break: keep-all;
+}
+
+/* 글자마다 붓 호흡 — 기울기·위치를 미세하게 흔든다 */
+.blog-side-title span {
+  display: inline-block;
+}
+
+.blog-side-title span:nth-child(1) {
+  transform: rotate(-2.5deg) translateX(0.03em);
+}
+
+.blog-side-title span:nth-child(2) {
+  transform: rotate(1.8deg) translateX(-0.04em) scale(1.06);
+}
+
+.blog-side-title span:nth-child(3) {
+  transform: rotate(-1.2deg) translateX(0.05em) scale(0.96);
+}
+
+.blog-side-title span:nth-child(4) {
+  transform: rotate(2.4deg) translateX(-0.02em) scale(1.03);
 }
 
 .blog-side-author {
