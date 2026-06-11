@@ -69,16 +69,6 @@ function BlogThemeToggle({ theme, onToggleTheme }: BlogThemeProps) {
   );
 }
 
-function BlogCornerNav({ theme, onToggleTheme }: BlogThemeProps) {
-  return (
-    <nav className="blog-corner-nav" aria-label="블로그 내비게이션">
-      <a href="/blog">글 목록</a>
-      <a href="/">포트폴리오</a>
-      <BlogThemeToggle theme={theme} onToggleTheme={onToggleTheme} />
-    </nav>
-  );
-}
-
 function BlogPostRow({ post, compact = false }: { post: BlogPost; compact?: boolean }) {
   return (
     <a href={post.href} className={compact ? "blog-archive-row" : "blog-post-row"}>
@@ -101,10 +91,16 @@ function BlogSideRail({ theme, onToggleTheme }: BlogThemeProps) {
       </nav>
 
       <div className="blog-side-title-wrap">
-        <h1 className="blog-side-title" aria-label="견현사제(見賢思齊)" />
+        <a
+          href="/blog"
+          className="blog-side-title-link"
+          aria-label="글 목록으로 돌아가기"
+        >
+          <h1 className="blog-side-title" aria-label="견현사제(見賢思齊)" />
+        </a>
       </div>
 
-      <div>
+      <div className="blog-side-bottom">
         <BlogVinyl />
         <figure className="blog-hero-quote">
           <blockquote className="blog-hero-copy">
@@ -175,9 +171,23 @@ function BlogThreadSections() {
   );
 }
 
-function BlogGroupPage({ groupId }: { groupId: string }) {
+function BlogIndexPane() {
+  return (
+    <div className="blog-content-col">
+      <SEO
+        title="Writings | kang1027's Portfolio"
+        description="견현사제의 태도로 남기는 강동현의 프로젝트 판단, 구현 노트, 개인 기록."
+        url={`${siteUrl}/blog`}
+        keywords="kang1027, portfolio, blog, engineering notes, writing"
+      />
+      <BlogThreadSections />
+    </div>
+  );
+}
+
+function BlogGroupPane({ groupId }: { groupId: string }) {
   const group = blogGroups.find((item) => item.id === groupId);
-  if (!group) return <BlogNotFound />;
+  if (!group) return <BlogNotFoundPane />;
 
   const posts = getBlogPostsByGroup(group.id);
   const yearGroups = posts.reduce<{ year: string; posts: BlogPost[] }[]>(
@@ -194,60 +204,45 @@ function BlogGroupPage({ groupId }: { groupId: string }) {
   );
 
   return (
-    <main className="blog-main">
-      <SEO
-        title={`${group.title} | Writings`}
-        description={group.description}
-        url={`${siteUrl}/blog/group/${group.id}`}
-        keywords={`kang1027, blog, ${group.title}`}
-      />
+    <>
+      <main className="blog-main">
+        <SEO
+          title={`${group.title} | Writings`}
+          description={group.description}
+          url={`${siteUrl}/blog/group/${group.id}`}
+          keywords={`kang1027, blog, ${group.title}`}
+        />
 
-      <div className="blog-article-shell">
-        <nav className="blog-breadcrumb" aria-label="Breadcrumb">
-          <a href="/blog">Writings</a>
-          <span>/</span>
-          <span>{group.title}</span>
-        </nav>
+        <div className="blog-article-shell">
+          <nav className="blog-breadcrumb" aria-label="Breadcrumb">
+            <a href="/blog">Writings</a>
+            <span>/</span>
+            <span>{group.title}</span>
+          </nav>
 
-        <header className="blog-article-header">
-          <h1>{group.title}</h1>
-          <p>{group.description}</p>
-        </header>
+          <header className="blog-article-header">
+            <h1>{group.title}</h1>
+            <p>{group.description}</p>
+          </header>
 
-        {yearGroups.map((yearGroup) => (
-          <section key={yearGroup.year} className="blog-year-block">
-            <h2>{yearGroup.year}</h2>
-            <div className="blog-year-rows">
-              {yearGroup.posts.map((post) => (
-                <BlogPostRow key={post.slug} post={post} compact />
-              ))}
-            </div>
-          </section>
-        ))}
-      </div>
-    </main>
+          {yearGroups.map((yearGroup) => (
+            <section key={yearGroup.year} className="blog-year-block">
+              <h2>{yearGroup.year}</h2>
+              <div className="blog-year-rows">
+                {yearGroup.posts.map((post) => (
+                  <BlogPostRow key={post.slug} post={post} compact />
+                ))}
+              </div>
+            </section>
+          ))}
+        </div>
+      </main>
+      <BlogFooter />
+    </>
   );
 }
 
-function BlogIndex({ theme, onToggleTheme }: BlogThemeProps) {
-  return (
-    <main className="blog-index-shell">
-      <SEO
-        title="Writings | kang1027's Portfolio"
-        description="견현사제의 태도로 남기는 강동현의 프로젝트 판단, 구현 노트, 개인 기록."
-        url={`${siteUrl}/blog`}
-        keywords="kang1027, portfolio, blog, engineering notes, writing"
-      />
-
-      <BlogSideRail theme={theme} onToggleTheme={onToggleTheme} />
-      <div className="blog-content-col">
-        <BlogThreadSections />
-      </div>
-    </main>
-  );
-}
-
-function BlogArticle({ post }: { post: BlogPost }) {
+function BlogArticlePane({ post }: { post: BlogPost }) {
   const group = getBlogGroup(post.group);
   const relatedPosts = getBlogPostsByGroup(post.group)
     .filter((relatedPost) => relatedPost.slug !== post.slug)
@@ -258,55 +253,58 @@ function BlogArticle({ post }: { post: BlogPost }) {
   const nextPosts = relatedPosts.length > 0 ? relatedPosts : fallbackPosts;
 
   return (
-    <main className="blog-main">
-      <SEO
-        title={`${post.title} | Writings`}
-        description={post.summary}
-        url={`${siteUrl}${post.href}`}
-        keywords={post.tags.join(", ")}
-        type="article"
-        publishedTime={post.date}
-        tags={post.tags}
-      />
+    <>
+      <main className="blog-main">
+        <SEO
+          title={`${post.title} | Writings`}
+          description={post.summary}
+          url={`${siteUrl}${post.href}`}
+          keywords={post.tags.join(", ")}
+          type="article"
+          publishedTime={post.date}
+          tags={post.tags}
+        />
 
-      <article className="blog-article-shell">
-        <nav className="blog-breadcrumb" aria-label="Breadcrumb">
-          <a href="/blog">Writings</a>
-          <span>/</span>
-          <a href={`/blog/group/${group.id}`}>{group.title}</a>
-        </nav>
+        <article className="blog-article-shell">
+          <nav className="blog-breadcrumb" aria-label="Breadcrumb">
+            <a href="/blog">Writings</a>
+            <span>/</span>
+            <a href={`/blog/group/${group.id}`}>{group.title}</a>
+          </nav>
 
-        <header className="blog-article-header">
-          <h1>{post.title}</h1>
-          <p>{post.summary}</p>
-          <div className="blog-article-meta">
-            <BlogMeta post={post} />
-          </div>
-          <div className="blog-tag-list" aria-label="Tags">
-            {post.tags.map((tag) => (
-              <span key={tag}>#{tag}</span>
-            ))}
-          </div>
-        </header>
-
-        <MarkdownArticle content={post.content} className="blog-markdown" />
-
-        {nextPosts.length > 0 && (
-          <footer className="blog-related">
-            <h2>같이 읽기</h2>
-            <div>
-              {nextPosts.map((relatedPost) => (
-                <BlogPostRow key={relatedPost.slug} post={relatedPost} compact />
+          <header className="blog-article-header">
+            <h1>{post.title}</h1>
+            <p>{post.summary}</p>
+            <div className="blog-article-meta">
+              <BlogMeta post={post} />
+            </div>
+            <div className="blog-tag-list" aria-label="Tags">
+              {post.tags.map((tag) => (
+                <span key={tag}>#{tag}</span>
               ))}
             </div>
-          </footer>
-        )}
-      </article>
-    </main>
+          </header>
+
+          <MarkdownArticle content={post.content} className="blog-markdown" />
+
+          {nextPosts.length > 0 && (
+            <footer className="blog-related">
+              <h2>같이 읽기</h2>
+              <div>
+                {nextPosts.map((relatedPost) => (
+                  <BlogPostRow key={relatedPost.slug} post={relatedPost} compact />
+                ))}
+              </div>
+            </footer>
+          )}
+        </article>
+      </main>
+      <BlogFooter />
+    </>
   );
 }
 
-function BlogNotFound() {
+function BlogNotFoundPane() {
   return (
     <main className="blog-main">
       <SEO
@@ -339,14 +337,50 @@ const readStoredBlogTheme = (): BlogTheme => {
 
 export default function BlogPage({ pathname }: BlogPageProps) {
   const [theme, setTheme] = useState<BlogTheme>(readStoredBlogTheme);
+  const [path, setPath] = useState(pathname);
+
+  // 브라우저 뒤로/앞으로 가기와 동기화
+  useEffect(() => {
+    const onPopState = () => setPath(window.location.pathname);
+    window.addEventListener("popstate", onPopState);
+    return () => window.removeEventListener("popstate", onPopState);
+  }, []);
 
   // 앱 셸이 html/body 스크롤을 막고 있어 마운트 전 해시 앵커가 무시된다.
-  // 렌더 후 해시 대상을 직접 스크롤로 복원한다.
+  // 전환 시 해시 대상 복원, 없으면 컨테이너 맨 위로.
   useEffect(() => {
     const hash = decodeURIComponent(window.location.hash.slice(1));
-    if (!hash) return;
-    document.getElementById(hash)?.scrollIntoView();
-  }, [pathname]);
+    if (hash) {
+      document.getElementById(hash)?.scrollIntoView();
+      return;
+    }
+    document.querySelector(".blog-public")?.scrollTo(0, 0);
+  }, [path]);
+
+  const navigate = (href: string) => {
+    window.history.pushState({}, "", href);
+    setPath(href.split("#")[0]);
+  };
+
+  // 내부 /blog 링크는 페이지 이동 대신 같은 화면에서 슬라이드 전환
+  const handleRootClick = (event: React.MouseEvent) => {
+    if (
+      event.defaultPrevented ||
+      event.metaKey ||
+      event.ctrlKey ||
+      event.shiftKey ||
+      event.altKey ||
+      event.button !== 0
+    ) {
+      return;
+    }
+    const anchor = (event.target as HTMLElement).closest("a");
+    if (!anchor || anchor.target === "_blank") return;
+    const href = anchor.getAttribute("href");
+    if (!href || !href.startsWith("/blog")) return;
+    event.preventDefault();
+    navigate(href);
+  };
 
   const toggleTheme = () => {
     const next: BlogTheme = theme === "dark" ? "light" : "dark";
@@ -358,26 +392,31 @@ export default function BlogPage({ pathname }: BlogPageProps) {
     }
   };
 
-  const route = parseBlogRoute(pathname);
+  const route = parseBlogRoute(path);
   const post = route.view === "post" ? getBlogPost(route.slug) : undefined;
+  const isReading = route.view !== "index";
 
   return (
-    <div className="blog-public" data-blog-theme={theme}>
-      {route.view === "index" ? (
-        <BlogIndex theme={theme} onToggleTheme={toggleTheme} />
-      ) : (
-        <>
-          <BlogCornerNav theme={theme} onToggleTheme={toggleTheme} />
-          {route.view === "group" ? (
-            <BlogGroupPage groupId={route.groupId} />
+    <div
+      className="blog-public"
+      data-blog-theme={theme}
+      data-view={isReading ? "reading" : "index"}
+      onClick={handleRootClick}
+    >
+      <main className="blog-shell">
+        <BlogSideRail theme={theme} onToggleTheme={toggleTheme} />
+        <div className="blog-pane" key={path}>
+          {route.view === "index" ? (
+            <BlogIndexPane />
+          ) : route.view === "group" ? (
+            <BlogGroupPane groupId={route.groupId} />
           ) : post ? (
-            <BlogArticle post={post} />
+            <BlogArticlePane post={post} />
           ) : (
-            <BlogNotFound />
+            <BlogNotFoundPane />
           )}
-          <BlogFooter />
-        </>
-      )}
+        </div>
+      </main>
     </div>
   );
 }

@@ -51,18 +51,15 @@
   color-scheme: dark;
 }
 
-/* 세로쓰기 내비 — 좌측 레일/아티클 구석 공용 */
-.blog-side-nav,
-.blog-corner-nav {
+/* 세로쓰기 내비 — 좌측 레일 */
+.blog-side-nav {
   display: flex;
   align-items: flex-start;
   gap: clamp(0.9rem, 1.6vw, 1.4rem);
 }
 
 .blog-side-nav a,
-.blog-side-nav button,
-.blog-corner-nav a,
-.blog-corner-nav button {
+.blog-side-nav button {
   writing-mode: vertical-rl;
   min-inline-size: 2.75rem;
   border: 0;
@@ -76,30 +73,15 @@
   cursor: pointer;
 }
 
-.blog-side-nav a:hover,
-.blog-side-nav button:hover,
-.blog-corner-nav a:hover,
-.blog-corner-nav button:hover {
-  color: var(--blog-accent);
-}
-
 /* 먹색 패널 안에서는 네온사인처럼 번진다 */
-.blog-side .blog-side-nav a:hover,
-.blog-side .blog-side-nav button:hover {
+.blog-side-nav a:hover,
+.blog-side-nav button:hover {
+  color: var(--blog-accent);
   text-shadow: 0 0 14px rgb(255 83 71 / 60%);
-}
-
-.blog-corner-nav {
-  position: fixed;
-  top: clamp(1.25rem, 4vh, 2.5rem);
-  left: clamp(1rem, 2vw, 2.25rem);
-  z-index: 40;
 }
 
 .blog-side-nav a:focus-visible,
 .blog-side-nav button:focus-visible,
-.blog-corner-nav a:focus-visible,
-.blog-corner-nav button:focus-visible,
 .blog-post-row:focus-visible,
 .blog-archive-row:focus-visible,
 .blog-return-link:focus-visible {
@@ -113,12 +95,46 @@
   padding: clamp(2.5rem, 5vw, 5rem) clamp(1.25rem, 4vw, 3.5rem) 6rem;
 }
 
-/* 인덱스 — 좌측 먹색 패널(견현사제) + 우측 종이(글 목록), 풀블리드 투톤 분할 */
-.blog-index-shell {
+/* 좌측 먹색 패널(견현사제) + 우측 종이 — 글 열면 레일이 좁은 스트립으로 슬라이드 */
+.blog-shell {
   width: 100%;
   display: grid;
   grid-template-columns: minmax(20rem, 42%) minmax(0, 1fr);
   align-items: start;
+  transition: grid-template-columns 520ms cubic-bezier(0.45, 0, 0.2, 1);
+}
+
+.blog-public[data-view="reading"] .blog-shell {
+  grid-template-columns: clamp(6rem, 9vw, 8.5rem) minmax(0, 1fr);
+}
+
+.blog-pane {
+  min-width: 0;
+}
+
+.blog-pane > * {
+  animation: blog-pane-in 440ms cubic-bezier(0.3, 0, 0.2, 1) both;
+}
+
+@keyframes blog-pane-in {
+  from {
+    opacity: 0;
+    transform: translateX(32px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .blog-shell {
+    transition: none;
+  }
+
+  .blog-pane > * {
+    animation: none;
+  }
 }
 
 .blog-side {
@@ -158,6 +174,33 @@
 
 .blog-side > * {
   position: relative;
+}
+
+/* 리딩 모드 — 레일이 좁은 스트립으로 줄고 붓글씨만 남는다 */
+.blog-public[data-view="reading"] .blog-side {
+  padding-inline: clamp(0.8rem, 1.5vw, 1.4rem);
+}
+
+.blog-public[data-view="reading"] .blog-side-nav,
+.blog-public[data-view="reading"] .blog-side-bottom {
+  display: none;
+}
+
+.blog-side-title-link {
+  display: block;
+}
+
+.blog-side-title-link:focus-visible {
+  outline: 2px solid var(--blog-accent);
+  outline-offset: 6px;
+}
+
+.blog-side-title {
+  transition: height 520ms cubic-bezier(0.45, 0, 0.2, 1);
+}
+
+.blog-public[data-view="reading"] .blog-side-title {
+  height: clamp(12rem, 36vh, 17rem);
 }
 
 /* LP 턴테이블 — 지금 듣는 곡 */
@@ -749,7 +792,7 @@ a.blog-vinyl-title:focus-visible {
 }
 
 @media (max-width: 1020px) {
-  .blog-index-shell {
+  .blog-shell {
     grid-template-columns: 1fr;
   }
 
@@ -759,10 +802,25 @@ a.blog-vinyl-title:focus-visible {
     gap: 2rem;
   }
 
+  /* 모바일 리딩 모드 — 레일은 얇은 붓글씨 배너로 */
+  .blog-public[data-view="reading"] .blog-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .blog-public[data-view="reading"] .blog-side {
+    padding: 1rem clamp(1.25rem, 4vw, 3.5rem);
+  }
+
+  .blog-public[data-view="reading"] .blog-side-title {
+    height: 6.5rem;
+  }
+
+  .blog-public[data-view="reading"] .blog-side-title-wrap {
+    justify-content: flex-start;
+  }
+
   .blog-side-nav a,
-  .blog-side-nav button,
-  .blog-corner-nav a,
-  .blog-corner-nav button {
+  .blog-side-nav button {
     writing-mode: horizontal-tb;
     display: inline-flex;
     align-items: center;
@@ -780,11 +838,6 @@ a.blog-vinyl-title:focus-visible {
     justify-content: flex-start;
     padding-top: clamp(2.5rem, 6vw, 3.5rem);
     padding-bottom: 5rem;
-  }
-
-  .blog-corner-nav {
-    position: static;
-    padding: 1rem clamp(1.25rem, 4vw, 3.5rem) 0;
   }
 }
 
