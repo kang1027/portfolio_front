@@ -113,6 +113,12 @@
   animation: blog-pane-in 440ms cubic-bezier(0.3, 0, 0.2, 1) both;
 }
 
+/* 레일 폭이 움직이는 전환에서는 패널 콘텐츠가 반 박자 늦게 들어온다 */
+.blog-public[data-shifting="true"] .blog-pane > * {
+  animation-delay: 200ms;
+  animation-duration: 460ms;
+}
+
 @keyframes blog-pane-in {
   from {
     opacity: 0;
@@ -191,6 +197,18 @@
   width: clamp(6rem, 9vw, 8.5rem);
   min-width: 0;
   padding-inline: clamp(0.8rem, 1.5vw, 1.4rem);
+}
+
+/* 레일 폭 전환 안무 — 붓글씨만 모핑하고, 텍스트류는 숨겼다가 자리 잡으면 페이드인 */
+.blog-side-nav,
+.blog-side-bottom {
+  transition: opacity 150ms ease;
+}
+
+.blog-public[data-shifting="true"] .blog-side-nav,
+.blog-public[data-shifting="true"] .blog-side-bottom {
+  opacity: 0;
+  pointer-events: none;
 }
 
 /* 글 목록 링크는 리딩 모드에서만 — 인덱스에선 의미 없음 */
