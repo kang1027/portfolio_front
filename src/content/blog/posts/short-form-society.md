@@ -3,7 +3,7 @@ title: "숏폼 사회에서 견현사제를 지키는 법"
 summary: "좋은 사람을 보고 따라가려면, 먼저 오래 볼 수 있는 환경이 필요하다."
 date: "2026-06-08"
 category: "essay"
-group: "personal"
+group: "field-notes"
 tags: ["life", "focus", "writing"]
 icon: "i-fa-solid:seedling"
 project: "Personal Note"

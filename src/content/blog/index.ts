@@ -28,27 +28,29 @@ export const blogCategories = [
 
 export const blogGroups = [
   {
-    id: "portfolio",
-    title: "Portfolio",
-    description: "이 포트폴리오 자체를 고치며 남긴 구조, UX, 표현 방식의 판단",
-    href: "/"
+    id: "principles",
+    title: "원리와 구조",
+    description: "기능 이름보다 먼저 문제의 원리, 데이터 흐름, 구조를 보는 글."
   },
   {
-    id: "omninews",
-    title: "OmniNews",
-    description: "뉴스와 RSS를 검색 가능한 개인 지식 흐름으로 보는 실험",
-    href: "https://github.com/Omni-News"
+    id: "implementation",
+    title: "구현과 디버깅",
+    description: "직접 만들며 마주친 구현 디테일, 버그, 성능 문제를 남긴 기록."
   },
   {
-    id: "classicmap",
-    title: "ClassicMap",
-    description: "클래식 음악 감상 경험을 데이터와 매칭 문제로 풀어본 기록",
-    href: "https://github.com/ClassicMap"
+    id: "interface",
+    title: "인터페이스와 사용감",
+    description: "화면, 글, 도구가 사용자의 맥락과 감각을 바꾸는 방식."
   },
   {
-    id: "personal",
-    title: "Personal Note",
-    description: "일과 생활을 오래 보기 위해 남기는 짧은 기준들"
+    id: "product-judgement",
+    title: "제품 판단",
+    description: "기능을 넣고 빼는 기준, 방향, 우선순위를 정리한 글."
+  },
+  {
+    id: "field-notes",
+    title: "견문과 기록",
+    description: "보고 들은 것, 모임, 일상에서 개발 기준으로 이어진 기록."
   }
 ] as const satisfies readonly BlogGroup[];
 
