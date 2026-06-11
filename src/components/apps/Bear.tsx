@@ -97,7 +97,7 @@ const postingSidebarItem = {
 
 const sidebarItems = [...bear, postingSidebarItem];
 const postingSidebarIndex = sidebarItems.length - 1;
-const defaultBlogGroupId: BlogGroupId = "portfolio";
+const defaultBlogGroupId: BlogGroupId = "principles";
 
 const Sidebar = ({ cur, setMidBar }: SidebarProps) => {
   return (
@@ -145,7 +145,7 @@ const BlogMiddlebar = ({
         </p>
         <h2 className="mt-1 text-lg font-bold text-c-900">Posting</h2>
         <p className="mt-1 text-xs leading-relaxed text-c-600">
-          프로젝트 흐름별 작업 판단 기록
+          갈래별로 이어지는 작업 판단 기록
         </p>
       </div>
       <div className="py-2">

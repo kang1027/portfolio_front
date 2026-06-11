@@ -1,5 +1,10 @@
 export type BlogCategoryId = "work" | "engineering" | "essay";
-export type BlogGroupId = "portfolio" | "omninews" | "classicmap" | "personal";
+export type BlogGroupId =
+  | "principles"
+  | "implementation"
+  | "interface"
+  | "product-judgement"
+  | "field-notes";
 
 export interface BlogCategory {
   id: BlogCategoryId;

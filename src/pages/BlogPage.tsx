@@ -54,8 +54,8 @@ function BlogTopBar() {
         Kang Donghyun
       </a>
       <nav className="blog-site-nav" aria-label="Blog navigation">
-        <a href="/blog#threads">Threads</a>
-        <a href="/blog#archive">Archive</a>
+        <a href="/blog#threads">갈래</a>
+        <a href="/blog#archive">날짜</a>
         <BlogThemeToggle />
       </nav>
     </header>
@@ -64,6 +64,7 @@ function BlogTopBar() {
 
 function BlogPostRow({ post, compact = false }: { post: BlogPost; compact?: boolean }) {
   const group = getBlogGroup(post.group);
+  const contextLabel = post.project ?? group.title;
 
   return (
     <a href={post.href} className={compact ? "blog-archive-row" : "blog-post-row"}>
@@ -74,7 +75,7 @@ function BlogPostRow({ post, compact = false }: { post: BlogPost; compact?: bool
         <span className="blog-post-title">{post.title}</span>
         {!compact && <span className="blog-post-summary">{post.summary}</span>}
       </span>
-      {!compact && <span className="blog-post-group">{group.title}</span>}
+      {!compact && <span className="blog-post-group">{contextLabel}</span>}
     </a>
   );
 }
@@ -109,7 +110,41 @@ function BlogGroupBlock({ group }: { group: BlogGroup }) {
   );
 }
 
+function BlogThreadNav() {
+  return (
+    <aside className="blog-thread-nav" aria-label="Writing threads">
+      <p>갈래</p>
+      {blogGroups.map((group) => {
+        const count = getBlogPostsByGroup(group.id).length;
+        if (count === 0) {
+          return (
+            <span key={group.id} className="blog-thread-nav-empty" aria-disabled="true">
+              <span>{group.title}</span>
+              <small>{count}</small>
+            </span>
+          );
+        }
+
+        return (
+          <a key={group.id} href={`#thread-${group.id}`}>
+            <span>{group.title}</span>
+            <small>{count}</small>
+          </a>
+        );
+      })}
+      <a href="#archive">
+        <span>Archive</span>
+        <small>{blogPosts.length}</small>
+      </a>
+    </aside>
+  );
+}
+
 function BlogIndex() {
+  const groupsWithPosts = blogGroups.filter(
+    (group) => getBlogPostsByGroup(group.id).length > 0
+  );
+
   return (
     <main className="blog-main">
       <SEO
@@ -119,41 +154,27 @@ function BlogIndex() {
         keywords="kang1027, portfolio, blog, engineering notes, writing"
       />
 
-      <section className="blog-hero">
-        <p className="blog-kicker">견현사제</p>
-        <h1>見賢思齊</h1>
-        <p className="blog-hero-copy">
-          "어진 사람을 보면 어떻게 그와 같아질까를 생각하며, 어질지 못한 사람을 보면
-          속으로 스스로 반성해야 한다."
-        </p>
-      </section>
+      <div className="blog-intro-layout">
+        <BlogThreadNav />
+        <section className="blog-hero">
+          <p className="blog-kicker">견현사제</p>
+          <h1>見賢思齊</h1>
+          <p className="blog-hero-copy">
+            "어진 사람을 보면 어떻게 그와 같아질까를 생각하며, 어질지 못한 사람을 보면
+            속으로 스스로 반성해야 한다."
+          </p>
+        </section>
+      </div>
 
       <div className="blog-home-layout">
-        <aside className="blog-thread-nav" aria-label="Writing threads">
-          <p>Threads</p>
-          {blogGroups.map((group) => {
-            const count = getBlogPostsByGroup(group.id).length;
-            return (
-              <a key={group.id} href={`#thread-${group.id}`}>
-                <span>{group.title}</span>
-                <small>{count}</small>
-              </a>
-            );
-          })}
-          <a href="#archive">
-            <span>Archive</span>
-            <small>{blogPosts.length}</small>
-          </a>
-        </aside>
-
         <div className="blog-flow">
           <section id="threads" className="blog-section">
             <header className="blog-section-header">
-              <p>Project Threads</p>
-              <h2>프로젝트별로 이어서 읽기</h2>
+              <p>Threads</p>
+              <h2>갈래별로 이어서 읽기</h2>
             </header>
             <div className="blog-thread-list">
-              {blogGroups.map((group) => (
+              {groupsWithPosts.map((group) => (
                 <BlogGroupBlock key={group.id} group={group} />
               ))}
             </div>
