@@ -107,18 +107,22 @@
   padding: clamp(2.5rem, 5vw, 5rem) clamp(1.25rem, 4vw, 3.5rem) 6rem;
 }
 
-/* 인덱스 — 좌측 고정 견현사제 레일 + 우측 글 흐름, 전체를 화면 중앙에 */
+/* 인덱스 — 좌측 먹색 패널(견현사제) + 우측 종이(글 목록), 풀블리드 투톤 분할 */
 .blog-index-shell {
-  width: min(100%, 74rem);
-  margin: 0 auto;
-  padding: 0 clamp(1.25rem, 3vw, 3rem);
+  width: 100%;
   display: grid;
-  grid-template-columns: minmax(16rem, 0.45fr) minmax(0, 0.55fr);
-  gap: clamp(2.5rem, 6vw, 6rem);
+  grid-template-columns: minmax(20rem, 42%) minmax(0, 1fr);
   align-items: start;
 }
 
 .blog-side {
+  /* 먹색 패널 — 내부 텍스트는 변수 재정의로 반전 */
+  --blog-text: #f4f4f4;
+  --blog-body: #d6d6d6;
+  --blog-muted: #ababab;
+  --blog-faint: #878787;
+  --blog-accent: #e0685b;
+
   position: sticky;
   top: 0;
   height: 100dvh;
@@ -126,7 +130,14 @@
   flex-direction: column;
   justify-content: space-between;
   gap: 1.5rem;
-  padding: clamp(1.5rem, 4vh, 3rem) 0 clamp(1.5rem, 4vh, 2.5rem);
+  background: #141414;
+  padding: clamp(1.5rem, 4vh, 3rem) clamp(2rem, 5vw, 4.5rem)
+    clamp(1.5rem, 4vh, 2.5rem);
+}
+
+.blog-public[data-blog-theme="dark"] .blog-side {
+  background: #0a0a0a;
+  border-right: 1px solid #262626;
 }
 
 .blog-side-title-wrap {
@@ -182,7 +193,11 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: clamp(2.5rem, 6vh, 4rem) 0;
+  padding: clamp(2.5rem, 6vh, 4rem) clamp(2rem, 6vw, 6.5rem);
+}
+
+.blog-content-col > section {
+  width: min(100%, 44rem);
 }
 
 .blog-hero-quote {
@@ -610,14 +625,12 @@
 @media (max-width: 1020px) {
   .blog-index-shell {
     grid-template-columns: 1fr;
-    gap: 0;
   }
 
   .blog-side {
     position: static;
     height: auto;
     gap: 2rem;
-    padding-bottom: 0;
   }
 
   .blog-side-nav a,
@@ -662,9 +675,10 @@
 }
 
 @media (max-width: 520px) {
-  .blog-index-shell,
+  .blog-side,
+  .blog-content-col,
   .blog-main {
-    padding-inline: 1rem;
+    padding-inline: 1.1rem;
   }
 
   .blog-side-title {
