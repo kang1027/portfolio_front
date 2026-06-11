@@ -7,18 +7,18 @@
 }
 
 .blog-public {
-  /* 문집(文集) 팔레트 — 한지 위 먹과 인주 */
-  --blog-bg: #f5f2ea;
-  --blog-surface: #fdfbf5;
-  --blog-surface-soft: #ede9de;
-  --blog-line: #ddd6c8;
-  --blog-line-strong: #c2b9a6;
-  --blog-text: #1f1c16;
-  --blog-body: #3a362d;
-  --blog-muted: #6b6557;
-  --blog-faint: #8d8675;
-  --blog-accent: #b23b2e;
-  --blog-accent-soft: #f6e8e4;
+  /* 문집(文集) 팔레트 — 흰 종이 위 먹과 인주, 무채색 기조 */
+  --blog-bg: #ffffff;
+  --blog-surface: #fafafa;
+  --blog-surface-soft: #f2f2f2;
+  --blog-line: #e4e4e4;
+  --blog-line-strong: #c9c9c9;
+  --blog-text: #161616;
+  --blog-body: #303030;
+  --blog-muted: #5f5f5f;
+  --blog-faint: #8c8c8c;
+  --blog-accent: #b3372a;
+  --blog-accent-soft: #f9eae7;
   --blog-serif: "Noto Serif KR", "Nanum Myeongjo", "AppleMyungjo", serif;
   --blog-sans:
     "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont,
@@ -36,17 +36,17 @@
 }
 
 .blog-public[data-blog-theme="dark"] {
-  --blog-bg: #161412;
-  --blog-surface: #1e1b18;
-  --blog-surface-soft: #262221;
-  --blog-line: #322d29;
-  --blog-line-strong: #4a443d;
-  --blog-text: #f0ece3;
-  --blog-body: #cfc9bc;
-  --blog-muted: #a39c8c;
-  --blog-faint: #7c7567;
-  --blog-accent: #d96c5a;
-  --blog-accent-soft: #33211d;
+  --blog-bg: #121212;
+  --blog-surface: #1a1a1a;
+  --blog-surface-soft: #222222;
+  --blog-line: #2c2c2c;
+  --blog-line-strong: #444444;
+  --blog-text: #f2f2f2;
+  --blog-body: #cfcfcf;
+  --blog-muted: #9e9e9e;
+  --blog-faint: #747474;
+  --blog-accent: #db6155;
+  --blog-accent-soft: #2e1b18;
 
   color-scheme: dark;
 }
