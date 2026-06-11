@@ -124,10 +124,10 @@
 }
 
 .blog-side-title-wrap {
+  flex: 1;
   display: flex;
-  justify-content: flex-end;
-  align-items: flex-end;
-  gap: clamp(0.9rem, 2vw, 1.6rem);
+  justify-content: center;
+  align-items: center;
   min-height: 0;
 }
 
@@ -177,29 +177,6 @@
 
 .blog-content-col > .blog-section:first-child {
   margin-top: 0;
-}
-
-/* 낙관(落款) — 인주 도장 */
-.blog-seal {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  flex-shrink: 0;
-  width: clamp(3.6rem, 8vw, 4.6rem);
-  height: clamp(3.6rem, 8vw, 4.6rem);
-  margin-top: 0.5rem;
-  padding: 0.3rem;
-  align-items: center;
-  justify-items: center;
-  background: var(--blog-accent);
-  border-radius: 0.5rem;
-  transform: rotate(-4deg);
-  color: #f8f3e9;
-  font-family: var(--blog-serif, inherit);
-  font-size: clamp(1.1rem, 2.4vw, 1.45rem);
-  font-weight: 700;
-  line-height: 1;
-  box-shadow: 0 2px 10px rgb(0 0 0 / 12%);
-  user-select: none;
 }
 
 .blog-hero-quote {
@@ -662,12 +639,6 @@
     min-inline-size: auto;
     min-height: 2.75rem;
     letter-spacing: 0.1em;
-  }
-
-  .blog-side-title-wrap {
-    flex-direction: row-reverse;
-    justify-content: space-between;
-    align-items: flex-start;
   }
 
   .blog-side-title {
