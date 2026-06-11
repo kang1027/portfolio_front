@@ -387,11 +387,24 @@ export default function BlogPage({ pathname }: BlogPageProps) {
   const post = route.view === "post" ? getBlogPost(route.slug) : undefined;
   const isReading = route.view !== "index";
 
+  // 레일 폭이 움직이는 동안 텍스트류가 매 프레임 재배치되며 지저분해지므로,
+  // 전환 중에는 잠시 숨겼다가 폭이 자리 잡은 뒤 페이드인한다.
+  const [shifting, setShifting] = useState(false);
+  const prevReadingRef = useRef(isReading);
+  useEffect(() => {
+    if (prevReadingRef.current === isReading) return;
+    prevReadingRef.current = isReading;
+    setShifting(true);
+    const timer = setTimeout(() => setShifting(false), 580);
+    return () => clearTimeout(timer);
+  }, [isReading]);
+
   return (
     <div
       className="blog-public"
       data-blog-theme={theme}
       data-view={isReading ? "reading" : "index"}
+      data-shifting={shifting ? "true" : "false"}
       onClick={handleRootClick}
     >
       <main className="blog-shell">
