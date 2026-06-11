@@ -187,9 +187,21 @@
   padding-inline: clamp(0.8rem, 1.5vw, 1.4rem);
 }
 
-.blog-public[data-view="reading"] .blog-side-nav,
 .blog-public[data-view="reading"] .blog-side-bottom {
   display: none;
+}
+
+/* 글 목록 링크는 리딩 모드에서만 — 인덱스에선 의미 없음 */
+.blog-nav-back {
+  display: none;
+}
+
+.blog-public[data-view="reading"] .blog-nav-back {
+  display: inline-flex;
+}
+
+.blog-public[data-view="reading"] .blog-side-nav {
+  gap: 0.85rem;
 }
 
 .blog-side-title-link {
@@ -571,15 +583,6 @@ a.blog-vinyl-title:focus-visible {
 
 .blog-article-meta > div {
   color: var(--blog-muted);
-}
-
-.blog-tag-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-  margin-top: 1rem;
-  color: var(--blog-faint);
-  font-size: 0.86rem;
 }
 
 .blog-markdown {
