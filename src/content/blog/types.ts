@@ -1,9 +1,4 @@
-export type BlogGroupId =
-  | "principles"
-  | "implementation"
-  | "interface"
-  | "product-judgement"
-  | "field-notes";
+export type BlogGroupId = "dev" | "essay" | "review" | "meetup" | "memoir";
 
 export interface BlogGroup {
   id: BlogGroupId;

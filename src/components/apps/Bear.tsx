@@ -96,7 +96,7 @@ const postingSidebarItem = {
 
 const sidebarItems = [...bear, postingSidebarItem];
 const postingSidebarIndex = sidebarItems.length - 1;
-const defaultBlogGroupId: BlogGroupId = "principles";
+const defaultBlogGroupId: BlogGroupId = "dev";
 
 const Sidebar = ({ cur, setMidBar }: SidebarProps) => {
   return (

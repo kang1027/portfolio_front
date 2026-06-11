@@ -2,7 +2,7 @@
 title: "ClassicMap의 연주 비교는 왜 DTW가 필요했나"
 summary: "같은 곡이라도 연주마다 템포가 다르다. 그래서 단순 timestamp 비교로는 부족했다."
 date: "2026-06-09"
-group: "principles"
+group: "dev"
 tags: ["classicmap", "dtw", "audio", "matching"]
 icon: "i-fa-solid:music"
 project: "ClassicMap"
