@@ -121,8 +121,9 @@ function BlogIndex() {
 
       <section className="blog-hero">
         <p className="blog-kicker">Kang's Writings</p>
-        <h1>견현사제(見賢思齊)</h1>
-        <p>
+        <h1>見賢思齊</h1>
+        <p className="blog-hero-reading">견현사제</p>
+        <p className="blog-hero-copy">
           좋은 사람을 보면 그 사람처럼 되기를 생각한다는 뜻처럼, 잘 만든 것 앞에서 기준을
           낮추지 않으려 한다. 프로젝트를 만들며 본 좋은 판단, 따라가고 싶은 기준, 아직 못
           닿은 부분을 기록한다.
