@@ -258,6 +258,50 @@
   gap: 0.7rem;
 }
 
+.blog-thread-more {
+  margin-top: 0.9rem;
+}
+
+.blog-thread-more a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.25rem;
+  color: var(--blog-faint);
+  font-size: 0.85rem;
+  text-decoration: none;
+}
+
+.blog-thread-more a:hover {
+  color: var(--blog-accent);
+}
+
+.blog-thread-more a:focus-visible {
+  outline: 2px solid var(--blog-accent);
+  outline-offset: 4px;
+}
+
+/* 갈래 페이지 — 연도별 묶음 */
+.blog-year-block {
+  display: grid;
+  grid-template-columns: minmax(4.5rem, 6rem) minmax(0, 1fr);
+  gap: clamp(1.25rem, 3vw, 2.5rem);
+  margin-top: clamp(2.2rem, 5vh, 3.2rem);
+}
+
+.blog-year-block h2 {
+  color: var(--blog-text);
+  font-family: var(--blog-serif, inherit);
+  font-size: 1.3rem;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.blog-year-rows {
+  min-width: 0;
+  display: grid;
+  gap: 0.35rem;
+}
+
 .blog-post-row,
 .blog-archive-row {
   display: grid;
@@ -606,6 +650,11 @@
 }
 
 @media (max-width: 860px) {
+  .blog-year-block {
+    grid-template-columns: 1fr;
+    gap: 0.9rem;
+  }
+
   .blog-archive-row {
     grid-template-columns: 4.7rem minmax(0, 1fr);
     gap: 0.9rem;

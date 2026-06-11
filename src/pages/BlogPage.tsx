@@ -27,12 +27,26 @@ const fullDateFormatter = new Intl.DateTimeFormat("ko-KR", {
   day: "numeric"
 });
 
-const normalizeSlug = (pathname: string): string | null => {
+type BlogRoute =
+  | { view: "index" }
+  | { view: "group"; groupId: string }
+  | { view: "post"; slug: string };
+
+const parseBlogRoute = (pathname: string): BlogRoute => {
   const cleaned = pathname.replace(/\/+$/, "");
-  if (cleaned === "/blog") return null;
-  const match = cleaned.match(/^\/blog\/([^/]+)$/);
-  return match?.[1] ?? null;
+  if (cleaned === "/blog") return { view: "index" };
+
+  const groupMatch = cleaned.match(/^\/blog\/group\/([^/]+)$/);
+  if (groupMatch) return { view: "group", groupId: groupMatch[1] };
+
+  const postMatch = cleaned.match(/^\/blog\/([^/]+)$/);
+  if (postMatch) return { view: "post", slug: postMatch[1] };
+
+  return { view: "index" };
 };
+
+// 인덱스에서 갈래당 보여줄 최근 글 수 — 넘치면 갈래 페이지로 안내
+const indexThreadLimit = 6;
 
 type BlogTheme = "light" | "dark";
 
@@ -136,18 +150,80 @@ function BlogThreadSections() {
         const posts = getBlogPostsByGroup(group.id);
         if (posts.length === 0) return null;
 
+        const visiblePosts = posts.slice(0, indexThreadLimit);
+        const hasMore = posts.length > indexThreadLimit;
+
         return (
           <section key={group.id} id={`thread-${group.id}`} className="blog-thread-block">
             <h2>{group.title}</h2>
             <div className="blog-thread-posts">
-              {posts.map((post) => (
+              {visiblePosts.map((post) => (
                 <BlogPostRow key={post.slug} post={post} />
               ))}
             </div>
+            {hasMore && (
+              <p className="blog-thread-more">
+                <a href={`/blog/group/${group.id}`}>전체 {posts.length}편 보기 →</a>
+              </p>
+            )}
           </section>
         );
       })}
     </section>
+  );
+}
+
+function BlogGroupPage({ groupId }: { groupId: string }) {
+  const group = blogGroups.find((item) => item.id === groupId);
+  if (!group) return <BlogNotFound />;
+
+  const posts = getBlogPostsByGroup(group.id);
+  const yearGroups = posts.reduce<{ year: string; posts: BlogPost[] }[]>(
+    (groups, post) => {
+      const existing = groups.find((item) => item.year === post.year);
+      if (existing) {
+        existing.posts.push(post);
+        return groups;
+      }
+      groups.push({ year: post.year, posts: [post] });
+      return groups;
+    },
+    []
+  );
+
+  return (
+    <main className="blog-main">
+      <SEO
+        title={`${group.title} | Writings`}
+        description={group.description}
+        url={`${siteUrl}/blog/group/${group.id}`}
+        keywords={`kang1027, blog, ${group.title}`}
+      />
+
+      <div className="blog-article-shell">
+        <nav className="blog-breadcrumb" aria-label="Breadcrumb">
+          <a href="/blog">Writings</a>
+          <span>/</span>
+          <span>{group.title}</span>
+        </nav>
+
+        <header className="blog-article-header">
+          <h1>{group.title}</h1>
+          <p>{group.description}</p>
+        </header>
+
+        {yearGroups.map((yearGroup) => (
+          <section key={yearGroup.year} className="blog-year-block">
+            <h2>{yearGroup.year}</h2>
+            <div className="blog-year-rows">
+              {yearGroup.posts.map((post) => (
+                <BlogPostRow key={post.slug} post={post} compact />
+              ))}
+            </div>
+          </section>
+        ))}
+      </div>
+    </main>
   );
 }
 
@@ -195,7 +271,7 @@ function BlogArticle({ post }: { post: BlogPost }) {
         <nav className="blog-breadcrumb" aria-label="Breadcrumb">
           <a href="/blog">Writings</a>
           <span>/</span>
-          <a href={`/blog#thread-${group.id}`}>{group.title}</a>
+          <a href={`/blog/group/${group.id}`}>{group.title}</a>
         </nav>
 
         <header className="blog-article-header">
@@ -280,19 +356,25 @@ export default function BlogPage({ pathname }: BlogPageProps) {
     }
   };
 
-  const slug = normalizeSlug(pathname);
-  const post = slug ? getBlogPost(slug) : undefined;
+  const route = parseBlogRoute(pathname);
+  const post = route.view === "post" ? getBlogPost(route.slug) : undefined;
 
   return (
     <div className="blog-public" data-blog-theme={theme}>
-      {slug ? (
+      {route.view === "index" ? (
+        <BlogIndex theme={theme} onToggleTheme={toggleTheme} />
+      ) : (
         <>
           <BlogCornerNav theme={theme} onToggleTheme={toggleTheme} />
-          {post ? <BlogArticle post={post} /> : <BlogNotFound />}
+          {route.view === "group" ? (
+            <BlogGroupPage groupId={route.groupId} />
+          ) : post ? (
+            <BlogArticle post={post} />
+          ) : (
+            <BlogNotFound />
+          )}
           <BlogFooter />
         </>
-      ) : (
-        <BlogIndex theme={theme} onToggleTheme={toggleTheme} />
       )}
     </div>
   );
