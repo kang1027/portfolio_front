@@ -100,22 +100,25 @@ const defaultBlogGroupId: BlogGroupId = "principles";
 
 const Sidebar = ({ cur, setMidBar }: SidebarProps) => {
   return (
-    <div text-white>
+    <div className="text-white">
       <div className="h-12 pr-3 hstack space-x-3 justify-end">
-        <span className="i-ic:baseline-cloud-off text-xl" />
-        <span className="i-akar-icons:settings-vertical text-xl" />
+        <span className="i-ic:baseline-cloud-off text-xl" aria-hidden="true" />
+        <span className="i-akar-icons:settings-vertical text-xl" aria-hidden="true" />
       </div>
       <ul>
         {sidebarItems.map((item, index) => (
-          <li
-            key={`bear-sidebar-${item.id}`}
-            className={`pl-6 h-8 hstack cursor-default ${
-              cur === index ? "bg-red-500" : "bg-transparent"
-            } ${cur === index ? "" : "hover:bg-gray-600"}`}
-            onClick={() => setMidBar(index)}
-          >
-            <span className={item.icon} />
-            <span className="ml-2">{item.title}</span>
+          <li key={`bear-sidebar-${item.id}`}>
+            <button
+              type="button"
+              aria-pressed={cur === index}
+              className={`w-full pl-6 h-8 hstack text-left cursor-default focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-red-500 ${
+                cur === index ? "bg-red-500" : "bg-transparent hover:bg-gray-600"
+              }`}
+              onClick={() => setMidBar(index)}
+            >
+              <span className={item.icon} aria-hidden="true" />
+              <span className="ml-2">{item.title}</span>
+            </button>
           </li>
         ))}
       </ul>
@@ -262,37 +265,49 @@ const Middlebar = ({ items, cur, setContent }: MiddlebarProps) => {
   return (
     <ul>
       {items.map((item: BearMdData, index: number) => (
-        <li
-          key={`bear-midbar-${item.id}`}
-          className={`h-24 flex flex-col cursor-default border-l-2 ${
-            cur === index
-              ? "border-red-500 bg-white dark:bg-gray-900"
-              : "border-transparent bg-transparent"
-          } hover:(bg-white dark:bg-gray-900)`}
-          onClick={() => setContent(item.id, item.file, index)}
-        >
-          <div className="h-8 mt-3 hstack">
-            <div className="-mt-1 w-10 vstack text-c-500">
-              <span className={item.icon} />
+        <li key={`bear-midbar-${item.id}`}>
+          <button
+            type="button"
+            aria-pressed={cur === index}
+            className={`w-full h-24 flex flex-col text-left cursor-default border-l-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-red-500 ${
+              cur === index
+                ? "border-red-500 bg-white dark:bg-gray-900"
+                : "border-transparent bg-transparent"
+            } hover:(bg-white dark:bg-gray-900)`}
+            onClick={() => setContent(item.id, item.file, index)}
+          >
+            <div className="h-8 mt-3 hstack self-stretch">
+              <div className="-mt-1 w-10 vstack text-c-500">
+                <span className={item.icon} aria-hidden="true" />
+              </div>
+              <span className="relative flex-1 font-bold" text="gray-900 dark:gray-100">
+                {item.title}
+                {item.link && (
+                  <a
+                    pos="absolute top-1 right-4"
+                    href={item.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`${item.title} 외부 링크 열기`}
+                    onClick={stopOpeningArticle}
+                  >
+                    <span
+                      className="i-ant-design:link-outlined text-c-500"
+                      aria-hidden="true"
+                    />
+                  </a>
+                )}
+              </span>
             </div>
-            <span className="relative flex-1 font-bold" text="gray-900 dark:gray-100">
-              {item.title}
-              {item.link && (
-                <a
-                  pos="absolute top-1 right-4"
-                  href={item.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={stopOpeningArticle}
-                >
-                  <span className="i-ant-design:link-outlined text-c-500" />
-                </a>
-              )}
-            </span>
-          </div>
-          <div className="flex-1 ml-10" p="b-2 r-1" text="sm c-500" border="b c-300">
-            {item.excerpt}
-          </div>
+            <div
+              className="flex-1 ml-10 self-stretch"
+              p="b-2 r-1"
+              text="sm c-500"
+              border="b c-300"
+            >
+              {item.excerpt}
+            </div>
+          </button>
         </li>
       ))}
     </ul>
