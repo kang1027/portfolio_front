@@ -388,16 +388,19 @@ export default function BlogPage({ pathname }: BlogPageProps) {
   const isReading = route.view !== "index";
 
   // 레일 폭이 움직이는 동안 텍스트류가 매 프레임 재배치되며 지저분해지므로,
-  // 전환 중에는 잠시 숨겼다가 폭이 자리 잡은 뒤 페이드인한다.
+  // 전환 중에는 즉시 숨겼다가 폭이 자리 잡은 뒤 페이드인한다.
+  // 렌더 단계에서 플래그를 세워 첫 프레임부터 숨김이 적용되게 한다.
   const [shifting, setShifting] = useState(false);
-  const prevReadingRef = useRef(isReading);
-  useEffect(() => {
-    if (prevReadingRef.current === isReading) return;
-    prevReadingRef.current = isReading;
+  const [prevReading, setPrevReading] = useState(isReading);
+  if (prevReading !== isReading) {
+    setPrevReading(isReading);
     setShifting(true);
-    const timer = setTimeout(() => setShifting(false), 580);
+  }
+  useEffect(() => {
+    if (!shifting) return;
+    const timer = setTimeout(() => setShifting(false), 560);
     return () => clearTimeout(timer);
-  }, [isReading]);
+  }, [shifting]);
 
   return (
     <div
