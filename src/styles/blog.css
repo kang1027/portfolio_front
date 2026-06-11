@@ -136,13 +136,20 @@
   flex-direction: column;
   justify-content: space-between;
   gap: 1.5rem;
+  overflow: hidden;
   background-color: #10181a;
-  background-image: url("/blog-rail-neon.png");
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
   padding: clamp(1.5rem, 4vh, 3rem) clamp(2rem, 5vw, 4.5rem)
     clamp(1.5rem, 4vh, 2.5rem);
+}
+
+/* 네온 시티 배경 — 블러로 뭉개서 빛망울만 남기고 붓글씨를 살린다 */
+.blog-side::before {
+  content: "";
+  position: absolute;
+  inset: -24px;
+  background: url("/blog-rail-neon.png") center / cover no-repeat;
+  filter: blur(14px);
+  pointer-events: none;
 }
 
 .blog-public[data-blog-theme="dark"] .blog-side {
