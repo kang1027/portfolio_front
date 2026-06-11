@@ -157,7 +157,7 @@
   min-width: 20rem;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
   gap: 1.5rem;
   background-color: #10181a;
   padding: clamp(1.5rem, 4vh, 3rem) clamp(2rem, 5vw, 4.5rem)
@@ -188,7 +188,7 @@
   border-right: 1px solid #262626;
 }
 
-.blog-side > :not(.blog-side-bg) {
+.blog-side > :not(.blog-side-bg, .blog-side-title-wrap) {
   position: relative;
 }
 
@@ -422,12 +422,23 @@ a.blog-vinyl-title:focus-visible {
   white-space: nowrap;
 }
 
+/* 붓글씨는 형제 레이아웃과 무관하게 레일 정중앙에 고정 —
+   모드 전환 시 주변 요소가 바뀌어도 제자리에서 크기만 변한다 */
 .blog-side-title-wrap {
-  flex: 1;
+  position: absolute;
+  inset: 0;
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 0;
+  pointer-events: none;
+}
+
+.blog-side-title-link {
+  pointer-events: auto;
+}
+
+.blog-side-bottom {
+  margin-top: auto;
 }
 
 /* 견현사제 붓글씨 — 잉크 알파 마스크에 테마 색을 입힌다 */
@@ -911,6 +922,12 @@ a.blog-vinyl-title:focus-visible {
   .blog-pane {
     width: 100%;
     flex: none;
+  }
+
+  /* 모바일은 레일 높이가 가변이라 붓글씨를 일반 흐름으로 되돌린다 */
+  .blog-side-title-wrap {
+    position: static;
+    pointer-events: auto;
   }
 
   /* 모바일 리딩 모드 — 레일은 얇은 붓글씨 배너로, LP는 생략 */
