@@ -7,10 +7,18 @@ import rehypeExternalLinks from "rehype-external-links";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { dracula, prism } from "react-syntax-highlighter/dist/esm/styles/prism";
 import BlogMeta from "~/components/blog/BlogMeta";
-import BlogPostCard from "~/components/blog/BlogPostCard";
 import MarkdownArticle from "~/components/blog/MarkdownArticle";
 import bear from "~/configs/bear";
-import { blogPosts, getBlogCategory, getBlogPost, type BlogPost } from "~/content/blog";
+import {
+  blogGroups,
+  blogPosts,
+  getBlogCategory,
+  getBlogGroup,
+  getBlogPost,
+  getBlogPostsByGroup,
+  type BlogGroupId,
+  type BlogPost
+} from "~/content/blog";
 import type { BearMdData } from "~/types";
 
 interface ContentProps {
@@ -34,6 +42,7 @@ interface BearState extends ContentProps {
   curMidbar: number;
   midbarList: BearMdData[];
   mode: "markdown" | "blog";
+  selectedGroupId: BlogGroupId;
   selectedPostSlug: string;
 }
 
@@ -88,6 +97,7 @@ const postingSidebarItem = {
 
 const sidebarItems = [...bear, postingSidebarItem];
 const postingSidebarIndex = sidebarItems.length - 1;
+const defaultBlogGroupId: BlogGroupId = "portfolio";
 
 const Sidebar = ({ cur, setMidBar }: SidebarProps) => {
   return (
@@ -115,29 +125,84 @@ const Sidebar = ({ cur, setMidBar }: SidebarProps) => {
 };
 
 interface BlogMiddlebarProps {
+  selectedGroupId: BlogGroupId;
   selectedSlug: string;
-  onSelect: (post: BlogPost, index: number) => void;
+  onSelectGroup: (groupId: BlogGroupId) => void;
+  onSelectPost: (post: BlogPost) => void;
 }
 
-const BlogMiddlebar = ({ selectedSlug, onSelect }: BlogMiddlebarProps) => {
+const BlogMiddlebar = ({
+  selectedGroupId,
+  selectedSlug,
+  onSelectGroup,
+  onSelectPost
+}: BlogMiddlebarProps) => {
   return (
     <div className="h-full overflow-y-auto">
       <div className="border-b border-c-300 px-4 py-4">
         <p className="text-xs font-bold uppercase tracking-wide text-red-500">
-          Kang's Notes
+          Kang's Writings
         </p>
         <h2 className="mt-1 text-lg font-bold text-c-900">Posting</h2>
-        <p className="mt-1 text-xs leading-relaxed text-c-600">작업 판단과 구현 기록</p>
+        <p className="mt-1 text-xs leading-relaxed text-c-600">
+          프로젝트 흐름별 작업 판단 기록
+        </p>
       </div>
-      <div>
-        {blogPosts.map((post, index) => (
-          <BlogPostCard
-            key={post.slug}
-            post={post}
-            selected={post.slug === selectedSlug}
-            onSelect={() => onSelect(post, index)}
-          />
-        ))}
+      <div className="py-2">
+        {blogGroups.map((group) => {
+          const posts = getBlogPostsByGroup(group.id);
+          const selected = selectedGroupId === group.id;
+
+          return (
+            <section key={group.id} className="border-b border-c-200">
+              <button
+                type="button"
+                className={`w-full px-4 py-3 text-left transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-red-500 ${
+                  selected
+                    ? "bg-white dark:bg-neutral-900"
+                    : "hover:bg-white dark:hover:bg-neutral-900"
+                }`}
+                onClick={() => onSelectGroup(group.id)}
+              >
+                <div className="flex items-baseline justify-between gap-3">
+                  <span className="text-sm font-bold text-c-900">{group.title}</span>
+                  <span className="font-tabular text-xs text-c-500">{posts.length}</span>
+                </div>
+                <p className="mt-1 line-clamp-2 text-xs leading-relaxed text-c-600">
+                  {group.description}
+                </p>
+              </button>
+
+              <div
+                className={`grid transition-[grid-template-rows] duration-200 ${
+                  selected ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+                }`}
+              >
+                <div className="min-h-0 overflow-hidden">
+                  {posts.map((post) => (
+                    <button
+                      key={post.slug}
+                      type="button"
+                      className={`w-full border-l-2 px-6 py-3 text-left transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-red-500 ${
+                        selectedSlug === post.slug
+                          ? "border-red-500 bg-red-50/60 dark:bg-red-950/20"
+                          : "border-transparent hover:bg-white dark:hover:bg-neutral-900"
+                      }`}
+                      onClick={() => onSelectPost(post)}
+                    >
+                      <h3 className="text-sm font-semibold leading-snug text-c-900">
+                        {post.title}
+                      </h3>
+                      <p className="mt-1 line-clamp-2 text-xs leading-relaxed text-c-600">
+                        {post.summary}
+                      </p>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </section>
+          );
+        })}
       </div>
     </div>
   );
@@ -153,21 +218,21 @@ const BlogContent = ({ post }: { post: BlogPost | undefined }) => {
   }
 
   const category = getBlogCategory(post.category);
+  const group = getBlogGroup(post.group);
 
   return (
     <article className="h-full overflow-y-auto px-10 py-8 text-c-700 xl:px-16">
       <div className="mx-auto max-w-3xl">
         <div className="mb-6 flex items-center justify-between gap-4">
-          <div className="flex min-w-0 items-center gap-2 text-sm font-bold text-red-500">
-            <span className={category.icon} aria-hidden="true" />
-            <span>{category.title}</span>
+          <div className="min-w-0 text-sm font-bold text-red-500">
+            <span>Posting / {group.title}</span>
+            <span className="text-c-500"> / {category.title}</span>
           </div>
           <a
             href={post.href}
-            className="inline-flex min-h-9 items-center gap-2 rounded px-2 text-sm text-c-500 hover:text-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-red-500"
+            className="inline-flex min-h-9 items-center rounded px-2 text-sm text-c-500 hover:text-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-red-500"
           >
-            <span className="i-ant-design:link-outlined" aria-hidden="true" />
-            Permalink
+            외부에서 열기
           </a>
         </div>
 
@@ -180,10 +245,7 @@ const BlogContent = ({ post }: { post: BlogPost | undefined }) => {
         </div>
         <div className="mt-4 flex flex-wrap gap-2">
           {post.tags.map((tag) => (
-            <span
-              key={tag}
-              className="rounded-full border border-c-300 px-3 py-1 text-xs text-c-600"
-            >
+            <span key={tag} className="border-b border-c-300 pb-0.5 text-xs text-c-600">
               #{tag}
             </span>
           ))}
@@ -309,11 +371,13 @@ const Bear = () => {
     contentID: bear[0].md[0].id,
     contentURL: bear[0].md[0].file,
     mode: "markdown",
+    selectedGroupId: defaultBlogGroupId,
     selectedPostSlug: blogPosts[0]?.slug ?? ""
   });
 
   const setMidBar = (index: number) => {
     if (index === postingSidebarIndex) {
+      const posts = getBlogPostsByGroup(state.selectedGroupId);
       setState({
         curSidebar: index,
         curMidbar: 0,
@@ -321,7 +385,8 @@ const Bear = () => {
         contentID: "",
         contentURL: "",
         mode: "blog",
-        selectedPostSlug: blogPosts[0]?.slug ?? ""
+        selectedGroupId: state.selectedGroupId,
+        selectedPostSlug: posts[0]?.slug ?? blogPosts[0]?.slug ?? ""
       });
       return;
     }
@@ -334,6 +399,7 @@ const Bear = () => {
       contentID: items[0].id,
       contentURL: items[0].file,
       mode: "markdown",
+      selectedGroupId: state.selectedGroupId,
       selectedPostSlug: state.selectedPostSlug
     });
   };
@@ -344,20 +410,36 @@ const Bear = () => {
       curMidbar: index,
       contentID: id,
       contentURL: url,
-      mode: "markdown"
+      mode: "markdown",
+      selectedGroupId: state.selectedGroupId
     });
   };
 
-  const setBlogPost = (post: BlogPost, index: number) => {
+  const setBlogGroup = (groupId: BlogGroupId) => {
+    const posts = getBlogPostsByGroup(groupId);
     setState({
       ...state,
-      curMidbar: index,
+      curMidbar: 0,
       mode: "blog",
+      selectedGroupId: groupId,
+      selectedPostSlug: posts[0]?.slug ?? ""
+    });
+  };
+
+  const setBlogPost = (post: BlogPost) => {
+    setState({
+      ...state,
+      curMidbar: 0,
+      mode: "blog",
+      selectedGroupId: post.group,
       selectedPostSlug: post.slug
     });
   };
 
-  const selectedPost = getBlogPost(state.selectedPostSlug) ?? blogPosts[0];
+  const selectedPost =
+    getBlogPost(state.selectedPostSlug) ??
+    getBlogPostsByGroup(state.selectedGroupId)[0] ??
+    blogPosts[0];
 
   return (
     <div className="bear font-avenir flex h-full">
@@ -366,7 +448,12 @@ const Bear = () => {
       </div>
       <div className="w-60 overflow-auto" bg="gray-50 dark:gray-800" border="r c-300">
         {state.mode === "blog" ? (
-          <BlogMiddlebar selectedSlug={state.selectedPostSlug} onSelect={setBlogPost} />
+          <BlogMiddlebar
+            selectedGroupId={state.selectedGroupId}
+            selectedSlug={selectedPost?.slug ?? ""}
+            onSelectGroup={setBlogGroup}
+            onSelectPost={setBlogPost}
+          />
         ) : (
           <Middlebar
             items={state.midbarList}

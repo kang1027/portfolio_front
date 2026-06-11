@@ -9,7 +9,12 @@ import { useStore } from "~/stores";
 import BlogMeta from "~/components/blog/BlogMeta";
 import MarkdownArticle from "~/components/blog/MarkdownArticle";
 import { bear } from "~/configs";
-import { blogPosts, getBlogPost } from "~/content/blog";
+import {
+  blogGroups,
+  getBlogGroup,
+  getBlogPost,
+  getBlogPostsByGroup
+} from "~/content/blog";
 import AppContainer from "./AppContainer";
 import AppNavBar from "./AppNavBar";
 import EdgeBackGesture from "../shell/EdgeBackGesture";
@@ -59,24 +64,49 @@ function BlogListView() {
 
   return (
     <ul className="absolute inset-0 overflow-y-auto" style={{ paddingTop: NAV_TOP_PT }}>
-      {blogPosts.map((post) => (
+      {blogGroups.map((group) => {
+        const posts = getBlogPostsByGroup(group.id);
+
+        return (
+          <li key={group.id}>
+            <button
+              type="button"
+              onClick={() => push({ view: "bear-blog-group", groupId: group.id })}
+              className="w-full px-4 py-4 text-left border-b border-black/5 dark:border-white/5 active:bg-black/5"
+            >
+              <div className="flex items-baseline justify-between gap-3">
+                <div className="text-black dark:text-white font-semibold">
+                  {group.title}
+                </div>
+                <div className="text-c-500 text-xs font-tabular">{posts.length}</div>
+              </div>
+              <div className="text-c-500 text-sm mt-1 line-clamp-2">
+                {group.description}
+              </div>
+            </button>
+          </li>
+        );
+      })}
+    </ul>
+  );
+}
+
+function BlogGroupPostListView({ groupId }: { groupId: string }) {
+  const push = useStore((s) => s.push);
+  const group = blogGroups.find((item) => item.id === groupId);
+  if (!group) return null;
+
+  return (
+    <ul className="absolute inset-0 overflow-y-auto" style={{ paddingTop: NAV_TOP_PT }}>
+      {getBlogPostsByGroup(group.id).map((post) => (
         <li key={post.slug}>
           <button
             type="button"
             onClick={() => push({ view: "bear-blog-article", slug: post.slug })}
             className="w-full px-4 py-3 text-left border-b border-black/5 dark:border-white/5 active:bg-black/5"
           >
-            <div className="flex items-start gap-3">
-              <span className={`${post.icon} mt-1 text-red-500`} aria-hidden="true" />
-              <div className="min-w-0 flex-1">
-                <div className="text-black dark:text-white font-semibold">
-                  {post.title}
-                </div>
-                <div className="text-c-500 text-sm mt-0.5 line-clamp-2">
-                  {post.summary}
-                </div>
-              </div>
-            </div>
+            <div className="text-black dark:text-white font-semibold">{post.title}</div>
+            <div className="text-c-500 text-sm mt-0.5 line-clamp-2">{post.summary}</div>
           </button>
         </li>
       ))}
@@ -190,13 +220,15 @@ function BlogArticleView({ slug }: { slug: string }) {
     );
   }
 
+  const group = getBlogGroup(post.group);
+
   return (
     <div
       className="absolute inset-0 overflow-y-auto px-4 pl-9 pb-8 bear"
       style={{ paddingTop: NAV_TOP_PT }}
     >
       <article className="pb-8">
-        <span className={`${post.icon} text-xl text-red-500`} aria-hidden="true" />
+        <div className="text-sm font-semibold text-red-500">Posting / {group.title}</div>
         <h1 className="mt-3 text-2xl font-bold leading-tight text-black dark:text-white">
           {post.title}
         </h1>
@@ -232,6 +264,7 @@ export default function BearMobile() {
     top?.view === "bear-list" ||
     top?.view === "bear-article" ||
     top?.view === "bear-blog-list" ||
+    top?.view === "bear-blog-group" ||
     top?.view === "bear-blog-article";
 
   let title = "Bear";
@@ -251,6 +284,11 @@ export default function BearMobile() {
     title = "Posting";
     body = <BlogListView />;
     viewKey = "blog-list";
+  } else if (top?.view === "bear-blog-group") {
+    const group = blogGroups.find((item) => item.id === top.groupId);
+    title = group?.title ?? "Posting";
+    body = <BlogGroupPostListView groupId={top.groupId} />;
+    viewKey = `blog-group-${top.groupId}`;
   } else if (top?.view === "bear-blog-article") {
     const post = getBlogPost(top.slug);
     title = post?.title ?? "Posting";
