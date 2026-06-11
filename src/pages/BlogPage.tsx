@@ -114,17 +114,18 @@ function BlogIndex() {
     <main className="blog-main">
       <SEO
         title="Writings | kang1027's Portfolio"
-        description="kang1027의 프로젝트 판단, 구현 노트, 개인 기록."
+        description="견현사제의 태도로 남기는 강동현의 프로젝트 판단, 구현 노트, 개인 기록."
         url={`${siteUrl}/blog`}
         keywords="kang1027, portfolio, blog, engineering notes, writing"
       />
 
       <section className="blog-hero">
         <p className="blog-kicker">Kang's Writings</p>
-        <h1>결과보다, 결과가 나온 판단을 남긴다.</h1>
+        <h1>견현사제(見賢思齊) 개발자 강동현(姜同賢)</h1>
         <p>
-          포트폴리오에서 빠지는 선택 이유, 구현 제약, 다시 만들 때 줄이고 싶은 것들을
-          프로젝트 흐름별로 기록한다.
+          좋은 사람을 보면 그 사람처럼 되기를 생각한다는 뜻처럼, 잘 만든 것 앞에서 기준을
+          낮추지 않으려 한다. 프로젝트를 만들며 본 좋은 판단, 따라가고 싶은 기준, 아직 못
+          닿은 부분을 기록한다.
         </p>
       </section>
 
@@ -264,6 +265,14 @@ function BlogNotFound() {
 }
 
 export default function BlogPage({ pathname }: BlogPageProps) {
+  useLayoutEffect(() => {
+    const store = useStore.getState();
+    if (store.dark) return;
+
+    useStore.setState({ dark: true });
+    document.documentElement.classList.add("dark");
+  }, []);
+
   const slug = normalizeSlug(pathname);
   const post = slug ? getBlogPost(slug) : undefined;
 
