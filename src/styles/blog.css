@@ -20,12 +20,16 @@
   --blog-accent: #b23b2e;
   --blog-accent-soft: #f6e8e4;
   --blog-serif: "Noto Serif KR", "Nanum Myeongjo", "AppleMyungjo", serif;
+  --blog-sans:
+    "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont,
+    "Apple SD Gothic Neo", "Noto Sans KR", system-ui, sans-serif;
 
   height: 100%;
   min-height: 100vh;
   overflow-y: auto;
   background: var(--blog-bg);
   color: var(--blog-text);
+  font-family: var(--blog-sans);
   color-scheme: light;
 }
 
