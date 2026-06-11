@@ -85,6 +85,7 @@ function BlogPostRow({ post, compact = false }: { post: BlogPost; compact?: bool
 function BlogSideRail({ theme, onToggleTheme }: BlogThemeProps) {
   return (
     <aside className="blog-side" aria-label="견현사제">
+      <span className="blog-side-bg" aria-hidden="true" />
       <nav className="blog-side-nav" aria-label="블로그 내비게이션">
         <a href="/blog" className="blog-nav-back">
           글 목록
