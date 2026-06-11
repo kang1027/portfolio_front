@@ -110,7 +110,7 @@
 }
 
 .blog-hero {
-  max-width: 54rem;
+  max-width: 68rem;
 }
 
 .blog-kicker,
@@ -146,15 +146,6 @@
   text-wrap: balance;
   word-break: keep-all;
   overflow-wrap: anywhere;
-}
-
-.blog-hero-reading {
-  margin-top: 0.9rem;
-  color: var(--blog-accent);
-  font-size: clamp(1.2rem, 2vw, 1.6rem);
-  font-weight: 800;
-  line-height: 1.25;
-  letter-spacing: 0;
 }
 
 .blog-hero-copy,
