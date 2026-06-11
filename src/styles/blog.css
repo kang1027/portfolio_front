@@ -153,7 +153,6 @@
   flex-direction: column;
   justify-content: space-between;
   gap: 1.5rem;
-  overflow: hidden;
   background-color: #10181a;
   padding: clamp(1.5rem, 4vh, 3rem) clamp(2rem, 5vw, 4.5rem)
     clamp(1.5rem, 4vh, 2.5rem);
@@ -162,21 +161,28 @@
   transition-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
 }
 
-/* 네온 시티 배경 — 블러로 뭉개서 빛망울만 남기고 붓글씨를 살린다 */
-.blog-side::before {
+/* 네온 시티 배경 — 블러로 뭉개서 빛망울만 남기고 붓글씨를 살린다.
+   레일 자체는 overflow를 열어둬야 해서(LP 팝오버) 배경만 내부에서 클리핑 */
+.blog-side-bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.blog-side-bg::before {
   content: "";
   position: absolute;
   inset: -24px;
   background: url("/blog-rail-neon.png") center / cover no-repeat;
   filter: blur(14px);
-  pointer-events: none;
 }
 
 .blog-public[data-blog-theme="dark"] .blog-side {
   border-right: 1px solid #262626;
 }
 
-.blog-side > * {
+.blog-side > :not(.blog-side-bg) {
   position: relative;
 }
 
@@ -185,10 +191,6 @@
   width: clamp(6rem, 9vw, 8.5rem);
   min-width: 0;
   padding-inline: clamp(0.8rem, 1.5vw, 1.4rem);
-}
-
-.blog-public[data-view="reading"] .blog-side-bottom {
-  display: none;
 }
 
 /* 글 목록 링크는 리딩 모드에서만 — 인덱스에선 의미 없음 */
@@ -200,8 +202,55 @@
   display: inline-flex;
 }
 
+/* 접힌 레일: 내비는 세로 한 줄로 안쪽에 정렬 */
 .blog-public[data-view="reading"] .blog-side-nav {
-  gap: 0.85rem;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+/* 접힌 레일: 인용·작성자는 숨기고 LP만 남긴다 */
+.blog-public[data-view="reading"] .blog-hero-quote,
+.blog-public[data-view="reading"] .blog-side-author {
+  display: none;
+}
+
+.blog-public[data-view="reading"] .blog-vinyl {
+  margin-bottom: 0;
+  justify-content: center;
+}
+
+.blog-public[data-view="reading"] .blog-vinyl-disc {
+  width: 3.6rem;
+  height: 3.6rem;
+}
+
+/* 접힌 레일: 곡 정보는 LP 호버 시 팝오버로 */
+.blog-public[data-view="reading"] .blog-vinyl-info {
+  position: absolute;
+  left: calc(100% + 0.9rem);
+  bottom: 0;
+  z-index: 6;
+  width: max-content;
+  max-width: 16rem;
+  padding: 0.65rem 0.95rem;
+  border: 1px solid #2c2c2c;
+  border-radius: 0.5rem;
+  background: rgb(8 8 8 / 94%);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(-6px);
+  transition:
+    opacity 200ms ease,
+    transform 200ms ease,
+    visibility 200ms;
+}
+
+.blog-public[data-view="reading"] .blog-vinyl:hover .blog-vinyl-info,
+.blog-public[data-view="reading"] .blog-vinyl:focus-within .blog-vinyl-info {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
 }
 
 .blog-side-title-link {
@@ -223,53 +272,78 @@
 
 /* LP 턴테이블 — 지금 듣는 곡 */
 .blog-vinyl {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 1rem;
   margin-bottom: 1.5rem;
 }
 
+/* 판: 가는 그루브 + 비스듬한 광택, 가운데 넓은 라벨, 작은 센터홀 */
 .blog-vinyl-disc {
   position: relative;
   flex-shrink: 0;
   width: 4.8rem;
   height: 4.8rem;
   border-radius: 50%;
-  background-color: #0c0c0c;
-  background-image: repeating-radial-gradient(
-    circle at center,
-    #0d0d0d 0,
-    #0d0d0d 2px,
-    #1f1f1f 2px,
-    #1f1f1f 3px
-  );
+  background-color: #050505;
+  background-image:
+    conic-gradient(
+      from 215deg,
+      rgb(255 255 255 / 0%) 0deg,
+      rgb(255 255 255 / 8%) 35deg,
+      rgb(255 255 255 / 0%) 75deg,
+      rgb(255 255 255 / 0%) 180deg,
+      rgb(255 255 255 / 6%) 215deg,
+      rgb(255 255 255 / 0%) 255deg
+    ),
+    repeating-radial-gradient(
+      circle at center,
+      #040404 0,
+      #040404 1px,
+      #1a1a1a 1px,
+      #1a1a1a 2px
+    );
   box-shadow:
-    0 0 0 1px rgb(255 255 255 / 9%),
-    0 4px 14px rgb(0 0 0 / 55%);
+    0 0 0 1px rgb(255 255 255 / 8%),
+    0 5px 16px rgb(0 0 0 / 55%);
   animation: blog-vinyl-spin 4s linear infinite;
   animation-play-state: paused;
+  transition:
+    width 520ms cubic-bezier(0.45, 0, 0.2, 1),
+    height 520ms cubic-bezier(0.45, 0, 0.2, 1);
 }
 
 .blog-vinyl[data-spinning="true"] .blog-vinyl-disc {
   animation-play-state: running;
 }
 
+/* 라벨 — 썸네일 없을 땐 흰 종이 라벨 */
+.blog-vinyl-disc::before {
+  content: "";
+  position: absolute;
+  inset: 30%;
+  border-radius: 50%;
+  background: #ece6da;
+}
+
 .blog-vinyl-disc img {
   position: absolute;
-  inset: 27%;
+  inset: 30%;
+  width: 40%;
+  height: 40%;
   border-radius: 50%;
-  width: 46%;
-  height: 46%;
   object-fit: cover;
 }
 
+/* 센터홀 */
 .blog-vinyl-disc::after {
   content: "";
   position: absolute;
-  inset: 46%;
+  inset: 47%;
   border-radius: 50%;
-  background: #141414;
-  box-shadow: 0 0 0 1px rgb(255 255 255 / 18%);
+  background: #10181a;
+  box-shadow: 0 0 0 1.5px rgb(0 0 0 / 60%);
 }
 
 @keyframes blog-vinyl-spin {
@@ -818,10 +892,19 @@ a.blog-vinyl-title:focus-visible {
     flex: none;
   }
 
-  /* 모바일 리딩 모드 — 레일은 얇은 붓글씨 배너로 */
+  /* 모바일 리딩 모드 — 레일은 얇은 붓글씨 배너로, LP는 생략 */
   .blog-public[data-view="reading"] .blog-side {
     width: 100%;
     padding: 1rem clamp(1.25rem, 4vw, 3.5rem);
+  }
+
+  .blog-public[data-view="reading"] .blog-side-nav {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .blog-public[data-view="reading"] .blog-side-bottom {
+    display: none;
   }
 
   .blog-public[data-view="reading"] .blog-side-title {
