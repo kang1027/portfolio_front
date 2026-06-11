@@ -86,6 +86,9 @@ function BlogSideRail({ theme, onToggleTheme }: BlogThemeProps) {
   return (
     <aside className="blog-side" aria-label="견현사제">
       <nav className="blog-side-nav" aria-label="블로그 내비게이션">
+        <a href="/blog" className="blog-nav-back">
+          글 목록
+        </a>
         <a href="/">포트폴리오</a>
         <BlogThemeToggle theme={theme} onToggleTheme={onToggleTheme} />
       </nav>
@@ -214,12 +217,6 @@ function BlogGroupPane({ groupId }: { groupId: string }) {
         />
 
         <div className="blog-article-shell">
-          <nav className="blog-breadcrumb" aria-label="Breadcrumb">
-            <a href="/blog">Writings</a>
-            <span>/</span>
-            <span>{group.title}</span>
-          </nav>
-
           <header className="blog-article-header">
             <h1>{group.title}</h1>
             <p>{group.description}</p>
@@ -267,8 +264,6 @@ function BlogArticlePane({ post }: { post: BlogPost }) {
 
         <article className="blog-article-shell">
           <nav className="blog-breadcrumb" aria-label="Breadcrumb">
-            <a href="/blog">Writings</a>
-            <span>/</span>
             <a href={`/blog/group/${group.id}`}>{group.title}</a>
           </nav>
 
@@ -277,11 +272,6 @@ function BlogArticlePane({ post }: { post: BlogPost }) {
             <p>{post.summary}</p>
             <div className="blog-article-meta">
               <BlogMeta post={post} />
-            </div>
-            <div className="blog-tag-list" aria-label="Tags">
-              {post.tags.map((tag) => (
-                <span key={tag}>#{tag}</span>
-              ))}
             </div>
           </header>
 
@@ -318,7 +308,7 @@ function BlogNotFoundPane() {
           주소가 바뀌었거나 아직 공개되지 않은 글이야.
         </p>
         <a href="/blog" className="blog-return-link">
-          Writings로 돌아가기
+          글 목록으로 돌아가기
         </a>
       </section>
     </main>
