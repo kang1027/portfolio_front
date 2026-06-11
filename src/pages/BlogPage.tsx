@@ -5,7 +5,6 @@ import {
   blogGroups,
   blogPosts,
   blogPostsByYear,
-  getBlogCategory,
   getBlogGroup,
   getBlogPost,
   getBlogPostsByGroup,
@@ -220,7 +219,6 @@ function BlogIndex() {
 }
 
 function BlogArticle({ post }: { post: BlogPost }) {
-  const category = getBlogCategory(post.category);
   const group = getBlogGroup(post.group);
   const relatedPosts = getBlogPostsByGroup(post.group)
     .filter((relatedPost) => relatedPost.slug !== post.slug)
@@ -250,7 +248,6 @@ function BlogArticle({ post }: { post: BlogPost }) {
         </nav>
 
         <header className="blog-article-header">
-          <p className="blog-kicker">{category.title}</p>
           <h1>{post.title}</h1>
           <p>{post.summary}</p>
           <div className="blog-article-meta">

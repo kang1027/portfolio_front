@@ -1,30 +1,10 @@
 import type {
-  BlogCategory,
-  BlogCategoryId,
   BlogFrontmatter,
   BlogGroup,
   BlogGroupId,
   BlogPost,
   BlogYearGroup
 } from "./types";
-
-export const blogCategories = [
-  {
-    id: "work",
-    title: "Work Notes",
-    description: "포트폴리오, 제품, 작업 방식에 대한 기록"
-  },
-  {
-    id: "engineering",
-    title: "Engineering",
-    description: "구현 판단, 아키텍처, 디버깅 노트"
-  },
-  {
-    id: "essay",
-    title: "Essay",
-    description: "일과 생활을 오래 보는 개인 기록"
-  }
-] as const satisfies readonly BlogCategory[];
 
 export const blogGroups = [
   {
@@ -54,7 +34,6 @@ export const blogGroups = [
   }
 ] as const satisfies readonly BlogGroup[];
 
-const categoryIds = blogCategories.map((category) => category.id);
 const groupIds = blogGroups.map((group) => group.id);
 
 const rawPosts = import.meta.glob<string>("./posts/*.md", {
@@ -89,10 +68,6 @@ const parseScalarMap = (source: string): Record<string, string | string[]> => {
   }, {});
 };
 
-const isCategoryId = (value: string): value is BlogCategoryId => {
-  return categoryIds.includes(value as BlogCategoryId);
-};
-
 const isGroupId = (value: string): value is BlogGroupId => {
   return groupIds.includes(value as BlogGroupId);
 };
@@ -114,10 +89,6 @@ const parsePost = (path: string, raw: string): BlogPost => {
   if (!match) throw new Error(`Missing frontmatter in ${path}`);
 
   const metadata = parseScalarMap(match[1]);
-  const category = requireText(metadata, "category", path);
-  if (!isCategoryId(category))
-    throw new Error(`Unknown category "${category}" in ${path}`);
-
   const group = requireText(metadata, "group", path);
   if (!isGroupId(group)) throw new Error(`Unknown group "${group}" in ${path}`);
 
@@ -136,7 +107,6 @@ const parsePost = (path: string, raw: string): BlogPost => {
     title,
     summary: requireText(metadata, "summary", path),
     date,
-    category,
     group,
     tags: Array.isArray(metadata.tags) ? metadata.tags : [],
     icon: requireText(metadata, "icon", path),
@@ -159,12 +129,6 @@ export const blogPosts = Object.entries(rawPosts)
   .map(([path, raw]) => parsePost(path, raw))
   .sort((a, b) => b.date.localeCompare(a.date));
 
-export const getBlogCategory = (categoryId: BlogCategoryId): BlogCategory => {
-  const category = blogCategories.find((item) => item.id === categoryId);
-  if (!category) throw new Error(`Unknown blog category "${categoryId}"`);
-  return category;
-};
-
 export const getBlogGroup = (groupId: BlogGroupId): BlogGroup => {
   const group = blogGroups.find((item) => item.id === groupId);
   if (!group) throw new Error(`Unknown blog group "${groupId}"`);
@@ -173,10 +137,6 @@ export const getBlogGroup = (groupId: BlogGroupId): BlogGroup => {
 
 export const getBlogPost = (slug: string): BlogPost | undefined => {
   return blogPosts.find((post) => post.slug === slug);
-};
-
-export const getBlogPostsByCategory = (categoryId: BlogCategoryId): BlogPost[] => {
-  return blogPosts.filter((post) => post.category === categoryId);
 };
 
 export const getBlogPostsByGroup = (groupId: BlogGroupId): BlogPost[] => {
@@ -194,12 +154,4 @@ export const blogPostsByYear = blogPosts.reduce<BlogYearGroup[]>((groups, post) 
   return groups;
 }, []);
 
-export type {
-  BlogCategory,
-  BlogCategoryId,
-  BlogFrontmatter,
-  BlogGroup,
-  BlogGroupId,
-  BlogPost,
-  BlogYearGroup
-};
+export type { BlogFrontmatter, BlogGroup, BlogGroupId, BlogPost, BlogYearGroup };

@@ -12,7 +12,6 @@ import bear from "~/configs/bear";
 import {
   blogGroups,
   blogPosts,
-  getBlogCategory,
   getBlogGroup,
   getBlogPost,
   getBlogPostsByGroup,
@@ -217,7 +216,6 @@ const BlogContent = ({ post }: { post: BlogPost | undefined }) => {
     );
   }
 
-  const category = getBlogCategory(post.category);
   const group = getBlogGroup(post.group);
 
   return (
@@ -226,7 +224,6 @@ const BlogContent = ({ post }: { post: BlogPost | undefined }) => {
         <div className="mb-6 flex items-center justify-between gap-4">
           <div className="min-w-0 text-sm font-bold text-red-500">
             <span>Posting / {group.title}</span>
-            <span className="text-c-500"> / {category.title}</span>
           </div>
           <a
             href={post.href}

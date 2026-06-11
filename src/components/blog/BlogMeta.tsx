@@ -1,4 +1,4 @@
-import { getBlogCategory, getBlogGroup, type BlogPost } from "~/content/blog";
+import type { BlogPost } from "~/content/blog";
 
 interface BlogMetaProps {
   post: BlogPost;
@@ -12,19 +12,14 @@ const dateFormatter = new Intl.DateTimeFormat("ko-KR", {
 });
 
 export default function BlogMeta({ post, compact = false }: BlogMetaProps) {
-  const category = getBlogCategory(post.category);
-  const group = getBlogGroup(post.group);
-
   return (
     <div
       className={`flex flex-wrap items-center gap-x-3 gap-y-1 text-c-500 ${
         compact ? "text-xs" : "text-sm"
       }`}
     >
-      <span>{category.title}</span>
       <span className="font-tabular">{dateFormatter.format(new Date(post.date))}</span>
       <span>{post.readingMinutes}분 읽기</span>
-      <span>{group.title}</span>
     </div>
   );
 }
