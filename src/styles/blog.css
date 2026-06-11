@@ -45,62 +45,49 @@
   color-scheme: dark;
 }
 
-.blog-site-header {
-  position: sticky;
-  top: 0;
-  z-index: 50;
+/* 세로쓰기 내비 — 좌측 레일/아티클 구석 공용 */
+.blog-side-nav,
+.blog-corner-nav {
   display: flex;
-  min-height: 3.75rem;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  border-bottom: 1px solid var(--blog-line);
-  background: color-mix(in srgb, var(--blog-bg) 88%, transparent);
-  padding: 0 clamp(1rem, 4vw, 3.5rem);
-  backdrop-filter: blur(18px);
+  align-items: flex-start;
+  gap: clamp(0.9rem, 1.6vw, 1.4rem);
 }
 
-.blog-brand,
-.blog-site-nav a,
-.blog-theme-toggle {
-  min-height: 2.75rem;
-  display: inline-flex;
-  align-items: center;
-  color: var(--blog-muted);
-  font-size: 0.875rem;
+.blog-side-nav a,
+.blog-side-nav button,
+.blog-corner-nav a,
+.blog-corner-nav button {
+  writing-mode: vertical-rl;
+  min-inline-size: 2.75rem;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  color: var(--blog-faint);
+  font: inherit;
+  font-size: 0.82rem;
+  letter-spacing: 0.28em;
   text-decoration: none;
+  cursor: pointer;
 }
 
-.blog-brand {
-  color: var(--blog-text);
-  font-family: var(--blog-serif, inherit);
-  font-weight: 700;
-  font-size: 1rem;
-}
-
-.blog-site-nav {
-  display: flex;
-  align-items: center;
-  gap: clamp(0.75rem, 2vw, 1.5rem);
-}
-
-.blog-site-nav a:hover,
-.blog-brand:hover,
-.blog-theme-toggle:hover {
+.blog-side-nav a:hover,
+.blog-side-nav button:hover,
+.blog-corner-nav a:hover,
+.blog-corner-nav button:hover {
   color: var(--blog-accent);
 }
 
-.blog-theme-toggle {
-  border: 0;
-  background: transparent;
-  cursor: pointer;
-  font: inherit;
-  font-weight: 650;
+.blog-corner-nav {
+  position: fixed;
+  top: clamp(1.25rem, 4vh, 2.5rem);
+  left: clamp(1rem, 2vw, 2.25rem);
+  z-index: 40;
 }
 
-.blog-brand:focus-visible,
-.blog-site-nav a:focus-visible,
-.blog-theme-toggle:focus-visible,
+.blog-side-nav a:focus-visible,
+.blog-side-nav button:focus-visible,
+.blog-corner-nav a:focus-visible,
+.blog-corner-nav button:focus-visible,
 .blog-post-row:focus-visible,
 .blog-archive-row:focus-visible,
 .blog-return-link:focus-visible {
@@ -114,34 +101,83 @@
   padding: clamp(2.5rem, 5vw, 5rem) clamp(1.25rem, 4vw, 3.5rem) 6rem;
 }
 
-.blog-index-main {
-  width: min(100%, 52rem);
+/* 인덱스 — 좌측 고정 견현사제 레일 + 우측 글 흐름 */
+.blog-index-shell {
+  width: min(100%, 92rem);
   margin: 0 auto;
-  padding: 0 clamp(1.25rem, 4vw, 2.5rem) 6rem;
+  padding: 0 clamp(1.25rem, 3vw, 3rem);
+  display: grid;
+  grid-template-columns: clamp(17rem, 28vw, 26rem) minmax(0, 1fr);
+  gap: clamp(2.5rem, 6vw, 6.5rem);
+  align-items: start;
 }
 
-.blog-hero {
-  padding: clamp(3.5rem, 9vw, 6.5rem) 0 clamp(2.5rem, 6vw, 4rem);
-  border-bottom: 1px solid var(--blog-line-strong);
-}
-
-.blog-hero-head {
+.blog-side {
+  position: sticky;
+  top: 0;
+  height: 100dvh;
   display: flex;
-  align-items: flex-start;
+  flex-direction: column;
   justify-content: space-between;
-  gap: clamp(1rem, 4vw, 2.5rem);
+  gap: 1.5rem;
+  padding: clamp(1.5rem, 4vh, 3rem) 0 clamp(1.5rem, 4vh, 2.5rem);
 }
 
-.blog-hero h1 {
+.blog-side-title-wrap {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  gap: clamp(0.9rem, 2vw, 1.6rem);
+  min-height: 0;
+}
+
+.blog-side-title {
+  writing-mode: vertical-rl;
   color: var(--blog-text);
   font-family: var(--blog-serif, inherit);
-  font-size: clamp(3rem, 8vw, 5.5rem);
+  font-size: clamp(2.8rem, 13vh, 5.2rem);
   font-weight: 900;
-  line-height: 1.05;
-  letter-spacing: 0.04em;
-  text-wrap: balance;
+  line-height: 1;
+  letter-spacing: 0.14em;
   word-break: keep-all;
-  overflow-wrap: anywhere;
+}
+
+.blog-side-author {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 1.1rem;
+  margin-top: 1.4rem;
+  color: var(--blog-muted);
+  font-size: 0.85rem;
+}
+
+.blog-side-author span {
+  font-family: var(--blog-serif, inherit);
+  font-weight: 700;
+  color: var(--blog-text);
+}
+
+.blog-side-author a {
+  color: var(--blog-muted);
+  text-decoration: none;
+}
+
+.blog-side-author a:hover {
+  color: var(--blog-accent);
+}
+
+.blog-side-author a:focus-visible {
+  outline: 2px solid var(--blog-accent);
+  outline-offset: 4px;
+}
+
+.blog-content-col {
+  min-width: 0;
+  padding: clamp(2rem, 5vh, 3.5rem) 0 6rem;
+}
+
+.blog-content-col > .blog-section:first-child {
+  margin-top: 0;
 }
 
 /* 낙관(落款) — 인주 도장 */
@@ -604,20 +640,54 @@
   --blog-text: rgb(249 250 251);
 }
 
-@media (max-width: 860px) {
-  .blog-site-header {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 0.2rem;
-    padding-bottom: 0.65rem;
-    padding-top: 0.65rem;
+@media (max-width: 1020px) {
+  .blog-index-shell {
+    grid-template-columns: 1fr;
+    gap: 0;
   }
 
-  .blog-site-nav {
-    width: 100%;
+  .blog-side {
+    position: static;
+    height: auto;
+    gap: 2rem;
+    padding-bottom: 0;
+  }
+
+  .blog-side-nav a,
+  .blog-side-nav button,
+  .blog-corner-nav a,
+  .blog-corner-nav button {
+    writing-mode: horizontal-tb;
+    display: inline-flex;
+    align-items: center;
+    min-inline-size: auto;
+    min-height: 2.75rem;
+    letter-spacing: 0.1em;
+  }
+
+  .blog-side-title-wrap {
+    flex-direction: row-reverse;
     justify-content: space-between;
+    align-items: flex-start;
   }
 
+  .blog-side-title {
+    writing-mode: horizontal-tb;
+    font-size: clamp(2.6rem, 9vw, 3.6rem);
+    line-height: 1.1;
+  }
+
+  .blog-content-col {
+    padding-top: clamp(2.5rem, 6vw, 3.5rem);
+  }
+
+  .blog-corner-nav {
+    position: static;
+    padding: 1rem clamp(1.25rem, 4vw, 3.5rem) 0;
+  }
+}
+
+@media (max-width: 860px) {
   .blog-year-block {
     grid-template-columns: 1fr;
   }
@@ -638,12 +708,12 @@
 }
 
 @media (max-width: 520px) {
-  .blog-index-main,
+  .blog-index-shell,
   .blog-main {
     padding-inline: 1rem;
   }
 
-  .blog-hero h1 {
+  .blog-side-title {
     font-size: 2.6rem;
   }
 

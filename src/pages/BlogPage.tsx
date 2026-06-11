@@ -55,18 +55,13 @@ function BlogThemeToggle({ theme, onToggleTheme }: BlogThemeProps) {
   );
 }
 
-function BlogTopBar({ theme, onToggleTheme }: BlogThemeProps) {
+function BlogCornerNav({ theme, onToggleTheme }: BlogThemeProps) {
   return (
-    <header className="blog-site-header">
-      <a href="/" className="blog-brand">
-        강동현
-      </a>
-      <nav className="blog-site-nav" aria-label="Blog navigation">
-        <a href="/blog#threads">갈래</a>
-        <a href="/blog#archive">날짜</a>
-        <BlogThemeToggle theme={theme} onToggleTheme={onToggleTheme} />
-      </nav>
-    </header>
+    <nav className="blog-corner-nav" aria-label="블로그 내비게이션">
+      <a href="/blog">글 목록</a>
+      <a href="/">포트폴리오</a>
+      <BlogThemeToggle theme={theme} onToggleTheme={onToggleTheme} />
+    </nav>
   );
 }
 
@@ -89,26 +84,43 @@ function BlogPostRow({ post, compact = false }: { post: BlogPost; compact?: bool
   );
 }
 
-function BlogHero() {
+function BlogSideRail({ theme, onToggleTheme }: BlogThemeProps) {
   return (
-    <section className="blog-hero" aria-label="견현사제">
-      <div className="blog-hero-head">
-        <h1>見賢思齊</h1>
+    <aside className="blog-side" aria-label="견현사제">
+      <nav className="blog-side-nav" aria-label="블로그 내비게이션">
+        <a href="#threads">갈래</a>
+        <a href="#archive">날짜</a>
+        <a href="/">포트폴리오</a>
+        <BlogThemeToggle theme={theme} onToggleTheme={onToggleTheme} />
+      </nav>
+
+      <div className="blog-side-title-wrap">
         <span className="blog-seal" aria-hidden="true">
           <span>見</span>
           <span>賢</span>
           <span>思</span>
           <span>齊</span>
         </span>
+        <h1 className="blog-side-title">見賢思齊</h1>
       </div>
-      <figure className="blog-hero-quote">
-        <blockquote className="blog-hero-copy">
-          “어진 사람을 보면 어떻게 그와 같아질까를 생각하며, 어질지 못한 사람을 보면
-          속으로 스스로 반성해야 한다.”
-        </blockquote>
-        <figcaption>— 논어(論語) · 이인편</figcaption>
-      </figure>
-    </section>
+
+      <div>
+        <figure className="blog-hero-quote">
+          <blockquote className="blog-hero-copy">
+            “어진 사람을 보면 어떻게 그와 같아질까를 생각하며, 어질지 못한 사람을 보면
+            속으로 스스로 반성해야 한다.”
+          </blockquote>
+          <figcaption>— 논어(論語) · 이인편</figcaption>
+        </figure>
+        <p className="blog-side-author">
+          <span>강동현</span>
+          <a href="https://github.com/kang1027" target="_blank" rel="noopener noreferrer">
+            GitHub
+          </a>
+          <a href="mailto:kang3171611@naver.com">메일</a>
+        </p>
+      </div>
+    </aside>
   );
 }
 
@@ -190,9 +202,9 @@ function BlogArchiveSection() {
   );
 }
 
-function BlogIndex() {
+function BlogIndex({ theme, onToggleTheme }: BlogThemeProps) {
   return (
-    <main className="blog-index-main">
+    <main className="blog-index-shell">
       <SEO
         title="Writings | kang1027's Portfolio"
         description="견현사제의 태도로 남기는 강동현의 프로젝트 판단, 구현 노트, 개인 기록."
@@ -200,9 +212,11 @@ function BlogIndex() {
         keywords="kang1027, portfolio, blog, engineering notes, writing"
       />
 
-      <BlogHero />
-      <BlogThreadSections />
-      <BlogArchiveSection />
+      <BlogSideRail theme={theme} onToggleTheme={onToggleTheme} />
+      <div className="blog-content-col">
+        <BlogThreadSections />
+        <BlogArchiveSection />
+      </div>
     </main>
   );
 }
@@ -323,9 +337,15 @@ export default function BlogPage({ pathname }: BlogPageProps) {
 
   return (
     <div className="blog-public" data-blog-theme={theme}>
-      <BlogTopBar theme={theme} onToggleTheme={toggleTheme} />
-      {slug ? post ? <BlogArticle post={post} /> : <BlogNotFound /> : <BlogIndex />}
-      <BlogFooter />
+      {slug ? (
+        <>
+          <BlogCornerNav theme={theme} onToggleTheme={toggleTheme} />
+          {post ? <BlogArticle post={post} /> : <BlogNotFound />}
+          <BlogFooter />
+        </>
+      ) : (
+        <BlogIndex theme={theme} onToggleTheme={toggleTheme} />
+      )}
     </div>
   );
 }
