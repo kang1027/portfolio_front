@@ -95,12 +95,6 @@ function BlogSideRail({ theme, onToggleTheme }: BlogThemeProps) {
       </nav>
 
       <div className="blog-side-title-wrap">
-        <span className="blog-seal" aria-hidden="true">
-          <span>見</span>
-          <span>賢</span>
-          <span>思</span>
-          <span>齊</span>
-        </span>
         <h1 className="blog-side-title" aria-label="견현사제(見賢思齊)" />
       </div>
 
