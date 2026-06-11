@@ -13,6 +13,7 @@
   --blog-line: #d8dde3;
   --blog-line-strong: #b8c0ca;
   --blog-text: #141922;
+  --blog-body: #333b47;
   --blog-muted: #5c6674;
   --blog-faint: #818b98;
   --blog-accent: #ef4444;
@@ -33,6 +34,7 @@
   --blog-line: #303641;
   --blog-line-strong: #48505d;
   --blog-text: #f1f3f5;
+  --blog-body: #ccd2d9;
   --blog-muted: #a0a8b3;
   --blog-faint: #77808d;
   --blog-accent: #ff5a5f;
@@ -402,7 +404,7 @@
 
 .blog-markdown p {
   margin-top: 1.15rem;
-  color: var(--blog-muted, inherit);
+  color: var(--blog-body, inherit);
   word-break: keep-all;
   overflow-wrap: anywhere;
 }
@@ -411,7 +413,7 @@
 .blog-markdown ol {
   margin-top: 1rem;
   padding-left: 1.35rem;
-  color: var(--blog-muted, inherit);
+  color: var(--blog-body, inherit);
 }
 
 .blog-markdown ul {
