@@ -112,7 +112,7 @@ function BlogGroupBlock({ group }: { group: BlogGroup }) {
 
 function BlogThreadNav() {
   return (
-    <aside className="blog-thread-nav" aria-label="Writing threads">
+    <nav className="blog-thread-nav" aria-label="Writing threads">
       <p>갈래</p>
       {blogGroups.map((group) => {
         const count = getBlogPostsByGroup(group.id).length;
@@ -136,6 +136,33 @@ function BlogThreadNav() {
         <span>Archive</span>
         <small>{blogPosts.length}</small>
       </a>
+    </nav>
+  );
+}
+
+function BlogIndexRail() {
+  return (
+    <aside className="blog-index-rail">
+      <div className="blog-sidebar-panel">
+        <a href="/" className="blog-sidebar-brand">
+          Kang Donghyun
+        </a>
+        <nav className="blog-sidebar-links" aria-label="Blog navigation">
+          <a href="/blog#threads">갈래</a>
+          <a href="/blog#archive">날짜</a>
+          <BlogThemeToggle />
+        </nav>
+        <BlogThreadNav />
+      </div>
+
+      <section className="blog-principle-panel" aria-label="견현사제">
+        <p className="blog-kicker">견현사제</p>
+        <h1>見賢思齊</h1>
+        <p className="blog-hero-copy">
+          "어진 사람을 보면 어떻게 그와 같아질까를 생각하며, 어질지 못한 사람을 보면
+          속으로 스스로 반성해야 한다."
+        </p>
+      </section>
     </aside>
   );
 }
@@ -146,7 +173,7 @@ function BlogIndex() {
   );
 
   return (
-    <main className="blog-main">
+    <main className="blog-index-shell">
       <SEO
         title="Writings | kang1027's Portfolio"
         description="견현사제의 태도로 남기는 강동현의 프로젝트 판단, 구현 노트, 개인 기록."
@@ -154,19 +181,9 @@ function BlogIndex() {
         keywords="kang1027, portfolio, blog, engineering notes, writing"
       />
 
-      <div className="blog-intro-layout">
-        <BlogThreadNav />
-        <section className="blog-hero">
-          <p className="blog-kicker">견현사제</p>
-          <h1>見賢思齊</h1>
-          <p className="blog-hero-copy">
-            "어진 사람을 보면 어떻게 그와 같아질까를 생각하며, 어질지 못한 사람을 보면
-            속으로 스스로 반성해야 한다."
-          </p>
-        </section>
-      </div>
+      <BlogIndexRail />
 
-      <div className="blog-home-layout">
+      <section className="blog-content-panel" aria-label="Blog posts">
         <div className="blog-flow">
           <section id="threads" className="blog-section">
             <header className="blog-section-header">
@@ -197,7 +214,7 @@ function BlogIndex() {
             ))}
           </section>
         </div>
-      </div>
+      </section>
     </main>
   );
 }
@@ -298,7 +315,7 @@ export default function BlogPage({ pathname }: BlogPageProps) {
 
   return (
     <div className="blog-public">
-      <BlogTopBar />
+      {slug && <BlogTopBar />}
       {slug ? post ? <BlogArticle post={post} /> : <BlogNotFound /> : <BlogIndex />}
     </div>
   );
