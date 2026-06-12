@@ -1,0 +1,1040 @@
+.font-tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
+.blog-public {
+  /* 문집(文集) 팔레트 — 흰 종이 위 먹과 인주, 무채색 기조 */
+  --blog-bg: #ffffff;
+  --blog-surface: #fafafa;
+  --blog-surface-soft: #f2f2f2;
+  --blog-line: #e4e4e4;
+  --blog-line-strong: #c9c9c9;
+  --blog-text: #161616;
+  --blog-body: #303030;
+  --blog-muted: #5f5f5f;
+  --blog-faint: #8c8c8c;
+  --blog-accent: #b3372a;
+  --blog-accent-soft: #f9eae7;
+  --blog-serif: "Noto Serif KR", "Nanum Myeongjo", "AppleMyungjo", serif;
+  --blog-sans:
+    "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont,
+    "Apple SD Gothic Neo", "Noto Sans KR", system-ui, sans-serif;
+  --blog-mono:
+    "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  height: 100%;
+  min-height: 100vh;
+  overflow-y: auto;
+  /* 끝에서 고무줄 바운스 없이 딱 멈추게 */
+  overscroll-behavior: none;
+  background: var(--blog-bg);
+  color: var(--blog-text);
+  font-family: var(--blog-sans);
+  color-scheme: light;
+}
+
+.blog-public[data-blog-theme="dark"] {
+  --blog-bg: #121212;
+  --blog-surface: #1a1a1a;
+  --blog-surface-soft: #222222;
+  --blog-line: #2c2c2c;
+  --blog-line-strong: #444444;
+  --blog-text: #f2f2f2;
+  --blog-body: #cfcfcf;
+  --blog-muted: #9e9e9e;
+  --blog-faint: #747474;
+  --blog-accent: #db6155;
+  --blog-accent-soft: #2e1b18;
+
+  color-scheme: dark;
+}
+
+/* 세로쓰기 내비 — 좌측 레일 */
+.blog-side-nav {
+  display: flex;
+  align-items: flex-start;
+  gap: clamp(0.9rem, 1.6vw, 1.4rem);
+}
+
+.blog-side-nav a,
+.blog-side-nav button {
+  writing-mode: vertical-rl;
+  min-inline-size: 2.75rem;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  color: var(--blog-faint);
+  font: inherit;
+  font-size: 0.82rem;
+  letter-spacing: 0.28em;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* 먹색 패널 안에서는 네온사인처럼 번진다 */
+.blog-side-nav a:hover,
+.blog-side-nav button:hover {
+  color: var(--blog-accent);
+  text-shadow: 0 0 14px rgb(255 83 71 / 60%);
+}
+
+.blog-side-nav a:focus-visible,
+.blog-side-nav button:focus-visible,
+.blog-post-row:focus-visible,
+.blog-archive-row:focus-visible,
+.blog-return-link:focus-visible {
+  outline: 2px solid var(--blog-accent);
+  outline-offset: 4px;
+}
+
+.blog-main {
+  width: min(100%, 74rem);
+  margin: 0 auto;
+  padding: clamp(2.5rem, 5vw, 5rem) clamp(1.25rem, 4vw, 3.5rem) 6rem;
+}
+
+/* 좌측 먹색 패널(견현사제) + 우측 종이 — 글 열면 레일 영역째 슬라이드로 접힌다 */
+.blog-shell {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+}
+
+.blog-pane {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.blog-pane > * {
+  animation: blog-pane-in 300ms cubic-bezier(0.3, 0, 0.2, 1) both;
+}
+
+/* 레일 폭이 움직이는 동안 패널 콘텐츠는 숨김 — 자리 잡힌 뒤 슬라이드 인 */
+.blog-public[data-shifting="true"] .blog-pane > * {
+  animation: none;
+  opacity: 0;
+}
+
+@keyframes blog-pane-in {
+  from {
+    opacity: 0;
+    transform: translateX(32px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .blog-side,
+  .blog-side-title {
+    transition: none;
+  }
+
+  .blog-pane > * {
+    animation: none;
+  }
+}
+
+.blog-side {
+  /* 먹색 패널 — 내부 텍스트는 변수 재정의로 반전 */
+  --blog-text: #f4f4f4;
+  --blog-body: #d6d6d6;
+  --blog-muted: #ababab;
+  --blog-faint: #878787;
+  --blog-accent: #ff5347;
+
+  position: sticky;
+  top: 0;
+  /* 패널 등장 애니메이션(fill-mode)이 .blog-main에 stacking context를 남겨서
+     떠 있는 내비가 본문 아래 깔린다 — 레일을 명시적으로 위 레이어로 */
+  z-index: 5;
+  height: 100dvh;
+  flex: 0 0 auto;
+  width: 42%;
+  min-width: 20rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 1.5rem;
+  background-color: #10181a;
+  padding: clamp(1.5rem, 4vh, 3rem) clamp(2rem, 5vw, 4.5rem)
+    clamp(1.5rem, 4vh, 2.5rem);
+  transition-property: width, min-width, padding;
+  transition-duration: 320ms;
+  transition-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
+}
+
+/* 네온 시티 배경 — 블러로 뭉개서 빛망울만 남기고 붓글씨를 살린다.
+   레일 자체는 overflow를 열어둬야 해서(LP 팝오버) 배경만 내부에서 클리핑 */
+.blog-side-bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.blog-side-bg::before {
+  content: "";
+  position: absolute;
+  inset: -24px;
+  background: url("/blog-rail-neon.png") center / cover no-repeat;
+  filter: blur(14px);
+}
+
+.blog-public[data-blog-theme="dark"] .blog-side {
+  border-right: 1px solid #262626;
+}
+
+.blog-side > :not(.blog-side-bg, .blog-side-title-wrap) {
+  position: relative;
+}
+
+/* 리딩 모드 — 레일이 좁은 스트립으로 줄고 붓글씨만 남는다 */
+.blog-public[data-view="reading"] .blog-side {
+  width: clamp(6rem, 9vw, 8.5rem);
+  min-width: 0;
+  padding-inline: clamp(0.8rem, 1.5vw, 1.4rem);
+}
+
+/* 레일 폭 전환 안무 — 붓글씨만 모핑하고, 텍스트류는 즉시 숨겼다가
+   폭이 자리 잡은 뒤 페이드인 (위치·표시 상태가 점프하는 복귀 방향 대비) */
+.blog-side-nav,
+.blog-side-bottom {
+  transition: opacity 180ms ease 40ms;
+}
+
+.blog-public[data-shifting="true"] .blog-side-nav,
+.blog-public[data-shifting="true"] .blog-side-bottom {
+  opacity: 0;
+  transition: none;
+  pointer-events: none;
+}
+
+/* 글 목록 링크는 리딩 모드에서만 — 인덱스에선 의미 없음 */
+.blog-nav-back {
+  display: none;
+}
+
+.blog-public[data-view="reading"] .blog-nav-back {
+  display: inline-flex;
+}
+
+/* 리딩 모드: 내비는 레일 옆 검정 영역 좌상단에 띄운다.
+   sticky 레일 밖으로 absolute로 빼면 WebKit에서 히트테스트가 깨질 수 있어
+   뷰포트 기준 fixed로 고정 (left = 스트립 폭 + 간격) */
+.blog-public[data-view="reading"] .blog-side-nav {
+  position: fixed;
+  left: calc(clamp(6rem, 9vw, 8.5rem) + 1.75rem);
+  top: clamp(1.5rem, 4vh, 3rem);
+  z-index: 7;
+}
+
+/* 접힌 레일: 인용·작성자는 숨기고 LP만 남긴다 */
+.blog-public[data-view="reading"] .blog-hero-quote,
+.blog-public[data-view="reading"] .blog-side-author {
+  display: none;
+}
+
+.blog-side-title-link {
+  display: block;
+}
+
+.blog-side-title-link:focus-visible {
+  outline: 2px solid var(--blog-accent);
+  outline-offset: 6px;
+}
+
+.blog-side-title {
+  transition: height 320ms cubic-bezier(0.45, 0, 0.2, 1);
+}
+
+.blog-public[data-view="reading"] .blog-side-title {
+  height: clamp(12rem, 36vh, 17rem);
+}
+
+/* LP 턴테이블 — 본문 영역 우상단에 고정. 디스크가 모서리 쪽, 곡 정보는 안쪽으로 */
+.blog-vinyl {
+  --vinyl-size: 4.8rem;
+
+  position: fixed;
+  top: clamp(1.5rem, 4vh, 3rem);
+  right: clamp(1.5rem, 3vw, 3rem);
+  z-index: 7;
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* 재생 중 아우라 — 디스크 뒤에서 테마 액센트 빛이 숨쉬듯 번진다 */
+.blog-vinyl::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 0;
+  z-index: -1;
+  width: var(--vinyl-size);
+  height: var(--vinyl-size);
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--blog-accent) 65%, transparent) 0%,
+    color-mix(in srgb, var(--blog-accent) 30%, transparent) 45%,
+    transparent 72%
+  );
+  filter: blur(10px);
+  transform: translateY(-50%) scale(1.2);
+  opacity: 0;
+  transition: opacity 600ms ease;
+  pointer-events: none;
+}
+
+.blog-vinyl[data-spinning="true"]::before {
+  opacity: 1;
+  animation: blog-vinyl-aura 2.8s ease-in-out infinite;
+}
+
+@keyframes blog-vinyl-aura {
+  0%,
+  100% {
+    transform: translateY(-50%) scale(1.2);
+    opacity: 0.6;
+  }
+
+  50% {
+    transform: translateY(-50%) scale(1.55);
+    opacity: 1;
+  }
+}
+
+/* 판: 가는 그루브 + 비스듬한 광택, 가운데 넓은 라벨, 작은 센터홀 */
+.blog-vinyl-disc {
+  position: relative;
+  flex-shrink: 0;
+  width: var(--vinyl-size);
+  height: var(--vinyl-size);
+  border-radius: 50%;
+  background-color: #050505;
+  background-image:
+    conic-gradient(
+      from 215deg,
+      rgb(255 255 255 / 0%) 0deg,
+      rgb(255 255 255 / 8%) 35deg,
+      rgb(255 255 255 / 0%) 75deg,
+      rgb(255 255 255 / 0%) 180deg,
+      rgb(255 255 255 / 6%) 215deg,
+      rgb(255 255 255 / 0%) 255deg
+    ),
+    repeating-radial-gradient(
+      circle at center,
+      #040404 0,
+      #040404 1px,
+      #1a1a1a 1px,
+      #1a1a1a 2px
+    );
+  box-shadow:
+    0 0 0 1px rgb(255 255 255 / 8%),
+    0 5px 16px rgb(0 0 0 / 55%);
+  animation: blog-vinyl-spin 4s linear infinite;
+  animation-play-state: paused;
+  transition:
+    width 320ms cubic-bezier(0.45, 0, 0.2, 1),
+    height 320ms cubic-bezier(0.45, 0, 0.2, 1);
+}
+
+.blog-vinyl[data-spinning="true"] .blog-vinyl-disc {
+  animation-play-state: running;
+}
+
+/* 라벨 — 썸네일 없을 땐 흰 종이 라벨 */
+.blog-vinyl-disc::before {
+  content: "";
+  position: absolute;
+  inset: 30%;
+  border-radius: 50%;
+  background: #ece6da;
+}
+
+.blog-vinyl-disc img {
+  position: absolute;
+  inset: 30%;
+  width: 40%;
+  height: 40%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* 센터홀 — 뒤 배경이 비치는 구멍 */
+.blog-vinyl-disc::after {
+  content: "";
+  position: absolute;
+  inset: 47%;
+  border-radius: 50%;
+  background: var(--blog-bg);
+  box-shadow: 0 0 0 1.5px rgb(0 0 0 / 60%);
+}
+
+@keyframes blog-vinyl-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .blog-vinyl-disc,
+  .blog-vinyl::before {
+    animation: none;
+  }
+}
+
+/* 곡명이 길어도 본문 안쪽까지 침범하지 않게 */
+.blog-vinyl-info {
+  min-width: 0;
+  max-width: 11rem;
+  text-align: right;
+}
+
+.blog-vinyl-label {
+  color: var(--blog-faint);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+}
+
+.blog-vinyl-title {
+  display: block;
+  margin-top: 0.25rem;
+  overflow: hidden;
+  color: var(--blog-text);
+  font-family: var(--blog-serif, inherit);
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.4;
+  text-decoration: none;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+a.blog-vinyl-title:hover {
+  color: var(--blog-accent);
+}
+
+a.blog-vinyl-title:focus-visible {
+  outline: 2px solid var(--blog-accent);
+  outline-offset: 4px;
+}
+
+.blog-vinyl-artist,
+.blog-vinyl-idle {
+  margin-top: 0.15rem;
+  overflow: hidden;
+  color: var(--blog-muted);
+  font-size: 0.82rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 붓글씨는 형제 레이아웃과 무관하게 레일 정중앙에 고정 —
+   모드 전환 시 주변 요소가 바뀌어도 제자리에서 크기만 변한다 */
+.blog-side-title-wrap {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none;
+}
+
+.blog-side-title-link {
+  pointer-events: auto;
+}
+
+.blog-side-bottom {
+  margin-top: auto;
+}
+
+/* 견현사제 붓글씨 — 잉크 알파 마스크에 테마 색을 입힌다 */
+.blog-side-title {
+  height: min(46vh, 29rem);
+  aspect-ratio: 269 / 985;
+  margin: 0;
+  background-color: var(--blog-text);
+  -webkit-mask: url("/calligraphy-gyeonhyeonsaje.png") center / contain no-repeat;
+  mask: url("/calligraphy-gyeonhyeonsaje.png") center / contain no-repeat;
+}
+
+.blog-side-author {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 1.1rem;
+  margin-top: 1.4rem;
+  color: var(--blog-muted);
+  font-size: 0.85rem;
+}
+
+.blog-side-author span {
+  font-family: var(--blog-serif, inherit);
+  font-weight: 700;
+  color: var(--blog-text);
+}
+
+.blog-side-author a {
+  color: var(--blog-muted);
+  text-decoration: none;
+}
+
+.blog-side-author a:hover {
+  color: var(--blog-accent);
+}
+
+.blog-side-author a:focus-visible {
+  outline: 2px solid var(--blog-accent);
+  outline-offset: 4px;
+}
+
+.blog-content-col {
+  min-width: 0;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(2.5rem, 6vh, 4rem) clamp(2rem, 6vw, 6.5rem);
+}
+
+.blog-content-col > section {
+  width: min(100%, 44rem);
+}
+
+.blog-hero-quote {
+  margin-top: 1.5rem;
+}
+
+.blog-hero-quote figcaption {
+  margin-top: 0.6rem;
+  color: var(--blog-faint);
+  font-family: var(--blog-serif, inherit);
+  font-size: 0.85rem;
+}
+
+.blog-article-header h1,
+.blog-article-shell > h1 {
+  margin-top: 0.8rem;
+  color: var(--blog-text);
+  font-family: var(--blog-serif, inherit);
+  font-size: clamp(2.2rem, 4.4vw, 3.6rem);
+  font-weight: 900;
+  line-height: 1.22;
+  letter-spacing: 0;
+  text-wrap: balance;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+
+.blog-hero-copy,
+.blog-article-header > p,
+.blog-not-found-copy {
+  margin-top: 1.25rem;
+  color: var(--blog-muted);
+  font-size: clamp(1rem, 1.8vw, 1.2rem);
+  line-height: 1.75;
+  word-break: keep-all;
+}
+
+.blog-hero-copy {
+  margin-top: 0;
+  font-family: var(--blog-serif, inherit);
+}
+
+.blog-related h2 {
+  color: var(--blog-text);
+  font-family: var(--blog-serif, inherit);
+  font-size: clamp(1.5rem, 3vw, 2.1rem);
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: 0;
+}
+
+/* 갈래 블록 — 선 없이 여백으로만 호흡 */
+.blog-thread-block {
+  scroll-margin-top: 2.5rem;
+}
+
+.blog-thread-block + .blog-thread-block {
+  margin-top: clamp(2.8rem, 6vh, 4.2rem);
+}
+
+.blog-thread-block h2 {
+  color: var(--blog-text);
+  font-family: var(--blog-serif, inherit);
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.blog-thread-posts {
+  min-width: 0;
+  margin-top: 1rem;
+  display: grid;
+  gap: 0.7rem;
+}
+
+.blog-thread-more {
+  margin-top: 0.9rem;
+}
+
+.blog-thread-more a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.25rem;
+  color: var(--blog-faint);
+  font-size: 0.85rem;
+  text-decoration: none;
+}
+
+.blog-thread-more a:hover {
+  color: var(--blog-accent);
+}
+
+.blog-thread-more a:focus-visible {
+  outline: 2px solid var(--blog-accent);
+  outline-offset: 4px;
+}
+
+/* 갈래 페이지 — 연도별 묶음 */
+.blog-year-block {
+  display: grid;
+  grid-template-columns: minmax(4.5rem, 6rem) minmax(0, 1fr);
+  gap: clamp(1.25rem, 3vw, 2.5rem);
+  margin-top: clamp(2.2rem, 5vh, 3.2rem);
+}
+
+.blog-year-block h2 {
+  color: var(--blog-text);
+  font-family: var(--blog-serif, inherit);
+  font-size: 1.3rem;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.blog-year-rows {
+  min-width: 0;
+  display: grid;
+  gap: 0.35rem;
+}
+
+.blog-post-row,
+.blog-archive-row {
+  display: grid;
+  align-items: baseline;
+  color: var(--blog-text);
+  text-decoration: none;
+}
+
+.blog-post-row {
+  grid-template-columns: 7.4rem minmax(0, 1fr);
+  gap: 1.2rem;
+}
+
+.blog-archive-row {
+  grid-template-columns: 5.7rem minmax(0, 1fr);
+  gap: 1.25rem;
+  padding: 0.55rem 0;
+}
+
+.blog-post-row:hover .blog-post-title,
+.blog-archive-row:hover .blog-post-title {
+  color: var(--blog-accent);
+}
+
+.blog-post-date {
+  color: var(--blog-faint);
+  font-size: 0.82rem;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.blog-post-title {
+  display: block;
+  min-width: 0;
+  color: var(--blog-text);
+  font-family: var(--blog-serif, inherit);
+  font-size: 1.02rem;
+  font-weight: 600;
+  line-height: 1.5;
+  transition: color 160ms ease;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+
+.blog-article-shell {
+  width: min(100%, 48rem);
+  margin: 0 auto;
+}
+
+.blog-breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  align-items: center;
+  margin-bottom: clamp(2rem, 5vw, 3.5rem);
+  color: var(--blog-faint);
+  font-size: 0.9rem;
+}
+
+.blog-breadcrumb a {
+  color: var(--blog-muted);
+  text-decoration: none;
+}
+
+.blog-breadcrumb a:hover {
+  color: var(--blog-accent);
+}
+
+.blog-article-header {
+  border-bottom: 1px solid var(--blog-line-strong);
+  padding-bottom: clamp(2rem, 5vw, 3.5rem);
+}
+
+.blog-article-meta {
+  margin-top: 1.6rem;
+}
+
+.blog-article-meta > div {
+  color: var(--blog-muted);
+}
+
+.blog-markdown {
+  margin-top: clamp(2rem, 5vw, 3.5rem);
+  color: inherit;
+  font-size: 1rem;
+  line-height: 1.86;
+}
+
+.blog-markdown h1,
+.blog-markdown h2,
+.blog-markdown h3,
+.blog-markdown h4 {
+  color: inherit;
+  font-family: var(--blog-serif, inherit);
+  font-weight: 700;
+  line-height: 1.35;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+  scroll-margin-top: 5rem;
+}
+
+.blog-markdown h1 {
+  margin-top: 3.5rem;
+  padding-bottom: 0.9rem;
+  border-bottom: 1px solid var(--blog-line, currentColor);
+  font-size: 2rem;
+}
+
+.blog-markdown h2 {
+  margin-top: 3.3rem;
+  padding-bottom: 0.65rem;
+  border-bottom: 1px solid var(--blog-line, currentColor);
+  font-size: 1.55rem;
+}
+
+.blog-markdown h3 {
+  margin-top: 2.4rem;
+  font-size: 1.25rem;
+}
+
+.blog-markdown h4 {
+  margin-top: 2rem;
+  font-size: 1.08rem;
+}
+
+.blog-markdown p {
+  margin-top: 1.15rem;
+  color: var(--blog-body, inherit);
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+
+.blog-markdown ul,
+.blog-markdown ol {
+  margin-top: 1rem;
+  padding-left: 1.35rem;
+  color: var(--blog-body, inherit);
+}
+
+.blog-markdown ul {
+  list-style: disc;
+}
+
+.blog-markdown ol {
+  list-style: decimal;
+}
+
+.blog-markdown li {
+  margin-top: 0.45rem;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+
+.blog-markdown li::marker {
+  color: var(--blog-accent, #ef4444);
+}
+
+.blog-markdown a {
+  color: var(--blog-accent, #ef4444);
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--blog-accent, #ef4444) 38%, transparent);
+  text-underline-offset: 0.22em;
+}
+
+.blog-markdown strong {
+  color: var(--blog-text, inherit);
+  font-weight: 800;
+}
+
+.blog-markdown code {
+  border: 1px solid var(--blog-line, #d8dde3);
+  border-radius: 0.25rem;
+  background: var(--blog-surface-soft, rgba(0, 0, 0, 0.04));
+  padding: 0.1rem 0.3rem;
+  color: var(--blog-text, inherit);
+  font-family: var(--blog-mono, monospace);
+  font-size: 0.88em;
+}
+
+.blog-markdown pre {
+  margin-top: 1.25rem;
+  overflow-x: auto;
+  border: 1px solid var(--blog-line, #d8dde3);
+  border-radius: 0.35rem;
+  background: var(--blog-surface, #fff);
+  padding: 1rem;
+  font-family: var(--blog-mono, monospace);
+  font-size: 0.88rem;
+  line-height: 1.7;
+}
+
+.blog-markdown pre code {
+  border: 0;
+  background: transparent;
+  padding: 0;
+}
+
+.blog-markdown hr {
+  margin: 2.5rem 0;
+  border: 0;
+  border-top: 1px solid var(--blog-line, currentColor);
+}
+
+.blog-markdown blockquote {
+  margin-top: 1.5rem;
+  border-left: 3px solid var(--blog-accent, #ef4444);
+  padding-left: 1rem;
+  color: var(--blog-muted, inherit);
+}
+
+.blog-related {
+  margin-top: clamp(3rem, 6vw, 4.5rem);
+  border-top: 1px solid var(--blog-line-strong);
+  padding-top: 1.7rem;
+}
+
+.blog-related > div {
+  margin-top: 1rem;
+}
+
+.blog-return-link {
+  display: inline-flex;
+  margin-top: 2rem;
+  color: var(--blog-accent);
+  font-weight: 760;
+  text-decoration: none;
+}
+
+.blog-site-footer {
+  border-top: 1px solid var(--blog-line-strong);
+  padding: 2.4rem 0 3.2rem;
+}
+
+.blog-site-footer > div {
+  width: min(100%, 52rem);
+  margin: 0 auto;
+  padding: 0 clamp(1.25rem, 4vw, 2.5rem);
+}
+
+.blog-footer-name {
+  color: var(--blog-text);
+  font-family: var(--blog-serif, inherit);
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.blog-footer-motto {
+  margin-top: 0.45rem;
+  color: var(--blog-muted);
+  font-family: var(--blog-serif, inherit);
+  font-size: 0.9rem;
+  line-height: 1.7;
+  word-break: keep-all;
+}
+
+.blog-footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.4rem;
+  margin-top: 0.9rem;
+}
+
+.blog-footer-links a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  color: var(--blog-muted);
+  font-size: 0.85rem;
+  text-decoration: none;
+}
+
+.blog-footer-links a:hover {
+  color: var(--blog-accent);
+}
+
+.blog-footer-links a:focus-visible {
+  outline: 2px solid var(--blog-accent);
+  outline-offset: 4px;
+}
+
+.bear .blog-markdown {
+  --blog-line: rgb(209 213 219);
+  --blog-surface: rgba(255, 255, 255, 0.78);
+  --blog-surface-soft: rgba(243, 244, 246, 0.86);
+  --blog-accent: #ef4444;
+}
+
+.dark .bear .blog-markdown {
+  --blog-line: rgb(55 65 81);
+  --blog-surface: rgba(17, 24, 39, 0.7);
+  --blog-surface-soft: rgba(31, 41, 55, 0.9);
+  --blog-muted: rgb(209 213 219);
+  --blog-text: rgb(249 250 251);
+}
+
+@media (max-width: 1020px) {
+  .blog-shell {
+    flex-direction: column;
+  }
+
+  .blog-side {
+    position: static;
+    height: auto;
+    width: 100%;
+    min-width: 0;
+    gap: 2rem;
+  }
+
+  .blog-pane {
+    width: 100%;
+    flex: none;
+  }
+
+  /* 모바일은 레일 높이가 가변이라 붓글씨를 일반 흐름으로 되돌린다 */
+  .blog-side-title-wrap {
+    position: static;
+    pointer-events: auto;
+  }
+
+  /* 모바일: 곡 정보는 생략하고 작은 디스크만 코너에 */
+  .blog-vinyl {
+    --vinyl-size: 3.2rem;
+  }
+
+  .blog-vinyl-info {
+    display: none;
+  }
+
+  /* 모바일 리딩 모드 — 레일은 얇은 붓글씨 배너로, LP는 생략 */
+  .blog-public[data-view="reading"] .blog-side {
+    width: 100%;
+    padding: 1rem clamp(1.25rem, 4vw, 3.5rem);
+  }
+
+  .blog-public[data-view="reading"] .blog-side-nav {
+    position: static;
+  }
+
+  .blog-public[data-view="reading"] .blog-side-bottom {
+    display: none;
+  }
+
+  .blog-public[data-view="reading"] .blog-side-title {
+    height: 6.5rem;
+  }
+
+  .blog-public[data-view="reading"] .blog-side-title-wrap {
+    justify-content: flex-start;
+  }
+
+  .blog-side-nav a,
+  .blog-side-nav button {
+    writing-mode: horizontal-tb;
+    display: inline-flex;
+    align-items: center;
+    min-inline-size: auto;
+    min-height: 2.75rem;
+    letter-spacing: 0.1em;
+  }
+
+  .blog-side-title {
+    height: clamp(14rem, 42vh, 20rem);
+  }
+
+  .blog-content-col {
+    min-height: 0;
+    justify-content: flex-start;
+    padding-top: clamp(2.5rem, 6vw, 3.5rem);
+    padding-bottom: 5rem;
+  }
+}
+
+@media (max-width: 860px) {
+  .blog-year-block {
+    grid-template-columns: 1fr;
+    gap: 0.9rem;
+  }
+
+  .blog-archive-row {
+    grid-template-columns: 4.7rem minmax(0, 1fr);
+    gap: 0.9rem;
+  }
+}
+
+@media (max-width: 520px) {
+  .blog-side,
+  .blog-content-col,
+  .blog-main {
+    padding-inline: 1.1rem;
+  }
+
+  .blog-side-title {
+    height: 13rem;
+  }
+
+  .blog-article-header h1,
+  .blog-article-shell > h1 {
+    font-size: 2.2rem;
+  }
+
+  .blog-post-row {
+    grid-template-columns: 1fr;
+    gap: 0.15rem;
+  }
+
+  .blog-archive-row {
+    grid-template-columns: 1fr;
+    gap: 0.2rem;
+  }
+}

@@ -5,6 +5,7 @@ import Shell from "~/components/Shell";
 import Login from "~/pages/Login";
 import Boot from "~/pages/Boot";
 import AdminSetup from "~/pages/AdminSetup";
+import BlogPage from "~/pages/BlogPage";
 import SEO, { SEOProvider } from "~/components/SEO";
 import { useDeviceMode } from "~/components/mobile/hooks/useDeviceMode";
 
@@ -14,6 +15,8 @@ import "katex/dist/katex.min.css";
 import "~/styles/index.css";
 
 export default function App() {
+  const pathname = window.location.pathname;
+  const isBlogPath = pathname === "/blog" || pathname.startsWith("/blog/");
   const [login, setLogin] = useState<boolean>(false);
   const [booting, setBooting] = useState<boolean>(false);
   const [restart, setRestart] = useState<boolean>(false);
@@ -83,26 +86,32 @@ export default function App() {
 
   return (
     <SEOProvider>
-      <SEO />
-      {booting ? (
-        <Boot restart={restart} sleep={sleep} setBooting={setBooting} />
-      ) : showAdminSetup ? (
-        <AdminSetup onComplete={handleSetupComplete} onSkip={handleSetupSkip} />
-      ) : login ? (
-        <Shell
-          setLogin={setLogin}
-          shutMac={shutMac}
-          sleepMac={sleepMac}
-          restartMac={restartMac}
-        />
+      {isBlogPath ? (
+        <BlogPage pathname={pathname} />
       ) : (
-        <Login
-          setLogin={setLogin}
-          setAdminMode={handleAdminMode}
-          shutMac={shutMac}
-          sleepMac={sleepMac}
-          restartMac={restartMac}
-        />
+        <>
+          <SEO />
+          {booting ? (
+            <Boot restart={restart} sleep={sleep} setBooting={setBooting} />
+          ) : showAdminSetup ? (
+            <AdminSetup onComplete={handleSetupComplete} onSkip={handleSetupSkip} />
+          ) : login ? (
+            <Shell
+              setLogin={setLogin}
+              shutMac={shutMac}
+              sleepMac={sleepMac}
+              restartMac={restartMac}
+            />
+          ) : (
+            <Login
+              setLogin={setLogin}
+              setAdminMode={handleAdminMode}
+              shutMac={shutMac}
+              sleepMac={sleepMac}
+              restartMac={restartMac}
+            />
+          )}
+        </>
       )}
     </SEOProvider>
   );
