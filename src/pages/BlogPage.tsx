@@ -94,6 +94,8 @@ function BlogSideRail({ theme, onToggleTheme }: BlogThemeProps) {
         <BlogThemeToggle theme={theme} onToggleTheme={onToggleTheme} />
       </nav>
 
+      <BlogVinyl />
+
       <div className="blog-side-title-wrap">
         <a
           href="/blog"
@@ -105,7 +107,6 @@ function BlogSideRail({ theme, onToggleTheme }: BlogThemeProps) {
       </div>
 
       <div className="blog-side-bottom">
-        <BlogVinyl />
         <figure className="blog-hero-quote">
           <blockquote className="blog-hero-copy">
             “어진 사람을 보면 어떻게 그와 같아질까를 생각하며, 어질지 못한 사람을 보면
