@@ -158,33 +158,46 @@ async function resolveDate(data, filePath) {
 }
 
 async function transformBody(body, slug, assetIndex, slugByNoteName) {
-  let out = body.replace(/%%[\s\S]*?%%/g, "").trim();
+  // 코드 펜스/인라인 코드 안의 옵시디언 문법은 건드리지 않는다 (홀수 인덱스 = 코드)
+  const segments = body.trim().split(/(```[\s\S]*?```|`[^`\n]*`)/g);
+  const result = [];
 
-  // 임베드: ![[file.png|300]] → 자산 복사 + 표준 이미지 문법
-  const embeds = [...out.matchAll(/!\[\[([^\]|]+)(?:\|[^\]]*)?\]\]/g)];
-  for (const embed of embeds) {
-    const target = embed[1].trim();
-    const sourcePath = assetIndex.get(path.basename(target));
-    if (!sourcePath) {
-      warnings.push(`${slug}: 첨부 "${target}"를 vault에서 찾지 못해 그대로 둠`);
+  for (let index = 0; index < segments.length; index++) {
+    if (index % 2 === 1) {
+      result.push(segments[index]);
       continue;
     }
-    const assetName = sanitizeAssetName(path.basename(target));
-    const destDir = path.join(OUT_ASSETS_DIR, slug);
-    await fs.mkdir(destDir, { recursive: true });
-    await fs.copyFile(sourcePath, path.join(destDir, assetName));
-    const markup = ASSET_EXTENSIONS.has(path.extname(assetName)) ? "!" : "";
-    out = out.replace(embed[0], `${markup}[](/blog/${slug}/${assetName})`);
+
+    let segment = segments[index].replace(/%%[\s\S]*?%%/g, "");
+
+    // 임베드: ![[file.png|300]] → 자산 복사 + 표준 이미지 문법
+    const embeds = [...segment.matchAll(/!\[\[([^\]|]+)(?:\|[^\]]*)?\]\]/g)];
+    for (const embed of embeds) {
+      const target = embed[1].trim();
+      const sourcePath = assetIndex.get(path.basename(target));
+      if (!sourcePath) {
+        warnings.push(`${slug}: 첨부 "${target}"를 vault에서 찾지 못해 그대로 둠`);
+        continue;
+      }
+      const assetName = sanitizeAssetName(path.basename(target));
+      const destDir = path.join(OUT_ASSETS_DIR, slug);
+      await fs.mkdir(destDir, { recursive: true });
+      await fs.copyFile(sourcePath, path.join(destDir, assetName));
+      const markup = ASSET_EXTENSIONS.has(path.extname(assetName)) ? "!" : "";
+      segment = segment.replace(embed[0], `${markup}[](/blog/${slug}/${assetName})`);
+    }
+
+    // 내부 링크: 발행 글이면 블로그 링크, 아니면 텍스트만 남긴다
+    segment = segment.replace(/\[\[([^\]|]+)(?:\|([^\]]*))?\]\]/g, (_, target, alias) => {
+      const label = alias?.trim() || target.trim();
+      const linkedSlug = slugByNoteName.get(path.basename(target.trim(), ".md"));
+      return linkedSlug ? `[${label}](/blog/${linkedSlug})` : label;
+    });
+
+    result.push(segment);
   }
 
-  // 내부 링크: 발행 글이면 블로그 링크, 아니면 텍스트만 남긴다
-  out = out.replace(/\[\[([^\]|]+)(?:\|([^\]]*))?\]\]/g, (_, target, alias) => {
-    const label = alias?.trim() || target.trim();
-    const linkedSlug = slugByNoteName.get(path.basename(target.trim(), ".md"));
-    return linkedSlug ? `[${label}](/blog/${linkedSlug})` : label;
-  });
-
-  return out;
+  return result.join("");
 }
 
 function serializePost(meta, body) {
