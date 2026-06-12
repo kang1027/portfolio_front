@@ -11,13 +11,21 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      # 공인망 SSH 노출 대신 tailnet에 잠깐 합류해서 홈서버로 직접 접속
+      - name: Connect Tailscale
+        uses: tailscale/github-action@v3
+        with:
+          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
+          tags: tag:ci
+
       - name: Deploy to Server via SSH
         uses: appleboy/ssh-action@v1.0.0
         with:
-          host: ${{ secrets.SSH_HOST }}
+          host: 100.81.204.65
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
-          port: ${{ secrets.SSH_PORT }}
+          port: 22
           script: |
             cd ${{ secrets.DEPLOY_PATH }}
             git pull origin main
