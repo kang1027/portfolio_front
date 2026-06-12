@@ -94,8 +94,6 @@ function BlogSideRail({ theme, onToggleTheme }: BlogThemeProps) {
         <BlogThemeToggle theme={theme} onToggleTheme={onToggleTheme} />
       </nav>
 
-      <BlogVinyl />
-
       <div className="blog-side-title-wrap">
         <a
           href="/blog"
@@ -411,6 +409,7 @@ export default function BlogPage({ pathname }: BlogPageProps) {
       data-shifting={shifting ? "true" : "false"}
       onClick={handleRootClick}
     >
+      <BlogVinyl />
       <main className="blog-shell">
         <BlogSideRail theme={theme} onToggleTheme={toggleTheme} />
         <div className="blog-pane" key={path}>
