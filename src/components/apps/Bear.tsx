@@ -139,6 +139,16 @@ const BlogMiddlebar = ({
   onSelectGroup,
   onSelectPost
 }: BlogMiddlebarProps) => {
+  const [expanded, setExpanded] = useState<Partial<Record<BlogGroupId, boolean>>>({
+    [selectedGroupId]: true
+  });
+
+  const toggleGroup = (groupId: BlogGroupId) => {
+    const opening = !expanded[groupId];
+    setExpanded({ ...expanded, [groupId]: opening });
+    if (opening) onSelectGroup(groupId);
+  };
+
   return (
     <div className="h-full overflow-y-auto">
       <div className="border-b border-c-300 px-4 py-4">
@@ -153,53 +163,69 @@ const BlogMiddlebar = ({
       <div className="py-2">
         {blogGroups.map((group) => {
           const posts = getBlogPostsByGroup(group.id);
-          const selected = selectedGroupId === group.id;
+          // 빈 갈래는 블로그 인덱스와 동일하게 숨긴다
+          if (posts.length === 0) return null;
+          const open = Boolean(expanded[group.id]);
 
           return (
             <section key={group.id} className="border-b border-c-200">
               <button
                 type="button"
+                aria-expanded={open}
                 className={`w-full px-4 py-3 text-left transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-red-500 ${
-                  selected
+                  selectedGroupId === group.id
                     ? "bg-white dark:bg-neutral-900"
                     : "hover:bg-white dark:hover:bg-neutral-900"
                 }`}
-                onClick={() => onSelectGroup(group.id)}
+                onClick={() => toggleGroup(group.id)}
               >
-                <div className="flex items-baseline justify-between gap-3">
-                  <span className="text-sm font-bold text-c-900">{group.title}</span>
+                <div className="flex items-center justify-between gap-3">
+                  <span className="hstack min-w-0 gap-1.5">
+                    <span
+                      className={`i-fa-solid:chevron-right shrink-0 text-[10px] text-c-500 transition-transform duration-200 ${
+                        open ? "rotate-90" : ""
+                      }`}
+                      aria-hidden="true"
+                    />
+                    <span className="truncate text-sm font-bold text-c-900">
+                      {group.title}
+                    </span>
+                  </span>
                   <span className="font-tabular text-xs text-c-500">{posts.length}</span>
                 </div>
-                <p className="mt-1 line-clamp-2 text-xs leading-relaxed text-c-600">
+                <p className="mt-1 line-clamp-2 pl-5 text-xs leading-relaxed text-c-600">
                   {group.description}
                 </p>
               </button>
 
               <div
                 className={`grid transition-[grid-template-rows] duration-200 ${
-                  selected ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+                  open ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
                 }`}
               >
                 <div className="min-h-0 overflow-hidden">
-                  {posts.map((post) => (
-                    <button
-                      key={post.slug}
-                      type="button"
-                      className={`w-full border-l-2 px-6 py-3 text-left transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-red-500 ${
-                        selectedSlug === post.slug
-                          ? "border-red-500 bg-red-50/60 dark:bg-red-950/20"
-                          : "border-transparent hover:bg-white dark:hover:bg-neutral-900"
-                      }`}
-                      onClick={() => onSelectPost(post)}
-                    >
-                      <h3 className="text-sm font-semibold leading-snug text-c-900">
-                        {post.title}
-                      </h3>
-                      <p className="mt-1 line-clamp-2 text-xs leading-relaxed text-c-600">
-                        {post.summary}
-                      </p>
-                    </button>
-                  ))}
+                  {/* 하위 글은 트리처럼 들여쓰고 세로 가이드라인으로 소속을 보여준다 */}
+                  <div className="mb-2 ml-6 border-l border-c-300">
+                    {posts.map((post) => (
+                      <button
+                        key={post.slug}
+                        type="button"
+                        className={`w-full border-l-2 py-2.5 pl-4 pr-4 text-left transition-colors -ml-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-red-500 ${
+                          selectedSlug === post.slug
+                            ? "border-red-500 bg-red-50/60 dark:bg-red-950/20"
+                            : "border-transparent hover:bg-white dark:hover:bg-neutral-900"
+                        }`}
+                        onClick={() => onSelectPost(post)}
+                      >
+                        <h3 className="text-sm font-semibold leading-snug text-c-900">
+                          {post.title}
+                        </h3>
+                        <p className="mt-1 line-clamp-2 text-xs leading-relaxed text-c-600">
+                          {post.summary}
+                        </p>
+                      </button>
+                    ))}
+                  </div>
                 </div>
               </div>
             </section>
