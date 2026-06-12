@@ -4,11 +4,34 @@ import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
 import rehypeRaw from "rehype-raw";
 import rehypeExternalLinks from "rehype-external-links";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { dracula, prism } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 interface MarkdownArticleProps {
   content: string;
   className?: string;
+  /** 미지정 시 전역(macOS) 다크 상태를 따른다 — 블로그는 로컬 테마를 명시로 넘김 */
+  dark?: boolean;
 }
+
+// 자주 쓰는 축약 언어명 → Prism 정식 명칭
+const LANGUAGE_ALIASES: Record<string, string> = {
+  ts: "typescript",
+  js: "javascript",
+  py: "python",
+  rs: "rust",
+  kt: "kotlin",
+  sh: "bash",
+  zsh: "bash",
+  shell: "bash",
+  yml: "yaml",
+  md: "markdown",
+  html: "markup",
+  xml: "markup",
+  svg: "markup",
+  vue: "markup",
+  dockerfile: "docker"
+};
 
 // 옵시디언 콜아웃 타입별 아이콘·라벨 (모르는 타입은 note로 폴백)
 const CALLOUT_META: Record<string, { icon: string; label: string }> = {
@@ -55,40 +78,69 @@ const transformObsidianSyntax = (markdown: string): string => {
     .join("");
 };
 
-interface MarkdownLinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
-  node?: unknown;
-}
-
-const components: Components = {
-  a: ({
-    node,
-    href,
-    children,
-    ...props
-  }: MarkdownLinkProps & { children?: React.ReactNode }) => (
+const buildComponents = (dark: boolean): Components => ({
+  a: ({ node, href, children, ...props }) => (
     <a {...props} href={href} target="_blank" rel="noopener noreferrer">
       {children}
     </a>
   ),
   img: ({ src, alt, ...props }) => (
     <img {...props} src={src} alt={alt ?? ""} loading="lazy" />
-  )
-};
+  ),
+  // 코드블록 래퍼는 아래 code 쪽 SyntaxHighlighter가 담당
+  pre: ({ children }) => <>{children}</>,
+  code: ({ node, className, children, ...props }) => {
+    const raw = String(children);
+    const match = /language-([\w-]+)/.exec(className ?? "");
+    // 펜스 블록은 항상 개행을 포함한다 — 개행 없으면 인라인 코드
+    if (!match && !raw.includes("\n")) {
+      return (
+        <code className={className} {...props}>
+          {children}
+        </code>
+      );
+    }
+
+    const language = match
+      ? LANGUAGE_ALIASES[match[1].toLowerCase()] ?? match[1].toLowerCase()
+      : "text";
+
+    return (
+      <SyntaxHighlighter
+        style={dark ? dracula : prism}
+        language={language}
+        PreTag="div"
+        className="blog-codeblock"
+        codeTagProps={{ style: { fontFamily: "var(--blog-mono)" } }}
+      >
+        {raw.replace(/\n$/, "")}
+      </SyntaxHighlighter>
+    );
+  }
+});
 
 export default function MarkdownArticle({
   content,
-  className = ""
+  className = "",
+  dark
 }: MarkdownArticleProps) {
+  const globalDark = useStore((state) => state.dark);
+  const isDark = dark ?? Boolean(globalDark);
+
   return (
     <div className={`markdown ${className}`}>
       <ReactMarkdown
         remarkPlugins={[remarkGfm, remarkMath]}
+        remarkRehypeOptions={{
+          footnoteLabel: "각주",
+          footnoteBackLabel: "본문으로 돌아가기"
+        }}
         rehypePlugins={[
           rehypeRaw,
           rehypeKatex,
           [rehypeExternalLinks, { target: "_blank", rel: ["noopener", "noreferrer"] }]
         ]}
-        components={components}
+        components={buildComponents(isDark)}
       >
         {transformObsidianSyntax(content)}
       </ReactMarkdown>
