@@ -76,13 +76,42 @@ $$
 
 ### 콜아웃
 
-옵시디언 콜아웃 그대로 쓰면 타입별 색깔 박스로 렌더됨:
+옵시디언 콜아웃 그대로 쓰면 잉크 계열별로 먹 디자인이 다른 수묵 박스로 렌더됨. 전 타입:
 
-> [!note] 메모 제목
-> 안에서 **굵게**, `코드`, 링크 전부 됨. 제목 생략하면 타입명이 들어감.
+> [!note] 메모 — `note`
+> 먹/백 잉크(테마 반전) + 번짐 텍스처. 안에서 **굵게**, `코드`, 링크 전부 됨.
 
-> [!tip]
-> 지원 타입: `note` `tip` `info` `todo`(파랑) / `warning`(주황) / `danger` `question`(빨강) / `success`(초록) / `quote` `example` `abstract`. 모르는 타입은 note로 폴백.
+> [!quote] 인용 — `quote`
+> 먹/백 잉크 + 산수 안개 텍스처.
+
+> [!example] 예시 — `example`
+> 먹/백 잉크 + 번짐.
+
+> [!abstract] 요약 — `abstract` (`summary`)
+> 먹/백 잉크 + 번짐.
+
+> [!tip] 팁 — `tip` (`hint`)
+> 청 잉크 + 유체 흐름 텍스처.
+
+> [!info] 정보 — `info`
+> 청 잉크 + 유체 흐름.
+
+> [!todo] 할 일 — `todo`
+> 청 잉크 + 유체 흐름.
+
+> [!warning] 주의 — `warning` (`caution`)
+> 황토 잉크 + 거친 붓터치 텍스처.
+
+> [!danger] 위험 — `danger` (`error`)
+> 인주 잉크 + 튄 자국 텍스처.
+
+> [!question] 질문 — `question`
+> 인주 잉크 + 튄 자국.
+
+> [!success] 완료 — `success`
+> 송록 잉크 + 잔잔한 결 텍스처.
+
+제목 생략하면 타입명이 들어가고, 모르는 타입은 note로 폴백.
 
 ### HTML 태그
 
