@@ -202,13 +202,11 @@
 /* 레일 폭 전환 안무 — 붓글씨만 모핑하고, 텍스트류는 즉시 숨겼다가
    폭이 자리 잡은 뒤 페이드인 (위치·표시 상태가 점프하는 복귀 방향 대비) */
 .blog-side-nav,
-.blog-vinyl,
 .blog-side-bottom {
   transition: opacity 180ms ease 40ms;
 }
 
 .blog-public[data-shifting="true"] .blog-side-nav,
-.blog-public[data-shifting="true"] .blog-vinyl,
 .blog-public[data-shifting="true"] .blog-side-bottom {
   opacity: 0;
   transition: none;
@@ -238,48 +236,6 @@
   display: none;
 }
 
-/* 접힌 스트립: LP가 스트립 폭 중앙에 오도록 */
-.blog-public[data-view="reading"] .blog-vinyl {
-  left: 0;
-  right: 0;
-  flex-direction: row;
-  justify-content: center;
-}
-
-.blog-public[data-view="reading"] .blog-vinyl-disc {
-  width: 3.6rem;
-  height: 3.6rem;
-}
-
-/* 접힌 레일: 곡 정보는 LP 호버 시 팝오버로 */
-.blog-public[data-view="reading"] .blog-vinyl-info {
-  position: absolute;
-  left: calc(100% + 0.9rem);
-  top: 0;
-  text-align: left;
-  z-index: 6;
-  width: max-content;
-  max-width: 16rem;
-  padding: 0.65rem 0.95rem;
-  border: 1px solid #2c2c2c;
-  border-radius: 0.5rem;
-  background: rgb(8 8 8 / 94%);
-  opacity: 0;
-  visibility: hidden;
-  transform: translateX(-6px);
-  transition:
-    opacity 200ms ease,
-    transform 200ms ease,
-    visibility 200ms;
-}
-
-.blog-public[data-view="reading"] .blog-vinyl:hover .blog-vinyl-info,
-.blog-public[data-view="reading"] .blog-vinyl:focus-within .blog-vinyl-info {
-  opacity: 1;
-  visibility: visible;
-  transform: none;
-}
-
 .blog-side-title-link {
   display: block;
 }
@@ -297,22 +253,16 @@
   height: clamp(12rem, 36vh, 17rem);
 }
 
-/* LP 턴테이블 — 레일 우상단 코너에 띄운다 (하단은 붓글씨와 겹쳐서 금지)
-   디스크가 모서리 쪽, 곡 정보는 안쪽으로 */
-.blog-side .blog-vinyl {
-  position: absolute;
+/* LP 턴테이블 — 본문 영역 우상단에 고정. 디스크가 모서리 쪽, 곡 정보는 안쪽으로 */
+.blog-vinyl {
+  position: fixed;
   top: clamp(1.5rem, 4vh, 3rem);
-  right: clamp(2rem, 5vw, 4.5rem);
+  right: clamp(1.5rem, 3vw, 3rem);
+  z-index: 7;
   display: flex;
   flex-direction: row-reverse;
   align-items: center;
   gap: 1rem;
-}
-
-/* 곡명이 길어도 중앙의 붓글씨 영역까지 침범하지 않게 */
-.blog-side .blog-vinyl-info {
-  max-width: 11rem;
-  text-align: right;
 }
 
 /* 판: 가는 그루브 + 비스듬한 광택, 가운데 넓은 라벨, 작은 센터홀 */
@@ -372,13 +322,13 @@
   object-fit: cover;
 }
 
-/* 센터홀 */
+/* 센터홀 — 뒤 배경이 비치는 구멍 */
 .blog-vinyl-disc::after {
   content: "";
   position: absolute;
   inset: 47%;
   border-radius: 50%;
-  background: #10181a;
+  background: var(--blog-bg);
   box-shadow: 0 0 0 1.5px rgb(0 0 0 / 60%);
 }
 
@@ -394,8 +344,11 @@
   }
 }
 
+/* 곡명이 길어도 본문 안쪽까지 침범하지 않게 */
 .blog-vinyl-info {
   min-width: 0;
+  max-width: 11rem;
+  text-align: right;
 }
 
 .blog-vinyl-label {
@@ -945,14 +898,14 @@ a.blog-vinyl-title:focus-visible {
     pointer-events: auto;
   }
 
-  /* 모바일은 코너 띄우기 대신 일반 흐름 — 내비와 부딪힌다 */
-  .blog-side .blog-vinyl {
-    position: static;
-    flex-direction: row;
+  /* 모바일: 곡 정보는 생략하고 작은 디스크만 코너에 */
+  .blog-vinyl-disc {
+    width: 3.2rem;
+    height: 3.2rem;
   }
 
-  .blog-side .blog-vinyl-info {
-    text-align: left;
+  .blog-vinyl-info {
+    display: none;
   }
 
   /* 모바일 리딩 모드 — 레일은 얇은 붓글씨 배너로, LP는 생략 */
@@ -965,8 +918,7 @@ a.blog-vinyl-title:focus-visible {
     position: static;
   }
 
-  .blog-public[data-view="reading"] .blog-side-bottom,
-  .blog-public[data-view="reading"] .blog-vinyl {
+  .blog-public[data-view="reading"] .blog-side-bottom {
     display: none;
   }
 
