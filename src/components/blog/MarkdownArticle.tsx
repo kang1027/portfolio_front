@@ -5,13 +5,11 @@ import rehypeKatex from "rehype-katex";
 import rehypeRaw from "rehype-raw";
 import rehypeExternalLinks from "rehype-external-links";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { dracula, prism } from "react-syntax-highlighter/dist/esm/styles/prism";
+import { dracula } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 interface MarkdownArticleProps {
   content: string;
   className?: string;
-  /** 미지정 시 전역(macOS) 다크 상태를 따른다 — 블로그는 로컬 테마를 명시로 넘김 */
-  dark?: boolean;
 }
 
 // 자주 쓰는 축약 언어명 → Prism 정식 명칭
@@ -33,23 +31,23 @@ const LANGUAGE_ALIASES: Record<string, string> = {
   dockerfile: "docker"
 };
 
-// 옵시디언 콜아웃 타입별 아이콘·라벨 (모르는 타입은 note로 폴백)
-const CALLOUT_META: Record<string, { icon: string; label: string }> = {
-  note: { icon: "✏️", label: "Note" },
-  tip: { icon: "💡", label: "Tip" },
-  hint: { icon: "💡", label: "Tip" },
-  info: { icon: "ℹ️", label: "Info" },
-  todo: { icon: "☑️", label: "Todo" },
-  warning: { icon: "⚠️", label: "Warning" },
-  caution: { icon: "⚠️", label: "Warning" },
-  danger: { icon: "🛑", label: "Danger" },
-  error: { icon: "🛑", label: "Danger" },
-  question: { icon: "❓", label: "Question" },
-  example: { icon: "📎", label: "Example" },
-  quote: { icon: "❝", label: "Quote" },
-  abstract: { icon: "📋", label: "Abstract" },
-  summary: { icon: "📋", label: "Summary" },
-  success: { icon: "✅", label: "Success" }
+// 옵시디언 콜아웃 타입별 낙관 도장(한자 한 자) + 한글 라벨 (모르는 타입은 note로 폴백)
+const CALLOUT_META: Record<string, { stamp: string; label: string }> = {
+  note: { stamp: "註", label: "메모" },
+  tip: { stamp: "訣", label: "팁" },
+  hint: { stamp: "訣", label: "팁" },
+  info: { stamp: "報", label: "정보" },
+  todo: { stamp: "課", label: "할 일" },
+  warning: { stamp: "警", label: "주의" },
+  caution: { stamp: "警", label: "주의" },
+  danger: { stamp: "危", label: "위험" },
+  error: { stamp: "危", label: "위험" },
+  question: { stamp: "問", label: "질문" },
+  example: { stamp: "例", label: "예시" },
+  quote: { stamp: "引", label: "인용" },
+  abstract: { stamp: "要", label: "요약" },
+  summary: { stamp: "要", label: "요약" },
+  success: { stamp: "成", label: "완료" }
 };
 
 // 코드 펜스/인라인 코드 안은 건드리지 않고 옵시디언 전용 문법을 변환한다.
@@ -71,14 +69,14 @@ const transformObsidianSyntax = (markdown: string): string => {
             const meta = CALLOUT_META[type] ?? CALLOUT_META.note;
             const variant = CALLOUT_META[type] ? type : "note";
             const heading = title.trim() || meta.label;
-            return `${prefix}<span class="callout-badge callout-${variant}">${meta.icon} ${heading}</span>`;
+            return `${prefix}<span class="callout-badge callout-${variant}"><span class="callout-stamp">${meta.stamp}</span>${heading}</span>`;
           }
         );
     })
     .join("");
 };
 
-const buildComponents = (dark: boolean): Components => ({
+const markdownComponents: Components = {
   a: ({ node, href, children, ...props }) => (
     <a {...props} href={href} target="_blank" rel="noopener noreferrer">
       {children}
@@ -105,28 +103,27 @@ const buildComponents = (dark: boolean): Components => ({
       ? LANGUAGE_ALIASES[match[1].toLowerCase()] ?? match[1].toLowerCase()
       : "text";
 
+    // 테마 무관 "밤 창문" — 종이 본문에 네온 토큰이 켜진 먹색 블록
     return (
-      <SyntaxHighlighter
-        style={dark ? dracula : prism}
-        language={language}
-        PreTag="div"
-        className="blog-codeblock"
-        codeTagProps={{ style: { fontFamily: "var(--blog-mono)" } }}
-      >
-        {raw.replace(/\n$/, "")}
-      </SyntaxHighlighter>
+      <div className="blog-codewrap" data-language={language === "text" ? "" : language}>
+        <SyntaxHighlighter
+          style={dracula}
+          language={language}
+          PreTag="div"
+          className="blog-codeblock"
+          codeTagProps={{ style: { fontFamily: "var(--blog-mono)" } }}
+        >
+          {raw.replace(/\n$/, "")}
+        </SyntaxHighlighter>
+      </div>
     );
   }
-});
+};
 
 export default function MarkdownArticle({
   content,
-  className = "",
-  dark
+  className = ""
 }: MarkdownArticleProps) {
-  const globalDark = useStore((state) => state.dark);
-  const isDark = dark ?? Boolean(globalDark);
-
   return (
     <div className={`markdown ${className}`}>
       <ReactMarkdown
@@ -140,7 +137,7 @@ export default function MarkdownArticle({
           rehypeKatex,
           [rehypeExternalLinks, { target: "_blank", rel: ["noopener", "noreferrer"] }]
         ]}
-        components={buildComponents(isDark)}
+        components={markdownComponents}
       >
         {transformObsidianSyntax(content)}
       </ReactMarkdown>
