@@ -971,15 +971,50 @@ a.blog-vinyl-title:focus-visible {
   color: inherit;
 }
 
+/* 콜아웃 잉크 팔레트 — 기본 콜아웃은 먹(라이트)/백(다크) 반전, 타입색은 테마별 톤 보정 */
+.blog-markdown {
+  --callout-ink: #222;
+  --callout-red: #b3372a;
+  --callout-blue: #41688f;
+  --callout-amber: #a86d14;
+  --callout-green: #44704e;
+}
+
+/* 전역 다크(Bear) */
+.dark .blog-markdown {
+  --callout-ink: #ececec;
+  --callout-red: #db6155;
+  --callout-blue: #82aacf;
+  --callout-amber: #d2a04a;
+  --callout-green: #84b08f;
+}
+
+/* 블로그 로컬 테마가 전역 다크보다 우선 */
+.blog-public[data-blog-theme="light"] .blog-markdown {
+  --callout-ink: #222;
+  --callout-red: #b3372a;
+  --callout-blue: #41688f;
+  --callout-amber: #a86d14;
+  --callout-green: #44704e;
+}
+
+.blog-public[data-blog-theme="dark"] .blog-markdown {
+  --callout-ink: #ececec;
+  --callout-red: #db6155;
+  --callout-blue: #82aacf;
+  --callout-amber: #d2a04a;
+  --callout-green: #84b08f;
+}
+
 /* 옵시디언 콜아웃 — 타입색이 옅게 비치는 반투명 박스 + 먹 번짐 텍스처 */
 .blog-markdown blockquote:has(.callout-badge) {
   position: relative;
   overflow: hidden;
-  border-left: 3px solid var(--callout-color, var(--blog-accent, #b3372a));
+  border-left: 3px solid var(--callout-color, var(--callout-ink));
   border-radius: 0 0.45rem 0.45rem 0;
   background: color-mix(
     in srgb,
-    var(--callout-color, var(--blog-accent, #b3372a)) 6%,
+    var(--callout-color, var(--callout-ink)) 6%,
     transparent
   );
   padding: 0.85rem 1.15rem 0.95rem;
@@ -992,7 +1027,7 @@ a.blog-vinyl-title:focus-visible {
   content: "";
   position: absolute;
   inset: 0;
-  background-color: var(--callout-color, var(--blog-accent, #b3372a));
+  background-color: var(--callout-color, var(--callout-ink));
   -webkit-mask: url("/blog-ink-wash.webp") right center / cover no-repeat;
   mask: url("/blog-ink-wash.webp") right center / cover no-repeat;
   opacity: 0.1;
@@ -1016,25 +1051,30 @@ a.blog-vinyl-title:focus-visible {
 .callout-badge {
   display: block;
   margin-bottom: 0.3rem;
-  color: var(--callout-color, var(--blog-accent, #b3372a));
+  color: var(--callout-color, var(--callout-ink));
   font-family: var(--blog-serif, inherit);
   font-weight: 700;
   font-size: 0.95em;
 }
 
-/* 타입별 인장색 — 도장·라벨·보더가 같은 변수를 탄다 */
+/* 타입별 잉크색 — 라벨·보더·먹 텍스처가 같은 변수를 탄다 */
 .blog-markdown blockquote:has(.callout-tip),
 .blog-markdown blockquote:has(.callout-info),
 .blog-markdown blockquote:has(.callout-todo) {
-  --callout-color: #4d7fae;
+  --callout-color: var(--callout-blue);
 }
 
 .blog-markdown blockquote:has(.callout-warning) {
-  --callout-color: #b97a1c;
+  --callout-color: var(--callout-amber);
+}
+
+.blog-markdown blockquote:has(.callout-danger),
+.blog-markdown blockquote:has(.callout-question) {
+  --callout-color: var(--callout-red);
 }
 
 .blog-markdown blockquote:has(.callout-success) {
-  --callout-color: #4b7a55;
+  --callout-color: var(--callout-green);
 }
 
 .blog-related {
