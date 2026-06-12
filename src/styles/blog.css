@@ -971,13 +971,15 @@ a.blog-vinyl-title:focus-visible {
   color: inherit;
 }
 
-/* 옵시디언 콜아웃 — 타입색이 옅게 비치는 반투명 박스 + 붓글씨 라벨 */
+/* 옵시디언 콜아웃 — 타입색이 옅게 비치는 반투명 박스 + 먹 번짐 텍스처 */
 .blog-markdown blockquote:has(.callout-badge) {
+  position: relative;
+  overflow: hidden;
   border-left: 3px solid var(--callout-color, var(--blog-accent, #b3372a));
   border-radius: 0 0.45rem 0.45rem 0;
   background: color-mix(
     in srgb,
-    var(--callout-color, var(--blog-accent, #b3372a)) 7%,
+    var(--callout-color, var(--blog-accent, #b3372a)) 6%,
     transparent
   );
   padding: 0.85rem 1.15rem 0.95rem;
@@ -985,20 +987,39 @@ a.blog-vinyl-title:focus-visible {
   font-family: var(--blog-sans, inherit);
 }
 
+/* 수묵 붓터치 — 타입색 잉크가 종이에 번진 듯한 워시 레이어 */
+.blog-markdown blockquote:has(.callout-badge)::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: var(--callout-color, var(--blog-accent, #b3372a));
+  -webkit-mask: url("/blog-ink-wash.webp") right center / cover no-repeat;
+  mask: url("/blog-ink-wash.webp") right center / cover no-repeat;
+  opacity: 0.1;
+  pointer-events: none;
+}
+
+/* 다크에선 먹이 묻히기 쉬워서 한 톤 진하게 */
+.blog-public[data-blog-theme="dark"] .blog-markdown blockquote:has(.callout-badge)::before {
+  opacity: 0.16;
+}
+
+.blog-markdown blockquote:has(.callout-badge) > * {
+  position: relative;
+}
+
 /* 안쪽 첫 문단의 기본 상단 마진 제거 — 배지가 박스 상단에 붙도록 */
 .blog-markdown blockquote:has(.callout-badge) > :first-child {
   margin-top: 0;
 }
 
-/* 라벨 — 먹 묻은 붓글씨 */
 .callout-badge {
   display: block;
-  margin-bottom: 0.15rem;
+  margin-bottom: 0.3rem;
   color: var(--callout-color, var(--blog-accent, #b3372a));
-  font-family: "Nanum Brush Script", var(--blog-serif, inherit);
-  font-weight: 400;
-  font-size: 1.45em;
-  line-height: 1.25;
+  font-family: var(--blog-serif, inherit);
+  font-weight: 700;
+  font-size: 0.95em;
 }
 
 /* 타입별 인장색 — 도장·라벨·보더가 같은 변수를 탄다 */
