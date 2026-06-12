@@ -1028,8 +1028,9 @@ a.blog-vinyl-title:focus-visible {
   position: absolute;
   inset: 0;
   background-color: var(--callout-color, var(--callout-ink));
-  -webkit-mask: url("/blog-ink-wash.webp") center / 100% 100% no-repeat;
-  mask: url("/blog-ink-wash.webp") center / 100% 100% no-repeat;
+  -webkit-mask: var(--callout-mask, url("/blog-ink-wash.webp")) center / 100% 100%
+    no-repeat;
+  mask: var(--callout-mask, url("/blog-ink-wash.webp")) center / 100% 100% no-repeat;
   opacity: 0.26;
   pointer-events: none;
 }
@@ -1057,24 +1058,34 @@ a.blog-vinyl-title:focus-visible {
   font-size: 0.95em;
 }
 
-/* 타입별 잉크색 — 라벨·보더·먹 텍스처가 같은 변수를 탄다 */
+/* 타입별 잉크색·먹 디자인 — 라벨·보더·텍스처가 같은 변수를 탄다
+   note류 = 번짐(기본), 청 = 유체 흐름, 황토 = 거친 붓터치,
+   인주 = 튄 자국, 송록 = 잔잔한 결, 인용 = 산수 안개 */
 .blog-markdown blockquote:has(.callout-tip),
 .blog-markdown blockquote:has(.callout-info),
 .blog-markdown blockquote:has(.callout-todo) {
   --callout-color: var(--callout-blue);
+  --callout-mask: url("/blog-ink-flow.webp");
 }
 
 .blog-markdown blockquote:has(.callout-warning) {
   --callout-color: var(--callout-amber);
+  --callout-mask: url("/blog-ink-stroke.webp");
 }
 
 .blog-markdown blockquote:has(.callout-danger),
 .blog-markdown blockquote:has(.callout-question) {
   --callout-color: var(--callout-red);
+  --callout-mask: url("/blog-ink-splash.webp");
 }
 
 .blog-markdown blockquote:has(.callout-success) {
   --callout-color: var(--callout-green);
+  --callout-mask: url("/blog-ink-calm.webp");
+}
+
+.blog-markdown blockquote:has(.callout-quote) {
+  --callout-mask: url("/blog-ink-mist.webp");
 }
 
 .blog-related {
