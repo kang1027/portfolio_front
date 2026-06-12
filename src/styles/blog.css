@@ -202,11 +202,13 @@
 /* 레일 폭 전환 안무 — 붓글씨만 모핑하고, 텍스트류는 즉시 숨겼다가
    폭이 자리 잡은 뒤 페이드인 (위치·표시 상태가 점프하는 복귀 방향 대비) */
 .blog-side-nav,
+.blog-vinyl,
 .blog-side-bottom {
   transition: opacity 180ms ease 40ms;
 }
 
 .blog-public[data-shifting="true"] .blog-side-nav,
+.blog-public[data-shifting="true"] .blog-vinyl,
 .blog-public[data-shifting="true"] .blog-side-bottom {
   opacity: 0;
   transition: none;
@@ -236,8 +238,11 @@
   display: none;
 }
 
+/* 접힌 스트립: LP가 스트립 폭 중앙에 오도록 */
 .blog-public[data-view="reading"] .blog-vinyl {
-  margin-bottom: 0;
+  left: 0;
+  right: 0;
+  flex-direction: row;
   justify-content: center;
 }
 
@@ -250,7 +255,8 @@
 .blog-public[data-view="reading"] .blog-vinyl-info {
   position: absolute;
   left: calc(100% + 0.9rem);
-  bottom: 0;
+  top: 0;
+  text-align: left;
   z-index: 6;
   width: max-content;
   max-width: 16rem;
@@ -291,13 +297,22 @@
   height: clamp(12rem, 36vh, 17rem);
 }
 
-/* LP 턴테이블 — 지금 듣는 곡 */
-.blog-vinyl {
-  position: relative;
+/* LP 턴테이블 — 레일 우상단 코너에 띄운다 (하단은 붓글씨와 겹쳐서 금지)
+   디스크가 모서리 쪽, 곡 정보는 안쪽으로 */
+.blog-side .blog-vinyl {
+  position: absolute;
+  top: clamp(1.5rem, 4vh, 3rem);
+  right: clamp(2rem, 5vw, 4.5rem);
   display: flex;
+  flex-direction: row-reverse;
   align-items: center;
   gap: 1rem;
-  margin-bottom: 1.5rem;
+}
+
+/* 곡명이 길어도 중앙의 붓글씨 영역까지 침범하지 않게 */
+.blog-side .blog-vinyl-info {
+  max-width: 11rem;
+  text-align: right;
 }
 
 /* 판: 가는 그루브 + 비스듬한 광택, 가운데 넓은 라벨, 작은 센터홀 */
@@ -930,6 +945,16 @@ a.blog-vinyl-title:focus-visible {
     pointer-events: auto;
   }
 
+  /* 모바일은 코너 띄우기 대신 일반 흐름 — 내비와 부딪힌다 */
+  .blog-side .blog-vinyl {
+    position: static;
+    flex-direction: row;
+  }
+
+  .blog-side .blog-vinyl-info {
+    text-align: left;
+  }
+
   /* 모바일 리딩 모드 — 레일은 얇은 붓글씨 배너로, LP는 생략 */
   .blog-public[data-view="reading"] .blog-side {
     width: 100%;
@@ -940,7 +965,8 @@ a.blog-vinyl-title:focus-visible {
     position: static;
   }
 
-  .blog-public[data-view="reading"] .blog-side-bottom {
+  .blog-public[data-view="reading"] .blog-side-bottom,
+  .blog-public[data-view="reading"] .blog-vinyl {
     display: none;
   }
 
