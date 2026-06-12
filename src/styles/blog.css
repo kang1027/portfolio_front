@@ -872,8 +872,9 @@ a.blog-vinyl-title:focus-visible {
   vertical-align: top;
 }
 
+/* 상·하단 굵은 괘선은 인주 — 옛 인찰지(붉은 괘선지) 느낌 */
 .blog-markdown thead th {
-  border-top: 2px solid var(--blog-text, currentColor);
+  border-top: 2px solid var(--callout-red, #b3372a);
   border-bottom: 1px solid var(--blog-line-strong, rgb(127 127 127 / 55%));
   color: var(--blog-text, inherit);
   font-family: var(--blog-serif, inherit);
@@ -881,7 +882,7 @@ a.blog-vinyl-title:focus-visible {
 }
 
 .blog-markdown tbody tr:last-child td {
-  border-bottom: 2px solid var(--blog-text, currentColor);
+  border-bottom: 2px solid var(--callout-red, #b3372a);
 }
 
 /* 이미지 — 본문 폭에 맞춰 중앙, 살짝 둥글게 */
@@ -963,12 +964,22 @@ a.blog-vinyl-title:focus-visible {
   text-decoration: none;
 }
 
-/* ==하이라이트== — 치자물 형광펜, 라이트/다크 공용 */
+/* ==하이라이트== — 주묵(朱墨) 붓 스와이프: 비대칭 라운드 + 양끝이 붓처럼 빠진다 */
 .blog-markdown mark {
-  border-radius: 0.2em;
-  background: rgb(245 200 66 / 30%);
-  padding: 0.05em 0.25em;
+  margin: 0 -0.12em;
+  border-radius: 0.6em 0.2em 0.55em 0.25em;
+  background: linear-gradient(
+    100deg,
+    transparent 0.8%,
+    color-mix(in srgb, var(--callout-red, #b3372a) 38%, transparent) 3.5%,
+    color-mix(in srgb, var(--callout-red, #b3372a) 24%, transparent) 50%,
+    color-mix(in srgb, var(--callout-red, #b3372a) 34%, transparent) 96.5%,
+    transparent 99.2%
+  );
+  padding: 0.12em 0.4em 0.16em;
   color: inherit;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
 }
 
 /* 콜아웃 잉크 팔레트 — 기본 콜아웃은 먹(라이트)/백(다크) 반전, 타입색은 테마별 톤 보정 */
