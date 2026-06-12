@@ -971,41 +971,34 @@ a.blog-vinyl-title:focus-visible {
   color: inherit;
 }
 
-/* 옵시디언 콜아웃 — 낙관 도장 배지가 찍힌 박스 */
+/* 옵시디언 콜아웃 — 타입색이 옅게 비치는 반투명 박스 + 붓글씨 라벨 */
 .blog-markdown blockquote:has(.callout-badge) {
   border-left: 3px solid var(--callout-color, var(--blog-accent, #b3372a));
   border-radius: 0 0.45rem 0.45rem 0;
-  background: var(--blog-surface-soft, rgb(127 127 127 / 8%));
-  padding: 0.95rem 1.15rem;
+  background: color-mix(
+    in srgb,
+    var(--callout-color, var(--blog-accent, #b3372a)) 7%,
+    transparent
+  );
+  padding: 0.85rem 1.15rem 0.95rem;
   color: var(--blog-body, inherit);
   font-family: var(--blog-sans, inherit);
 }
 
-.callout-badge {
-  display: flex;
-  align-items: center;
-  gap: 0.55rem;
-  margin-bottom: 0.45rem;
-  color: var(--callout-color, var(--blog-accent, #b3372a));
-  font-family: var(--blog-serif, inherit);
-  font-weight: 700;
-  font-size: 0.95em;
+/* 안쪽 첫 문단의 기본 상단 마진 제거 — 배지가 박스 상단에 붙도록 */
+.blog-markdown blockquote:has(.callout-badge) > :first-child {
+  margin-top: 0;
 }
 
-/* 도장 — 인주 사각에 흰 한자 한 자 */
-.callout-stamp {
-  display: inline-flex;
-  flex-shrink: 0;
-  align-items: center;
-  justify-content: center;
-  width: 1.5em;
-  height: 1.5em;
-  border-radius: 0.18em;
-  background: var(--callout-color, var(--blog-accent, #b3372a));
-  color: #fff;
-  font-size: 0.88em;
-  font-weight: 600;
-  line-height: 1;
+/* 라벨 — 먹 묻은 붓글씨 */
+.callout-badge {
+  display: block;
+  margin-bottom: 0.15rem;
+  color: var(--callout-color, var(--blog-accent, #b3372a));
+  font-family: "Nanum Brush Script", var(--blog-serif, inherit);
+  font-weight: 400;
+  font-size: 1.45em;
+  line-height: 1.25;
 }
 
 /* 타입별 인장색 — 도장·라벨·보더가 같은 변수를 탄다 */
