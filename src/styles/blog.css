@@ -828,20 +828,31 @@ a.blog-vinyl-title:focus-visible {
   font-size: inherit;
 }
 
+/* 구분선 — 가운데 인주 마름모 한 점 (문집 장식) */
 .blog-markdown hr {
-  margin: 2.5rem 0;
+  margin: 2.75rem 0;
   border: 0;
-  border-top: 1px solid var(--blog-line, currentColor);
+  text-align: center;
 }
 
+.blog-markdown hr::after {
+  content: "◆";
+  color: var(--blog-accent, #b3372a);
+  font-size: 0.6rem;
+  opacity: 0.75;
+}
+
+/* 일반 인용 — 명조로 한 호흡 느리게 */
 .blog-markdown blockquote {
   margin-top: 1.5rem;
   border-left: 3px solid var(--blog-accent, #ef4444);
-  padding-left: 1rem;
+  padding-left: 1.1rem;
   color: var(--blog-muted, inherit);
+  font-family: var(--blog-serif, inherit);
+  line-height: 1.9;
 }
 
-/* GFM 표 — 좁은 화면에선 가로 스크롤 */
+/* GFM 표 — 활판 괘선표: 세로선 없이 상·하단 굵은 괘선 + 헤더 아래 가는 선 */
 .blog-markdown table {
   display: block;
   width: max-content;
@@ -854,16 +865,23 @@ a.blog-vinyl-title:focus-visible {
 
 .blog-markdown th,
 .blog-markdown td {
-  border: 1px solid var(--blog-line, rgb(127 127 127 / 35%));
-  padding: 0.55rem 1rem;
+  border: 0;
+  border-bottom: 1px solid var(--blog-line, rgb(127 127 127 / 30%));
+  padding: 0.6rem 1.6rem 0.6rem 0.15rem;
   text-align: left;
   vertical-align: top;
 }
 
 .blog-markdown thead th {
-  background: var(--blog-surface-soft, rgb(127 127 127 / 10%));
+  border-top: 2px solid var(--blog-text, currentColor);
+  border-bottom: 1px solid var(--blog-line-strong, rgb(127 127 127 / 55%));
   color: var(--blog-text, inherit);
+  font-family: var(--blog-serif, inherit);
   font-weight: 700;
+}
+
+.blog-markdown tbody tr:last-child td {
+  border-bottom: 2px solid var(--blog-text, currentColor);
 }
 
 /* 이미지 — 본문 폭에 맞춰 중앙, 살짝 둥글게 */
@@ -874,13 +892,35 @@ a.blog-vinyl-title:focus-visible {
   border-radius: 0.5rem;
 }
 
-/* 신택스 하이라이트 코드블록 (react-syntax-highlighter가 인라인 테마를 입힘) */
+/* 코드블록 — 종이에 뚫린 "밤 창문": 테마 무관 레일 먹색 + 네온 토큰 */
+.blog-markdown .blog-codewrap {
+  position: relative;
+  margin-top: 1.6rem;
+}
+
+/* 우상단 언어 라벨 — 네온사인 */
+.blog-markdown .blog-codewrap:not([data-language=""])::before {
+  content: attr(data-language);
+  position: absolute;
+  top: 0.75rem;
+  right: 1.05rem;
+  z-index: 1;
+  color: #ff5347;
+  font-family: var(--blog-mono, monospace);
+  font-size: 0.66rem;
+  letter-spacing: 0.14em;
+  text-shadow: 0 0 9px rgb(255 83 71 / 60%);
+}
+
 .blog-markdown .blog-codeblock {
-  margin: 1.5rem 0 0;
-  border-radius: 0.55rem;
-  padding: 1.05rem 1.2rem !important;
+  margin: 0;
+  border: 1px solid rgb(255 255 255 / 7%);
+  border-radius: 0.6rem;
+  background: #0d1417 !important;
+  box-shadow: 0 8px 26px rgb(0 0 0 / 20%);
+  padding: 1.1rem 1.25rem !important;
   font-size: 0.875rem;
-  line-height: 1.65;
+  line-height: 1.7;
 }
 
 /* 체크리스트 — 기본 마커 제거 + 액센트 체크박스 */
@@ -904,7 +944,14 @@ a.blog-vinyl-title:focus-visible {
 
 .blog-markdown section[data-footnotes] h2 {
   margin-top: 0;
+  color: var(--blog-text, inherit);
+  font-family: var(--blog-serif, inherit);
   font-size: 1.05em;
+}
+
+.blog-markdown [data-footnote-ref],
+.blog-markdown [data-footnote-backref] {
+  color: var(--blog-accent, #b3372a);
 }
 
 .blog-markdown [data-footnote-ref] {
@@ -916,74 +963,64 @@ a.blog-vinyl-title:focus-visible {
   text-decoration: none;
 }
 
-/* ==하이라이트== — 형광펜 느낌, 라이트/다크 공용 */
+/* ==하이라이트== — 치자물 형광펜, 라이트/다크 공용 */
 .blog-markdown mark {
   border-radius: 0.2em;
-  background: rgb(250 204 21 / 32%);
+  background: rgb(245 200 66 / 30%);
   padding: 0.05em 0.25em;
   color: inherit;
 }
 
-/* 옵시디언 콜아웃 — 첫 줄 배지(callout-badge)가 있으면 인용을 박스로 승격 */
+/* 옵시디언 콜아웃 — 낙관 도장 배지가 찍힌 박스 */
 .blog-markdown blockquote:has(.callout-badge) {
-  border-left-width: 3px;
+  border-left: 3px solid var(--callout-color, var(--blog-accent, #b3372a));
   border-radius: 0 0.45rem 0.45rem 0;
   background: var(--blog-surface-soft, rgb(127 127 127 / 8%));
-  padding: 0.85rem 1.1rem;
+  padding: 0.95rem 1.15rem;
   color: var(--blog-body, inherit);
+  font-family: var(--blog-sans, inherit);
 }
 
 .callout-badge {
-  display: block;
-  margin-bottom: 0.35rem;
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin-bottom: 0.45rem;
+  color: var(--callout-color, var(--blog-accent, #b3372a));
+  font-family: var(--blog-serif, inherit);
   font-weight: 700;
-  font-size: 0.92em;
+  font-size: 0.95em;
 }
 
-/* 타입별 포인트 컬러 — 배지 글자 + 왼쪽 보더 */
-.callout-badge.callout-note,
-.callout-badge.callout-quote,
-.callout-badge.callout-abstract,
-.callout-badge.callout-example {
-  color: var(--blog-text, inherit);
+/* 도장 — 인주 사각에 흰 한자 한 자 */
+.callout-stamp {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 1.5em;
+  height: 1.5em;
+  border-radius: 0.18em;
+  background: var(--callout-color, var(--blog-accent, #b3372a));
+  color: #fff;
+  font-size: 0.88em;
+  font-weight: 600;
+  line-height: 1;
 }
 
+/* 타입별 인장색 — 도장·라벨·보더가 같은 변수를 탄다 */
 .blog-markdown blockquote:has(.callout-tip),
 .blog-markdown blockquote:has(.callout-info),
 .blog-markdown blockquote:has(.callout-todo) {
-  border-left-color: #3b82f6;
-}
-
-.callout-badge.callout-tip,
-.callout-badge.callout-info,
-.callout-badge.callout-todo {
-  color: #3b82f6;
+  --callout-color: #4d7fae;
 }
 
 .blog-markdown blockquote:has(.callout-warning) {
-  border-left-color: #d97706;
-}
-
-.callout-badge.callout-warning {
-  color: #d97706;
-}
-
-.blog-markdown blockquote:has(.callout-danger),
-.blog-markdown blockquote:has(.callout-question) {
-  border-left-color: var(--blog-accent, #ef4444);
-}
-
-.callout-badge.callout-danger,
-.callout-badge.callout-question {
-  color: var(--blog-accent, #ef4444);
+  --callout-color: #b97a1c;
 }
 
 .blog-markdown blockquote:has(.callout-success) {
-  border-left-color: #16a34a;
-}
-
-.callout-badge.callout-success {
-  color: #16a34a;
+  --callout-color: #4b7a55;
 }
 
 .blog-related {
