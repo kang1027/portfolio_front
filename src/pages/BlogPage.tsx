@@ -239,7 +239,7 @@ function BlogGroupPane({ groupId }: { groupId: string }) {
   );
 }
 
-function BlogArticlePane({ post, dark }: { post: BlogPost; dark: boolean }) {
+function BlogArticlePane({ post }: { post: BlogPost }) {
   const group = getBlogGroup(post.group);
   const relatedPosts = getBlogPostsByGroup(post.group)
     .filter((relatedPost) => relatedPost.slug !== post.slug)
@@ -275,7 +275,7 @@ function BlogArticlePane({ post, dark }: { post: BlogPost; dark: boolean }) {
             </div>
           </header>
 
-          <MarkdownArticle content={post.content} className="blog-markdown" dark={dark} />
+          <MarkdownArticle content={post.content} className="blog-markdown" />
 
           {nextPosts.length > 0 && (
             <footer className="blog-related">
@@ -418,7 +418,7 @@ export default function BlogPage({ pathname }: BlogPageProps) {
           ) : route.view === "group" ? (
             <BlogGroupPane groupId={route.groupId} />
           ) : post ? (
-            <BlogArticlePane post={post} dark={theme === "dark"} />
+            <BlogArticlePane post={post} />
           ) : (
             <BlogNotFoundPane />
           )}
