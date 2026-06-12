@@ -151,6 +151,9 @@
 
   position: sticky;
   top: 0;
+  /* 패널 등장 애니메이션(fill-mode)이 .blog-main에 stacking context를 남겨서
+     떠 있는 내비가 본문 아래 깔린다 — 레일을 명시적으로 위 레이어로 */
+  z-index: 5;
   height: 100dvh;
   flex: 0 0 auto;
   width: 42%;
@@ -222,12 +225,14 @@
   display: inline-flex;
 }
 
-/* 리딩 모드: 내비는 레일 옆 검정 영역 좌상단에 띄운다 */
+/* 리딩 모드: 내비는 레일 옆 검정 영역 좌상단에 띄운다.
+   sticky 레일 밖으로 absolute로 빼면 WebKit에서 히트테스트가 깨질 수 있어
+   뷰포트 기준 fixed로 고정 (left = 스트립 폭 + 간격) */
 .blog-public[data-view="reading"] .blog-side-nav {
-  position: absolute;
-  left: calc(100% + 1.75rem);
+  position: fixed;
+  left: calc(clamp(6rem, 9vw, 8.5rem) + 1.75rem);
   top: clamp(1.5rem, 4vh, 3rem);
-  z-index: 6;
+  z-index: 7;
 }
 
 /* 접힌 레일: 인용·작성자는 숨기고 LP만 남긴다 */
