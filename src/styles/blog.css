@@ -260,6 +260,8 @@
 
 /* LP 턴테이블 — 본문 영역 우상단에 고정. 디스크가 모서리 쪽, 곡 정보는 안쪽으로 */
 .blog-vinyl {
+  --vinyl-size: 4.8rem;
+
   position: fixed;
   top: clamp(1.5rem, 4vh, 3rem);
   right: clamp(1.5rem, 3vw, 3rem);
@@ -270,12 +272,53 @@
   gap: 1rem;
 }
 
+/* 재생 중 아우라 — 디스크 뒤에서 테마 액센트 빛이 숨쉬듯 번진다 */
+.blog-vinyl::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 0;
+  z-index: -1;
+  width: var(--vinyl-size);
+  height: var(--vinyl-size);
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--blog-accent) 65%, transparent) 0%,
+    color-mix(in srgb, var(--blog-accent) 30%, transparent) 45%,
+    transparent 72%
+  );
+  filter: blur(10px);
+  transform: translateY(-50%) scale(1.2);
+  opacity: 0;
+  transition: opacity 600ms ease;
+  pointer-events: none;
+}
+
+.blog-vinyl[data-spinning="true"]::before {
+  opacity: 1;
+  animation: blog-vinyl-aura 2.8s ease-in-out infinite;
+}
+
+@keyframes blog-vinyl-aura {
+  0%,
+  100% {
+    transform: translateY(-50%) scale(1.2);
+    opacity: 0.6;
+  }
+
+  50% {
+    transform: translateY(-50%) scale(1.55);
+    opacity: 1;
+  }
+}
+
 /* 판: 가는 그루브 + 비스듬한 광택, 가운데 넓은 라벨, 작은 센터홀 */
 .blog-vinyl-disc {
   position: relative;
   flex-shrink: 0;
-  width: 4.8rem;
-  height: 4.8rem;
+  width: var(--vinyl-size);
+  height: var(--vinyl-size);
   border-radius: 50%;
   background-color: #050505;
   background-image:
@@ -344,7 +387,8 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .blog-vinyl-disc {
+  .blog-vinyl-disc,
+  .blog-vinyl::before {
     animation: none;
   }
 }
@@ -904,9 +948,8 @@ a.blog-vinyl-title:focus-visible {
   }
 
   /* 모바일: 곡 정보는 생략하고 작은 디스크만 코너에 */
-  .blog-vinyl-disc {
-    width: 3.2rem;
-    height: 3.2rem;
+  .blog-vinyl {
+    --vinyl-size: 3.2rem;
   }
 
   .blog-vinyl-info {
