@@ -838,6 +838,76 @@ a.blog-vinyl-title:focus-visible {
   color: var(--blog-muted, inherit);
 }
 
+/* ==하이라이트== — 형광펜 느낌, 라이트/다크 공용 */
+.blog-markdown mark {
+  border-radius: 0.2em;
+  background: rgb(250 204 21 / 32%);
+  padding: 0.05em 0.25em;
+  color: inherit;
+}
+
+/* 옵시디언 콜아웃 — 첫 줄 배지(callout-badge)가 있으면 인용을 박스로 승격 */
+.blog-markdown blockquote:has(.callout-badge) {
+  border-left-width: 3px;
+  border-radius: 0 0.45rem 0.45rem 0;
+  background: var(--blog-surface-soft, rgb(127 127 127 / 8%));
+  padding: 0.85rem 1.1rem;
+  color: var(--blog-body, inherit);
+}
+
+.callout-badge {
+  display: block;
+  margin-bottom: 0.35rem;
+  font-weight: 700;
+  font-size: 0.92em;
+}
+
+/* 타입별 포인트 컬러 — 배지 글자 + 왼쪽 보더 */
+.callout-badge.callout-note,
+.callout-badge.callout-quote,
+.callout-badge.callout-abstract,
+.callout-badge.callout-example {
+  color: var(--blog-text, inherit);
+}
+
+.blog-markdown blockquote:has(.callout-tip),
+.blog-markdown blockquote:has(.callout-info),
+.blog-markdown blockquote:has(.callout-todo) {
+  border-left-color: #3b82f6;
+}
+
+.callout-badge.callout-tip,
+.callout-badge.callout-info,
+.callout-badge.callout-todo {
+  color: #3b82f6;
+}
+
+.blog-markdown blockquote:has(.callout-warning) {
+  border-left-color: #d97706;
+}
+
+.callout-badge.callout-warning {
+  color: #d97706;
+}
+
+.blog-markdown blockquote:has(.callout-danger),
+.blog-markdown blockquote:has(.callout-question) {
+  border-left-color: var(--blog-accent, #ef4444);
+}
+
+.callout-badge.callout-danger,
+.callout-badge.callout-question {
+  color: var(--blog-accent, #ef4444);
+}
+
+.blog-markdown blockquote:has(.callout-success) {
+  border-left-color: #16a34a;
+}
+
+.callout-badge.callout-success {
+  color: #16a34a;
+}
+
 .blog-related {
   margin-top: clamp(3rem, 6vw, 4.5rem);
   border-top: 1px solid var(--blog-line-strong);
