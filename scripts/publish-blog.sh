@@ -30,6 +30,3 @@ git diff --cached --name-only | sed "s/^/  /"
 # 콘텐츠(md·이미지)만 커밋하므로 lint 훅은 생략
 git commit --no-verify -m "post: 블로그 글 발행 (${changed}편 변경)"
 git push origin main
-
-echo ""
-echo "푸시 완료 — 자동 배포 시작됨. 몇 분 뒤 https://kang1027.com/blog 에 반영돼."
