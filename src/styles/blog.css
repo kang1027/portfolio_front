@@ -1022,21 +1022,21 @@ a.blog-vinyl-title:focus-visible {
   font-family: var(--blog-sans, inherit);
 }
 
-/* 수묵 붓터치 — 타입색 잉크가 종이에 번진 듯한 워시 레이어 */
+/* 수묵 번짐 — 타입색 먹이 오른쪽에서 종이로 번져 들어오는 워시 레이어 */
 .blog-markdown blockquote:has(.callout-badge)::before {
   content: "";
   position: absolute;
   inset: 0;
   background-color: var(--callout-color, var(--callout-ink));
-  -webkit-mask: url("/blog-ink-wash.webp") right center / cover no-repeat;
-  mask: url("/blog-ink-wash.webp") right center / cover no-repeat;
-  opacity: 0.1;
+  -webkit-mask: url("/blog-ink-wash.webp") center / 100% 100% no-repeat;
+  mask: url("/blog-ink-wash.webp") center / 100% 100% no-repeat;
+  opacity: 0.26;
   pointer-events: none;
 }
 
 /* 다크에선 먹이 묻히기 쉬워서 한 톤 진하게 */
 .blog-public[data-blog-theme="dark"] .blog-markdown blockquote:has(.callout-badge)::before {
-  opacity: 0.16;
+  opacity: 0.3;
 }
 
 .blog-markdown blockquote:has(.callout-badge) > * {
