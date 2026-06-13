@@ -925,6 +925,9 @@ a.blog-vinyl-title:focus-visible {
 }
 
 .blog-markdown .blog-codeblock {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   margin: 0;
   border: 1px solid rgb(255 255 255 / 7%);
   border-radius: 0.6rem;
@@ -933,6 +936,56 @@ a.blog-vinyl-title:focus-visible {
   padding: 1.1rem 1.25rem !important;
   font-size: 0.875rem;
   line-height: 1.7;
+}
+
+/* 먹 농담 — 단색 판이 아니라 벼루에 먹 친 면. 어두운 바탕엔 물 섞인 옅은(청)먹이 번져야 보인다 */
+.blog-markdown .blog-codeblock::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-color: #7da6bd;
+  -webkit-mask: url("/blog-ink-wash.webp") right top / 200% auto no-repeat;
+  mask: url("/blog-ink-wash.webp") right top / 200% auto no-repeat;
+  opacity: 0.14;
+  pointer-events: none;
+}
+
+/* 하단 좌측에도 농담 한 겹 더 — 종이에 먹이 두 번 스민 듯 */
+.blog-markdown .blog-codewrap::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: 0.6rem;
+  background-color: #6f8a99;
+  -webkit-mask: url("/blog-ink-mist.webp") left bottom / 170% auto no-repeat;
+  mask: url("/blog-ink-mist.webp") left bottom / 170% auto no-repeat;
+  opacity: 0.08;
+  pointer-events: none;
+}
+
+/* 좌측에 먹을 머금은 가는 띠 — 붓이 한 번 지나간 자리 */
+.blog-markdown .blog-codeblock::after {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  z-index: 0;
+  width: 3px;
+  background: linear-gradient(
+    180deg,
+    transparent,
+    rgb(255 255 255 / 22%) 18%,
+    rgb(255 255 255 / 14%) 82%,
+    transparent
+  );
+  pointer-events: none;
+}
+
+/* 코드·토큰은 먹 농담 위로 */
+.blog-markdown .blog-codeblock > code {
+  position: relative;
+  z-index: 1;
 }
 
 /* 체크리스트 — 기본 마커 제거 + 액센트 체크박스 */
