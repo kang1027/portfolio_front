@@ -75,11 +75,10 @@
   cursor: pointer;
 }
 
-/* 먹색 패널 안에서는 네온사인처럼 번진다 */
+/* 호버하면 인주가 배어난다 */
 .blog-side-nav a:hover,
 .blog-side-nav button:hover {
   color: var(--blog-accent);
-  text-shadow: 0 0 14px rgb(255 83 71 / 60%);
 }
 
 .blog-side-nav a:focus-visible,
@@ -142,12 +141,14 @@
 }
 
 .blog-side {
-  /* 먹색 패널 — 내부 텍스트는 변수 재정의로 반전 */
-  --blog-text: #f4f4f4;
-  --blog-body: #d6d6d6;
-  --blog-muted: #ababab;
-  --blog-faint: #878787;
-  --blog-accent: #ff5347;
+  /* 수묵 레일 — 라이트: 밝은 종이 패널 + 먹 텍스트 (테마 대응) */
+  --blog-text: #1a1a1a;
+  --blog-body: #383838;
+  --blog-muted: #6a6a6a;
+  --blog-faint: #969696;
+  --blog-accent: #b3372a;
+  --rail-bg: #f1f1ef;
+  --fox-ink: #1c1c1c;
 
   position: sticky;
   top: 0;
@@ -162,7 +163,7 @@
   flex-direction: column;
   justify-content: flex-start;
   gap: 1.5rem;
-  background-color: #10181a;
+  background-color: var(--rail-bg);
   padding: clamp(1.5rem, 4vh, 3rem) clamp(2rem, 5vw, 4.5rem)
     clamp(1.5rem, 4vh, 2.5rem);
   transition-property: width, min-width, padding;
@@ -170,7 +171,20 @@
   transition-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
 }
 
-/* 네온 시티 배경 — 블러로 뭉개서 빛망울만 남기고 붓글씨를 살린다.
+/* 다크: 먹 패널 + 흰 텍스트 + 옅은 백먹 여우 */
+.blog-public[data-blog-theme="dark"] .blog-side {
+  --blog-text: #f4f4f4;
+  --blog-body: #d6d6d6;
+  --blog-muted: #ababab;
+  --blog-faint: #878787;
+  --blog-accent: #db6155;
+  --rail-bg: #141414;
+  --fox-ink: #e8e8e8;
+
+  border-right: 1px solid #262626;
+}
+
+/* 수묵 여우 — 한지 먹그림을 테마 대비색으로 칠해 은은한 배경 텍스처로.
    레일 자체는 overflow를 열어둬야 해서(LP 팝오버) 배경만 내부에서 클리핑 */
 .blog-side-bg {
   position: absolute;
@@ -182,14 +196,11 @@
 .blog-side-bg::before {
   content: "";
   position: absolute;
-  inset: -24px;
-  /* 유화 네온 — blur는 붓터치 질감 남길 만큼만, 살짝 어둡게 해서 붓글씨를 띄운다 */
-  background: url("/blog-rail-neon.webp") center / cover no-repeat;
-  filter: blur(8px) brightness(0.82);
-}
-
-.blog-public[data-blog-theme="dark"] .blog-side {
-  border-right: 1px solid #262626;
+  inset: 0;
+  background-color: var(--fox-ink);
+  -webkit-mask: url("/blog-rail-fox.webp") center bottom / cover no-repeat;
+  mask: url("/blog-rail-fox.webp") center bottom / cover no-repeat;
+  opacity: 0.2;
 }
 
 .blog-side > :not(.blog-side-bg, .blog-side-title-wrap) {
