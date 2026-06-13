@@ -784,12 +784,23 @@ a.blog-vinyl-title:focus-visible {
   color: var(--blog-accent, #ef4444);
 }
 
+/* 링크 — 먹 위주: 본문 잉크색 + 옅은 먹 밑줄, 호버에서만 인주가 비친다 */
 .blog-markdown a {
-  color: var(--blog-accent, #ef4444);
+  color: var(--callout-ink, var(--blog-text, inherit));
   font-weight: 700;
   text-decoration: underline;
-  text-decoration-color: color-mix(in srgb, var(--blog-accent, #ef4444) 38%, transparent);
+  text-decoration-color: color-mix(in srgb, var(--callout-ink, currentColor) 42%, transparent);
   text-underline-offset: 0.22em;
+  transition: color 150ms ease, text-decoration-color 150ms ease;
+}
+
+.blog-markdown a:hover {
+  color: var(--callout-red, var(--blog-accent, #b3372a));
+  text-decoration-color: color-mix(
+    in srgb,
+    var(--callout-red, var(--blog-accent, #b3372a)) 50%,
+    transparent
+  );
 }
 
 .blog-markdown strong {
@@ -979,10 +990,10 @@ a.blog-vinyl-title:focus-visible {
   inset: auto -0.3em -0.14em;
   height: 58%;
   z-index: -1;
-  background-color: var(--callout-red, #b3372a);
+  background-color: var(--callout-ink, #222);
   -webkit-mask: url("/blog-ink-marker.webp") center / 100% 100% no-repeat;
   mask: url("/blog-ink-marker.webp") center / 100% 100% no-repeat;
-  opacity: 0.55;
+  opacity: 0.3;
   pointer-events: none;
 }
 
