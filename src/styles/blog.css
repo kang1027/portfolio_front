@@ -778,8 +778,30 @@ a.blog-vinyl-title:focus-visible {
   color: var(--blog-body, inherit);
 }
 
+/* ul 불릿 — 붓으로 콕 찍은 먹점, 테마 대응(라이트 검은 먹 / 다크 흰 먹) */
 .blog-markdown ul {
-  list-style: disc;
+  list-style: none;
+}
+
+.blog-markdown ul > li {
+  position: relative;
+}
+
+.blog-markdown ul > li:not(:has(> input))::before {
+  content: "";
+  position: absolute;
+  left: -1.05rem;
+  top: 0.66em;
+  width: 0.42em;
+  height: 0.42em;
+  background: radial-gradient(
+    circle at 38% 32%,
+    var(--callout-ink, #222),
+    color-mix(in srgb, var(--callout-ink, #222) 72%, transparent)
+  );
+  /* 완벽한 원이 아니라 붓끝으로 찍은 자국처럼 살짝 비대칭 */
+  border-radius: 62% 38% 54% 46%;
+  transform: rotate(-10deg);
 }
 
 .blog-markdown ol {
@@ -792,8 +814,9 @@ a.blog-vinyl-title:focus-visible {
   overflow-wrap: anywhere;
 }
 
-.blog-markdown li::marker {
-  color: var(--blog-accent, #ef4444);
+.blog-markdown ol > li::marker {
+  color: var(--callout-ink, #222);
+  font-weight: 700;
 }
 
 /* 링크 — 먹 위주: 본문 잉크색 + 옅은 먹 밑줄, 호버에서만 인주가 비친다 */
