@@ -990,20 +990,24 @@ a.blog-vinyl-title:focus-visible {
   inset: auto -0.3em -0.14em;
   height: 58%;
   z-index: -1;
-  background-color: var(--callout-ink, #222);
+  /* 라이트는 더 어두운 먹, 다크는 더 밝은 먹 — 양쪽 다 또렷하게 */
+  background-color: var(--mark-ink, #0a0a0a);
   -webkit-mask: url("/blog-ink-marker.webp") center / 100% 100% no-repeat;
   mask: url("/blog-ink-marker.webp") center / 100% 100% no-repeat;
-  opacity: 0.3;
+  opacity: var(--mark-opacity, 0.42);
   pointer-events: none;
 }
 
-/* 콜아웃 잉크 팔레트 — 기본 콜아웃은 먹(라이트)/백(다크) 반전, 타입색은 테마별 톤 보정 */
+/* 콜아웃 잉크 팔레트 — 기본 콜아웃은 먹(라이트)/백(다크) 반전, 타입색은 테마별 톤 보정.
+   --mark-ink/--mark-opacity: 하이라이트 붓자국은 라이트=짙은 먹, 다크=밝은 먹으로 또렷하게 */
 .blog-markdown {
   --callout-ink: #222;
   --callout-red: #b3372a;
   --callout-blue: #41688f;
   --callout-amber: #a86d14;
   --callout-green: #44704e;
+  --mark-ink: #000000;
+  --mark-opacity: 0.46;
 }
 
 /* 전역 다크(Bear) */
@@ -1013,6 +1017,8 @@ a.blog-vinyl-title:focus-visible {
   --callout-blue: #82aacf;
   --callout-amber: #d2a04a;
   --callout-green: #84b08f;
+  --mark-ink: #ffffff;
+  --mark-opacity: 0.5;
 }
 
 /* 블로그 로컬 테마가 전역 다크보다 우선 */
@@ -1022,6 +1028,8 @@ a.blog-vinyl-title:focus-visible {
   --callout-blue: #41688f;
   --callout-amber: #a86d14;
   --callout-green: #44704e;
+  --mark-ink: #000000;
+  --mark-opacity: 0.46;
 }
 
 .blog-public[data-blog-theme="dark"] .blog-markdown {
@@ -1030,6 +1038,8 @@ a.blog-vinyl-title:focus-visible {
   --callout-blue: #82aacf;
   --callout-amber: #d2a04a;
   --callout-green: #84b08f;
+  --mark-ink: #ffffff;
+  --mark-opacity: 0.5;
 }
 
 /* 옵시디언 콜아웃 — 타입색이 옅게 비치는 반투명 박스 + 먹 번짐 텍스처 */
