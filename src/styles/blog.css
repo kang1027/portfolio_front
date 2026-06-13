@@ -183,8 +183,9 @@
   content: "";
   position: absolute;
   inset: -24px;
-  background: url("/blog-rail-neon.png") center / cover no-repeat;
-  filter: blur(14px);
+  /* 유화 네온 — blur는 붓터치 질감 남길 만큼만, 살짝 어둡게 해서 붓글씨를 띄운다 */
+  background: url("/blog-rail-neon.webp") center / cover no-repeat;
+  filter: blur(8px) brightness(0.82);
 }
 
 .blog-public[data-blog-theme="dark"] .blog-side {
