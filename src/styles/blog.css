@@ -793,19 +793,38 @@ a.blog-vinyl-title:focus-visible {
   position: relative;
 }
 
+/* 불릿 = 먹 얼룩 — 항목마다 4종을 순환해서 똑같은 점 반복이 아니라 손으로 찍은 듯 */
+.blog-markdown ul > li:not(:has(> input)) {
+  padding-left: 0.2rem;
+}
+
 .blog-markdown ul > li:not(:has(> input))::before {
   content: "";
   position: absolute;
-  left: -1.5rem;
-  top: 0.72em;
-  /* 붓으로 짧게 그은 가로 먹 획 — 고문서 항목 표시 느낌 */
-  width: 0.95em;
-  height: 0.34em;
+  left: -1.7rem;
+  top: 0.48em;
+  width: 1.1em;
+  height: 1.1em;
   background-color: var(--callout-ink, #222);
-  -webkit-mask: url("/blog-ink-marker.webp") center / 100% 100% no-repeat;
-  mask: url("/blog-ink-marker.webp") center / 100% 100% no-repeat;
-  opacity: 0.82;
-  transform: rotate(-2deg);
+  -webkit-mask: var(--blot, url("/blog-blot-1.webp")) center / contain no-repeat;
+  mask: var(--blot, url("/blog-blot-1.webp")) center / contain no-repeat;
+  opacity: 0.9;
+}
+
+.blog-markdown ul > li:not(:has(> input)):nth-child(4n + 1) {
+  --blot: url("/blog-blot-1.webp");
+}
+
+.blog-markdown ul > li:not(:has(> input)):nth-child(4n + 2) {
+  --blot: url("/blog-blot-2.webp");
+}
+
+.blog-markdown ul > li:not(:has(> input)):nth-child(4n + 3) {
+  --blot: url("/blog-blot-3.webp");
+}
+
+.blog-markdown ul > li:not(:has(> input)):nth-child(4n) {
+  --blot: url("/blog-blot-4.webp");
 }
 
 .blog-markdown ol {
