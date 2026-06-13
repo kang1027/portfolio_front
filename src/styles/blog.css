@@ -987,9 +987,9 @@ a.blog-vinyl-title:focus-visible {
 .blog-markdown mark::before {
   content: "";
   position: absolute;
-  /* 글자 하단 ~42%를 먹되 옅게 깔아 글자가 비친다 — 형광펜처럼 */
+  /* 글자 하단 ~50%를 먹되 옅게 깔아 글자가 비친다 — 형광펜처럼 */
   inset: auto -0.3em -0.1em;
-  height: 42%;
+  height: 50%;
   z-index: -1;
   /* 라이트는 더 어두운 먹, 다크는 더 밝은 먹 — 양쪽 다 또렷하게 */
   background-color: var(--mark-ink, #0a0a0a);
