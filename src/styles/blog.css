@@ -987,8 +987,9 @@ a.blog-vinyl-title:focus-visible {
 .blog-markdown mark::before {
   content: "";
   position: absolute;
-  inset: auto -0.3em -0.14em;
-  height: 58%;
+  /* 글자 획을 덮지 않게 하단 띠로만 — 밑줄처럼 글자 아래에 붓이 지나간다 */
+  inset: auto -0.3em -0.1em;
+  height: 34%;
   z-index: -1;
   /* 라이트는 더 어두운 먹, 다크는 더 밝은 먹 — 양쪽 다 또렷하게 */
   background-color: var(--mark-ink, #0a0a0a);
@@ -1007,7 +1008,7 @@ a.blog-vinyl-title:focus-visible {
   --callout-amber: #a86d14;
   --callout-green: #44704e;
   --mark-ink: #000000;
-  --mark-opacity: 0.46;
+  --mark-opacity: 0.6;
 }
 
 /* 전역 다크(Bear) */
@@ -1018,7 +1019,7 @@ a.blog-vinyl-title:focus-visible {
   --callout-amber: #d2a04a;
   --callout-green: #84b08f;
   --mark-ink: #ffffff;
-  --mark-opacity: 0.5;
+  --mark-opacity: 0.62;
 }
 
 /* 블로그 로컬 테마가 전역 다크보다 우선 */
@@ -1029,7 +1030,7 @@ a.blog-vinyl-title:focus-visible {
   --callout-amber: #a86d14;
   --callout-green: #44704e;
   --mark-ink: #000000;
-  --mark-opacity: 0.46;
+  --mark-opacity: 0.6;
 }
 
 .blog-public[data-blog-theme="dark"] .blog-markdown {
@@ -1039,7 +1040,7 @@ a.blog-vinyl-title:focus-visible {
   --callout-amber: #d2a04a;
   --callout-green: #84b08f;
   --mark-ink: #ffffff;
-  --mark-opacity: 0.5;
+  --mark-opacity: 0.62;
 }
 
 /* 옵시디언 콜아웃 — 타입색이 옅게 비치는 반투명 박스 + 먹 번짐 텍스처 */
