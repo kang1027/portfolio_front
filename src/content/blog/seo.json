@@ -1,0 +1,25 @@
+{
+  "siteUrl": "https://www.kang1027.com",
+  "siteName": "kang1027's Portfolio",
+  "authorName": "강동현",
+  "authorUrl": "https://www.kang1027.com/",
+  "homeTitle": "kang1027's Portfolio",
+  "homeDescription": "macOS 스타일로 구성한 강동현의 포트폴리오. 프로젝트, 기술 스택, 연락처, 작업 기록을 담고 있다.",
+  "homeKeywords": ["portfolio", "developer", "macOS", "kang1027", "web development"],
+  "homeImage": {
+    "path": "/screenshots/light.png",
+    "width": 2898,
+    "height": 1804,
+    "alt": "kang1027 포트폴리오 미리보기"
+  },
+  "blogName": "견현사제",
+  "blogTitle": "견현사제 | kang1027",
+  "blogDescription": "견현사제의 태도로 남기는 강동현의 프로젝트 판단, 구현 노트, 개인 기록.",
+  "blogKeywords": ["kang1027", "강동현", "견현사제", "개발 블로그", "구현 노트", "프로젝트 회고"],
+  "blogImage": {
+    "path": "/blog-rail-neon.png",
+    "width": 1024,
+    "height": 585,
+    "alt": "견현사제 블로그 미리보기"
+  }
+}
