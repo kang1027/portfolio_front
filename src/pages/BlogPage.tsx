@@ -155,14 +155,12 @@ function BlogThreadSections() {
         return (
           <section key={group.id} id={`thread-${group.id}`} className="blog-thread-block">
             <h2>{group.title}</h2>
-            {posts.length > 0 ? (
+            {posts.length > 0 && (
               <div className="blog-thread-posts">
                 {visiblePosts.map((post) => (
                   <BlogPostRow key={post.slug} post={post} />
                 ))}
               </div>
-            ) : (
-              <p className="blog-empty-copy">아직 글이 없어.</p>
             )}
             {hasMore && (
               <p className="blog-thread-more">
@@ -224,20 +222,16 @@ function BlogGroupPane({ groupId }: { groupId: string }) {
             <p>{group.description}</p>
           </header>
 
-          {yearGroups.length > 0 ? (
-            yearGroups.map((yearGroup) => (
-              <section key={yearGroup.year} className="blog-year-block">
-                <h2>{yearGroup.year}</h2>
-                <div className="blog-year-rows">
-                  {yearGroup.posts.map((post) => (
-                    <BlogPostRow key={post.slug} post={post} compact />
-                  ))}
-                </div>
-              </section>
-            ))
-          ) : (
-            <p className="blog-empty-copy">아직 글이 없어.</p>
-          )}
+          {yearGroups.map((yearGroup) => (
+            <section key={yearGroup.year} className="blog-year-block">
+              <h2>{yearGroup.year}</h2>
+              <div className="blog-year-rows">
+                {yearGroup.posts.map((post) => (
+                  <BlogPostRow key={post.slug} post={post} compact />
+                ))}
+              </div>
+            </section>
+          ))}
         </div>
       </main>
       <BlogFooter />
