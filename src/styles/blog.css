@@ -149,6 +149,7 @@
   --blog-accent: #b3372a;
   --rail-bg: #f1f1ef;
   --fox-ink: #1c1c1c;
+  --calligraphy-ink: var(--blog-text);
 
   position: sticky;
   top: 0;
@@ -180,6 +181,7 @@
   --blog-accent: #db6155;
   --rail-bg: #11100f;
   --fox-ink: #9da4a6;
+  --calligraphy-ink: #c9c4ba;
 
   border-right: 1px solid #242220;
 }
@@ -479,7 +481,7 @@ a.blog-vinyl-title:focus-visible {
   height: min(46vh, 29rem);
   aspect-ratio: 269 / 985;
   margin: 0;
-  background-color: var(--blog-text);
+  background-color: var(--calligraphy-ink, var(--blog-text));
   -webkit-mask: url("/calligraphy-gyeonhyeonsaje.png") center / contain no-repeat;
   mask: url("/calligraphy-gyeonhyeonsaje.png") center / contain no-repeat;
 }
