@@ -10,12 +10,22 @@ import {
   getBlogPostsByGroup,
   type BlogPost
 } from "~/content/blog";
+import blogSeo from "~/content/blog/seo.json";
 
 interface BlogPageProps {
   pathname: string;
 }
 
-const siteUrl = "https://www.kang1027.com";
+const siteUrl = blogSeo.siteUrl;
+const blogImageUrl = blogSeo.blogImage.path.startsWith("http")
+  ? blogSeo.blogImage.path
+  : `${siteUrl}${blogSeo.blogImage.path}`;
+const blogKeywords = blogSeo.blogKeywords.join(", ");
+const blogAuthorJsonLd = {
+  "@type": "Person",
+  name: blogSeo.authorName,
+  url: blogSeo.authorUrl
+};
 
 const shortDateFormatter = new Intl.DateTimeFormat("ko-KR", {
   month: "short",
@@ -178,10 +188,29 @@ function BlogIndexPane() {
   return (
     <div className="blog-content-col">
       <SEO
-        title="Writings | kang1027's Portfolio"
-        description="견현사제의 태도로 남기는 강동현의 프로젝트 판단, 구현 노트, 개인 기록."
+        title={blogSeo.blogTitle}
+        description={blogSeo.blogDescription}
+        image={blogImageUrl}
+        imageAlt={blogSeo.blogImage.alt}
+        imageWidth={blogSeo.blogImage.width}
+        imageHeight={blogSeo.blogImage.height}
         url={`${siteUrl}/blog`}
-        keywords="kang1027, portfolio, blog, engineering notes, writing"
+        keywords={blogKeywords}
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "Blog",
+          name: blogSeo.blogName,
+          description: blogSeo.blogDescription,
+          url: `${siteUrl}/blog`,
+          inLanguage: "ko-KR",
+          author: blogAuthorJsonLd,
+          blogPost: blogPosts.slice(0, 20).map((post) => ({
+            "@type": "BlogPosting",
+            headline: post.title,
+            url: `${siteUrl}${post.href}`,
+            datePublished: post.date
+          }))
+        }}
       />
       <BlogThreadSections />
     </div>
@@ -210,10 +239,29 @@ function BlogGroupPane({ groupId }: { groupId: string }) {
     <>
       <main className="blog-main">
         <SEO
-          title={`${group.title} | Writings`}
+          title={`${group.title} | ${blogSeo.blogName}`}
           description={group.description}
+          image={blogImageUrl}
+          imageAlt={blogSeo.blogImage.alt}
+          imageWidth={blogSeo.blogImage.width}
+          imageHeight={blogSeo.blogImage.height}
           url={`${siteUrl}/blog/group/${group.id}`}
-          keywords={`kang1027, blog, ${group.title}`}
+          keywords={`${blogKeywords}, ${group.title}`}
+          jsonLd={{
+            "@context": "https://schema.org",
+            "@type": "CollectionPage",
+            name: `${group.title} | ${blogSeo.blogName}`,
+            description: group.description,
+            url: `${siteUrl}/blog/group/${group.id}`,
+            inLanguage: "ko-KR",
+            author: blogAuthorJsonLd,
+            hasPart: posts.map((post) => ({
+              "@type": "BlogPosting",
+              headline: post.title,
+              url: `${siteUrl}${post.href}`,
+              datePublished: post.date
+            }))
+          }}
         />
 
         <div className="blog-article-shell">
@@ -253,13 +301,33 @@ function BlogArticlePane({ post }: { post: BlogPost }) {
     <>
       <main className="blog-main">
         <SEO
-          title={`${post.title} | Writings`}
+          title={`${post.title} | ${blogSeo.blogName}`}
           description={post.summary}
+          image={blogImageUrl}
+          imageAlt={blogSeo.blogImage.alt}
+          imageWidth={blogSeo.blogImage.width}
+          imageHeight={blogSeo.blogImage.height}
           url={`${siteUrl}${post.href}`}
-          keywords={post.tags.join(", ")}
+          keywords={post.tags.length > 0 ? post.tags.join(", ") : blogKeywords}
           type="article"
           publishedTime={post.date}
           tags={post.tags}
+          jsonLd={{
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            headline: post.title,
+            description: post.summary,
+            url: `${siteUrl}${post.href}`,
+            mainEntityOfPage: `${siteUrl}${post.href}`,
+            image: blogImageUrl,
+            datePublished: post.date,
+            dateModified: post.date,
+            author: blogAuthorJsonLd,
+            publisher: blogAuthorJsonLd,
+            articleSection: group.title,
+            keywords: post.tags,
+            inLanguage: "ko-KR"
+          }}
         />
 
         <article className="blog-article-shell">

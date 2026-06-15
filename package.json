@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "blog:sync": "node scripts/sync-obsidian-blog.mjs",
-    "build": "vite build",
+    "build": "vite build && node scripts/generate-blog-seo.mjs",
     "dev": "vite --host",
     "lint": "eslint .",
     "prepare": "husky",

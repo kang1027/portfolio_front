@@ -5,34 +5,9 @@ import type {
   BlogPost,
   BlogYearGroup
 } from "./types";
+import groups from "./groups.json";
 
-export const blogGroups = [
-  {
-    id: "dev",
-    title: "설계와 구현",
-    description: "직접 만들며 남긴 설계 판단, 구현 디테일, 디버깅 기록."
-  },
-  {
-    id: "essay",
-    title: "생각과 질문",
-    description: "일과 삶에서 길어 올린 질문을 천천히 따라가는 글."
-  },
-  {
-    id: "review",
-    title: "읽기와 보기",
-    description: "책, 영화, 시리즈를 보고 남긴 감상."
-  },
-  {
-    id: "meetup",
-    title: "견문과 모임",
-    description: "세미나, 강연, 모임에서 보고 들은 것을 정리한 후기."
-  },
-  {
-    id: "memoir",
-    title: "해의 회고",
-    description: "한 해를 닫으며 남기는 회고."
-  }
-] as const satisfies readonly BlogGroup[];
+export const blogGroups = groups as readonly BlogGroup[];
 
 const groupIds = blogGroups.map((group) => group.id);
 
