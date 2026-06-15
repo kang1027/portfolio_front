@@ -171,17 +171,17 @@
   transition-timing-function: cubic-bezier(0.45, 0, 0.2, 1);
 }
 
-/* 다크: 먹 패널 + 흰 텍스트 + 옅은 백먹 여우 */
+/* 다크: 먹 패널 + 낮은 대비의 백묵 여우 */
 .blog-public[data-blog-theme="dark"] .blog-side {
   --blog-text: #f4f4f4;
   --blog-body: #d6d6d6;
   --blog-muted: #ababab;
   --blog-faint: #878787;
   --blog-accent: #db6155;
-  --rail-bg: #141414;
-  --fox-ink: #e8e8e8;
+  --rail-bg: #11100f;
+  --fox-ink: #9da4a6;
 
-  border-right: 1px solid #262626;
+  border-right: 1px solid #242220;
 }
 
 /* 수묵 여우 — 한지 먹그림을 테마 대비색으로 칠해 은은한 배경 텍스처로.
@@ -201,6 +201,10 @@
   -webkit-mask: url("/blog-rail-fox.webp") center bottom / cover no-repeat;
   mask: url("/blog-rail-fox.webp") center bottom / cover no-repeat;
   opacity: 0.2;
+}
+
+.blog-public[data-blog-theme="dark"] .blog-side-bg::before {
+  opacity: 0.14;
 }
 
 .blog-side > :not(.blog-side-bg, .blog-side-title-wrap) {
