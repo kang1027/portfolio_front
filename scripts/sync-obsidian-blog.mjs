@@ -83,7 +83,9 @@ function parseFrontmatter(raw) {
 }
 
 function stripQuotes(value) {
-  return String(value).trim().replace(/^["']|["']$/g, "");
+  return String(value)
+    .trim()
+    .replace(/^["']|["']$/g, "");
 }
 
 function toList(value) {
@@ -153,7 +155,9 @@ async function resolveDate(data, filePath) {
   }
   const stat = await fs.stat(filePath);
   const fallback = (stat.birthtime ?? stat.mtime).toISOString().slice(0, 10);
-  warnings.push(`${path.basename(filePath)}: date 속성이 없어 파일 생성일(${fallback}) 사용`);
+  warnings.push(
+    `${path.basename(filePath)}: date 속성이 없어 파일 생성일(${fallback}) 사용`
+  );
   return fallback;
 }
 
@@ -249,7 +253,10 @@ async function main() {
   const slugByNoteName = new Map();
   for (const note of published) {
     const name = path.basename(note.file, ".md");
-    note.slug = typeof note.data.slug === "string" && note.data.slug ? note.data.slug : slugify(name);
+    note.slug =
+      typeof note.data.slug === "string" && note.data.slug
+        ? note.data.slug
+        : slugify(name);
     slugByNoteName.set(name, note.slug);
   }
 
@@ -270,12 +277,17 @@ async function main() {
   for (const note of published) {
     const { data } = note;
     const body = await transformBody(note.body, note.slug, assetIndex, slugByNoteName);
-    const tags = [...new Set([...toList(data.tags), ...toList(data.type), ...toList(data.domain)])]
+    const tags = [
+      ...new Set([...toList(data.tags), ...toList(data.type), ...toList(data.domain)])
+    ]
       .map((tag) => String(tag).replace(/^#/, ""))
       .filter(Boolean);
 
     const meta = {
-      title: typeof data.title === "string" && data.title ? data.title : path.basename(note.file, ".md"),
+      title:
+        typeof data.title === "string" && data.title
+          ? data.title
+          : path.basename(note.file, ".md"),
       summary:
         typeof data.summary === "string" && data.summary
           ? data.summary
@@ -285,16 +297,25 @@ async function main() {
       date: await resolveDate(data, note.file),
       group: note.group,
       tags,
-      icon: typeof data.icon === "string" && data.icon ? data.icon : DEFAULT_ICON_BY_GROUP[note.group],
-      project: typeof data.project === "string" && data.project ? data.project : undefined,
+      icon:
+        typeof data.icon === "string" && data.icon
+          ? data.icon
+          : DEFAULT_ICON_BY_GROUP[note.group],
+      project:
+        typeof data.project === "string" && data.project ? data.project : undefined,
       projectHref:
-        typeof data.projectHref === "string" && data.projectHref ? data.projectHref : undefined
+        typeof data.projectHref === "string" && data.projectHref
+          ? data.projectHref
+          : undefined
     };
     if (!meta.summary) {
       warnings.push(`${note.slug}: summary를 만들 본문이 없음 — 빈 값으로 발행됨`);
     }
 
-    await fs.writeFile(path.join(OUT_POSTS_DIR, `${note.slug}.md`), serializePost(meta, body));
+    await fs.writeFile(
+      path.join(OUT_POSTS_DIR, `${note.slug}.md`),
+      serializePost(meta, body)
+    );
   }
 
   console.log(`발행 ${published.length}편, 초고 ${drafts}편 (vault: ${VAULT_BLOG_DIR})`);
