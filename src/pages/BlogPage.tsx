@@ -149,19 +149,21 @@ function BlogThreadSections() {
     <section id="threads" aria-label="갈래별 글">
       {blogGroups.map((group) => {
         const posts = getBlogPostsByGroup(group.id);
-        if (posts.length === 0) return null;
-
         const visiblePosts = posts.slice(0, indexThreadLimit);
         const hasMore = posts.length > indexThreadLimit;
 
         return (
           <section key={group.id} id={`thread-${group.id}`} className="blog-thread-block">
             <h2>{group.title}</h2>
-            <div className="blog-thread-posts">
-              {visiblePosts.map((post) => (
-                <BlogPostRow key={post.slug} post={post} />
-              ))}
-            </div>
+            {posts.length > 0 ? (
+              <div className="blog-thread-posts">
+                {visiblePosts.map((post) => (
+                  <BlogPostRow key={post.slug} post={post} />
+                ))}
+              </div>
+            ) : (
+              <p className="blog-empty-copy">아직 글이 없어.</p>
+            )}
             {hasMore && (
               <p className="blog-thread-more">
                 <a href={`/blog/group/${group.id}`}>전체 {posts.length}편 보기 →</a>
@@ -222,16 +224,20 @@ function BlogGroupPane({ groupId }: { groupId: string }) {
             <p>{group.description}</p>
           </header>
 
-          {yearGroups.map((yearGroup) => (
-            <section key={yearGroup.year} className="blog-year-block">
-              <h2>{yearGroup.year}</h2>
-              <div className="blog-year-rows">
-                {yearGroup.posts.map((post) => (
-                  <BlogPostRow key={post.slug} post={post} compact />
-                ))}
-              </div>
-            </section>
-          ))}
+          {yearGroups.length > 0 ? (
+            yearGroups.map((yearGroup) => (
+              <section key={yearGroup.year} className="blog-year-block">
+                <h2>{yearGroup.year}</h2>
+                <div className="blog-year-rows">
+                  {yearGroup.posts.map((post) => (
+                    <BlogPostRow key={post.slug} post={post} compact />
+                  ))}
+                </div>
+              </section>
+            ))
+          ) : (
+            <p className="blog-empty-copy">아직 글이 없어.</p>
+          )}
         </div>
       </main>
       <BlogFooter />

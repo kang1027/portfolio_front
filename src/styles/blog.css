@@ -601,6 +601,14 @@ a.blog-vinyl-title:focus-visible {
   gap: 0.7rem;
 }
 
+.blog-empty-copy {
+  margin-top: 0.9rem;
+  color: var(--blog-faint);
+  font-family: var(--blog-serif, inherit);
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+
 .blog-thread-more {
   margin-top: 0.9rem;
 }
