@@ -34,7 +34,7 @@ export default function BlogVinyl() {
         ) : (
           <>
             <p className="blog-vinyl-label">턴테이블</p>
-            <p className="blog-vinyl-idle">지금은 조용한 중…</p>
+            <p className="blog-vinyl-idle">잠깐 쉬는 중...</p>
           </>
         )}
       </div>
