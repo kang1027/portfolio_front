@@ -240,7 +240,7 @@ const BlogContent = ({ post }: { post: BlogPost | undefined }) => {
   if (!post) {
     return (
       <div className="flex h-full items-center justify-center text-c-500">
-        아직 공개된 글이 없어.
+        아직 공개된 글이 없습니다.
       </div>
     );
   }
