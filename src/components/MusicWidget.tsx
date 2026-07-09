@@ -14,7 +14,6 @@ export default function MusicWidget() {
   const [nowPlaying, setNowPlaying] = useState<NowPlayingResponse | null>(null);
   const [useLiveData, setUseLiveData] = useState(false);
   const [isLoading, setIsLoading] = useState(true); // 초기 로딩 상태
-  const [apiFailed, setApiFailed] = useState(false); // API 실패 여부
   const [isTitleOverflow, setIsTitleOverflow] = useState(false); // 제목이 넘치는지
   const titleRef = useRef<HTMLHeadingElement>(null);
   const measureRef = useRef<HTMLHeadingElement>(null);
@@ -56,7 +55,6 @@ export default function MusicWidget() {
 
         setNowPlaying(data);
         setUseLiveData(true);
-        setApiFailed(false);
 
         // currentTime이 duration을 초과하지 않도록 제한
         const safeDuration = data.track.duration;
@@ -67,7 +65,6 @@ export default function MusicWidget() {
       } else if (data === null) {
         // WebSocket 연결 실패
         setUseLiveData(false);
-        setApiFailed(true);
       } else {
         // 재생 중이 아님
         setUseLiveData(false);
@@ -113,7 +110,7 @@ export default function MusicWidget() {
   };
 
   // 표시할 곡 정보 결정
-  const shouldShowFallback = apiFailed && !useLiveData;
+  const shouldShowFallback = !isLoading && !useLiveData;
   const displayTitle =
     useLiveData && nowPlaying?.track
       ? nowPlaying.track.title
