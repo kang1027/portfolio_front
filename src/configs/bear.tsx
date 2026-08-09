@@ -28,6 +28,15 @@ const bear: BearData[] = [
     icon: "i-octicon:repo",
     md: [
       {
+        id: "weave",
+        title: "Weave",
+        file: "markdown/weave.md",
+        icon: "i-fa-solid:chart-line",
+        excerpt:
+          "한국·미국·일본 주식과 가상자산을 관리하는 macOS 메뉴바 포트폴리오 앱...",
+        link: "https://github.com/kang1027/Weave"
+      },
+      {
         id: "omninews",
         title: "OmniNews",
         file: "markdown/omninews.md",
