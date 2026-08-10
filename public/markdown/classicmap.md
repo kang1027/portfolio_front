@@ -84,7 +84,7 @@ React Native 기반의 크로스플랫폼 애플리케이션
 - Compare: YouTube 영상 비교 (DTW 기반)
 - Timeline: 작곡가 연대기
 
-### [ClassicMap_services](https://github.com/ClassicMap/ClassicMap_services) (데이터 수집 도구)
+### [ClassicMap_service](https://github.com/ClassicMap/ClassicMap_service) (데이터 수집 도구)
 
 데이터베이스 구축을 위한 데이터 수집 및 처리 파이프라인
 
@@ -114,7 +114,7 @@ React Native 기반의 크로스플랫폼 애플리케이션
 
 ## DTW 알고리즘 상세
 
-**위치:** [comparsion.py](https://github.com/ClassicMap/ClassicMap_services/tree/master/match_similar_pieces)
+**위치:** [comparsion.py](https://github.com/ClassicMap/ClassicMap_service/tree/master/match_similar_pieces)
 
 **동작 원리:**
 
@@ -156,9 +156,8 @@ npx expo start
 
 ## 배포 현황
 
-- **웹:** https://kang1027.com/omninews
-- **iOS:** App Store 심사 중
-- **Android:** Google Play 심사 중
+- **웹:** https://kang1027.com/classicmap
+- **모바일:** React Native 기반 iOS·Android 앱 구현
 - **백엔드:** Docker Compose (MySQL + Rust API, 포트 1037)
 
 ## 데이터베이스 스키마
