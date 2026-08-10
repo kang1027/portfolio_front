@@ -47,7 +47,7 @@ const bear: BearData[] = [
       {
         id: "classicmap",
         title: "ClassicMap",
-        file: "markdown/classicmap.md",
+        file: "markdown/classicmap.md?v=20260810",
         icon: "i-fa-solid:music",
         excerpt:
           "클래식 음악 입문자를 위한 로드맵 서비스. Apple Music, Spotify API 연동...",

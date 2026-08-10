@@ -7,9 +7,9 @@
   "homeDescription": "macOS 스타일로 구성한 강동현의 포트폴리오. 프로젝트, 기술 스택, 연락처, 작업 기록을 담고 있다.",
   "homeKeywords": ["portfolio", "developer", "macOS", "kang1027", "web development"],
   "homeImage": {
-    "path": "/screenshots/light.png",
-    "width": 2898,
-    "height": 1804,
+    "path": "/screenshots/light.png?v=20260810",
+    "width": 1440,
+    "height": 1000,
     "alt": "kang1027 포트폴리오 미리보기"
   },
   "blogName": "견현사제",
