@@ -368,8 +368,10 @@ const Content = ({ contentID, contentURL }: ContentProps) => {
     fetchMarkdown(contentID, contentURL);
   }, [contentID, contentURL, fetchMarkdown]);
 
+  const contentWidth = contentID === "weave" ? "weave-readme-content" : "w-2/3";
+
   return (
-    <div className="markdown w-2/3 mx-auto px-2 py-6 text-c-700">
+    <div className={`markdown ${contentWidth} mx-auto px-2 py-6 text-c-700`}>
       <ReactMarkdown
         remarkPlugins={[remarkGfm, remarkMath]}
         rehypePlugins={[

@@ -236,3 +236,74 @@
   -webkit-user-select: auto;
   pointer-events: auto;
 }
+
+.bear .markdown.weave-readme-content {
+  width: 98%;
+  max-width: 772px;
+}
+
+.bear .markdown .weave-readme-logo,
+.bear .markdown .weave-readme-title,
+.bear .markdown .weave-readme-tagline,
+.bear .markdown .weave-readme-badges,
+.bear .markdown .weave-readme-language,
+.bear .markdown .weave-readme-menubar {
+  text-align: center;
+}
+
+.bear .markdown .weave-readme-logo img {
+  margin-bottom: 0;
+}
+
+.bear .markdown .weave-readme-title {
+  margin-top: 0.25rem;
+}
+
+.bear .markdown .weave-readme-tagline,
+.bear .markdown .weave-readme-badges,
+.bear .markdown .weave-readme-language {
+  margin-top: 1rem;
+}
+
+.bear .markdown .weave-readme-badges img {
+  margin: 0 0.125rem;
+}
+
+.bear .markdown .weave-readme-menubar img {
+  margin-bottom: 0.5rem;
+}
+
+.bear .markdown .weave-readme-gallery {
+  display: grid;
+  grid-template-columns: repeat(3, 230px);
+  gap: 12px;
+  justify-content: center;
+  width: 100%;
+  margin: 2rem auto;
+  padding-bottom: 0.5rem;
+  overflow-x: auto;
+}
+
+.bear .markdown .weave-readme-gallery figure {
+  width: 230px;
+  margin: 0;
+  text-align: center;
+}
+
+.bear .markdown .weave-readme-gallery img {
+  display: block;
+  width: 230px;
+  height: auto;
+  margin: 0;
+}
+
+.bear .markdown .weave-readme-gallery figcaption {
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+}
+
+@media (max-width: 767px) {
+  .bear .markdown .weave-readme-gallery {
+    justify-content: start;
+  }
+}

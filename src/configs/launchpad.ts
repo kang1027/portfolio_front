@@ -2,6 +2,12 @@ import type { LaunchpadData } from "~/types";
 
 const launchpadApps: LaunchpadData[] = [
   {
+    id: "weave",
+    title: "Weave",
+    img: "https://raw.githubusercontent.com/kang1027/Weave/main/assets/logo.svg",
+    link: "https://github.com/kang1027/Weave"
+  },
+  {
     id: "omninews",
     title: "OmniNews",
     img: "https://avatars.githubusercontent.com/u/249217599?s=200&v=4",
