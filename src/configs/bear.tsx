@@ -30,7 +30,7 @@ const bear: BearData[] = [
       {
         id: "weave",
         title: "Weave",
-        file: "markdown/weave.md?v=20260810",
+        file: "markdown/weave.md?v=20260810-2",
         icon: "i-fa-solid:chart-line",
         excerpt:
           "한국·미국·일본 주식과 가상자산을 관리하는 macOS 메뉴바 포트폴리오 앱...",
