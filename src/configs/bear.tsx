@@ -30,7 +30,7 @@ const bear: BearData[] = [
       {
         id: "weave",
         title: "Weave",
-        file: "markdown/weave.md",
+        file: "markdown/weave.md?v=20260810",
         icon: "i-fa-solid:chart-line",
         excerpt:
           "한국·미국·일본 주식과 가상자산을 관리하는 macOS 메뉴바 포트폴리오 앱...",
@@ -79,7 +79,7 @@ const bear: BearData[] = [
       {
         id: "exp-opark",
         title: "(주)오파크",
-        file: "markdown/exp-opark.md",
+        file: "markdown/exp-opark.md?v=20260810",
         icon: "i-fa-solid:rocket",
         excerpt: "2026~ 풀스택. TOONT-M 플랫폼 개발과 TOONT 쇼핑몰 리뉴얼 담당..."
       },
