@@ -1,53 +1,97 @@
+<img src="https://raw.githubusercontent.com/kang1027/Weave/main/assets/logo.svg" width="112" height="112" alt="Weave" />
+
 # Weave
 
-한국·미국·일본 주식과 가상자산을 한곳에서 관리하는 macOS 메뉴바 포트폴리오 앱입니다.
+**한국·미국·일본 주식과 크립토를 macOS 메뉴바에서. 계정 없이 로컬 저장, 내 거래 기반 실제 손익까지.**
 
-## 프로젝트 링크
+[![Release](https://img.shields.io/github/v/release/kang1027/Weave?label=release&color=6366F1)](https://github.com/kang1027/Weave/releases)
+[![License](https://img.shields.io/github/license/kang1027/Weave?color=6366F1)](https://github.com/kang1027/Weave/blob/main/LICENSE)
+[![macOS](https://img.shields.io/badge/macOS-14%2B-111111?logo=apple&logoColor=white)](https://www.apple.com/macos)
+[![Swift](https://img.shields.io/badge/Swift-5.9-F05138?logo=swift&logoColor=white)](https://swift.org)
 
-- **GitHub**: [kang1027/Weave](https://github.com/kang1027/Weave)
-- **설치**: `brew install --cask kang1027/weave/weave-pt`
+[English](https://github.com/kang1027/Weave/blob/main/README.md) · **한국어**
 
-## 프로젝트 개요
+<img src="https://raw.githubusercontent.com/kang1027/Weave/main/assets/screenshot-menubar.png" width="300" alt="macOS 메뉴바의 Weave" />
 
-Weave는 보유 자산의 현재가와 수익률을 메뉴바에서 빠르게 확인하고, 클릭 한 번으로 전체 포트폴리오를 관리할 수 있도록 만든 네이티브 macOS 앱입니다. 별도 계정이나 서버 없이 거래 내역과 설정을 사용자의 Mac에만 저장합니다.
+*메뉴바에 상주*
 
-## 주요 기능
+## 앱 화면
 
-### 글로벌 자산 통합 관리
+### 포트폴리오
 
-- 한국·미국·일본 주식과 가상자산을 하나의 포트폴리오에서 관리
-- Binance, Naver, Yahoo Finance 기반 통합 종목 검색 및 시세 조회
-- 티커가 없는 부동산·현금 등의 수동 자산 등록 지원
+<img src="https://raw.githubusercontent.com/kang1027/Weave/main/assets/screenshot.png" width="720" alt="Weave 포트폴리오 개요" />
 
-### 수익률 및 거래 분석
+### 종목 세부
 
-- 매수·매도 내역을 기반으로 평균 매입가와 실현·미실현 손익 계산
-- 전체 자산과 개별 종목의 가치 변화를 기간별 차트로 시각화
-- 매수·매도 시점과 자산별 비중을 차트 및 링 게이지로 제공
+<img src="https://raw.githubusercontent.com/kang1027/Weave/main/assets/screenshot-detail.png" width="720" alt="Weave 종목 세부" />
 
-### macOS 메뉴바 경험
+### 자산별 차트
 
-- 선택한 자산의 현재가와 등락률을 메뉴바에서 순환 표시
-- 금액을 숨기고 비율만 확인할 수 있는 프라이버시 모드
-- Slate·Light 테마와 한국어·영어 지원
+<img src="https://raw.githubusercontent.com/kang1027/Weave/main/assets/screenshot-byasset.png" width="720" alt="Weave 자산별 차트" />
 
-### 로컬 우선 설계
+## 기능
 
-- 계정, 원격 저장소, 텔레메트리 없이 모든 포트폴리오 데이터를 로컬에 저장
-- 사용자 설정과 커스텀 로고를 포함하는 자체 백업 파일 지원
-- Developer ID 서명·공증 및 Sparkle 기반 자동 업데이트 제공
+- **메뉴바에 상주합니다.** 보유 자산 시세를 번갈아 보여주고, 클릭하면 팝오버로 펼쳐집니다.
+- **한국·미국·일본 주식 + 크립토.** Binance·Naver·Yahoo Finance 심볼 검색을 한곳에서 지원합니다.
+- **정확한 평단·손익.** 매수/매도 기록을 바탕으로 평단과 미실현·실현 수익률을 계산합니다.
+- **가치 히스토리 차트.** 통합·자산별(1D / 1W / 1M / 1Y) 차트에 링 게이지와 매수 마커까지 보여줍니다.
+- **수동 자산.** 티커가 없는 자산도 추적할 수 있어 부동산·현금 등 원하는 것은 무엇이든 합산됩니다.
+- **프라이버시 모드.** 금액은 가리고 등락률은 유지하며, 팝오버와 메뉴바에 동시에 적용됩니다.
+- **온전히 로컬.** 계정도 텔레메트리도 없이 데이터가 이 Mac을 벗어나지 않습니다. `.weave` 백업은 커스텀 로고까지 담는 자기완결형입니다.
+- **네이티브하고 깔끔합니다.** Slate / Light 테마와 한국어 / English를 지원하고, 서명·공증을 마쳤으며 Sparkle로 자동 업데이트됩니다.
 
-## 기술 스택
+## 설치
 
-- **UI**: SwiftUI, Swift Charts
-- **플랫폼**: macOS 14+
-- **데이터 소스**: Binance, Naver, Yahoo Finance
-- **배포**: Homebrew Cask, GitHub Releases, Sparkle
+### Homebrew (권장)
 
-## 개발 포인트
+```sh
+brew install --cask kang1027/weave/weave-pt
+```
 
-메뉴바의 제한된 공간 안에서 시세 확인, 자산 검색, 거래 기록, 손익 분석까지 완료할 수 있도록 정보 구조를 설계했습니다. 서로 다른 시장과 통화의 데이터를 하나의 모델로 정규화하고, 네트워크 장애가 발생해도 마지막 시세와 로컬 캐시를 활용할 수 있도록 구성했습니다.
+한 줄이면 tap과 설치가 한 번에 끝납니다. Developer ID로 서명하고 Apple 공증을 마쳐 Gatekeeper 경고 없이 실행되며, Sparkle로 자동 업데이트됩니다. 업데이트는 `brew upgrade --cask weave-pt`로 하시면 됩니다.
+
+### 직접 다운로드
+
+Homebrew를 쓰지 않으신다면 [releases](https://github.com/kang1027/Weave/releases/latest)에서 최신 `.dmg`를 받아 연 뒤 **Weave**를 Applications 폴더로 드래그하세요. 서명·공증되어 있어 Gatekeeper 경고가 뜨지 않습니다.
+
+### 소스 빌드
+
+macOS 14 이상과 Swift 툴체인이 필요합니다.
+
+```sh
+git clone https://github.com/kang1027/Weave.git
+cd Weave
+scripts/fetch-sparkle.sh   # 최초 1회 — Sparkle 벤더링
+swift run Weave            # 개발 실행
+swift test                 # 단위 테스트
+scripts/bundle.sh          # dist/Weave.app 번들 생성
+```
+
+## 기여하기
+
+이슈와 풀 리퀘스트를 환영합니다. PR을 열기 전에 다음을 확인하세요.
+
+- 변경 범위를 작게 유지하고 사용자에게 보이는 동작을 설명합니다.
+- `swift build`와 `swift test`를 실행합니다.
+- `feat:`, `fix:`, `docs:` 같은 영어 Conventional Commit 메시지를 사용합니다.
+- Weave의 로컬 전용 원칙을 지킵니다. 계정·텔레메트리·분석·시크릿을 추가하지 않습니다.
+
+전체 개발 및 PR 가이드는 [CONTRIBUTING.md](https://github.com/kang1027/Weave/blob/main/CONTRIBUTING.md)를 확인하세요.
+
+## 데이터 · 프라이버시
+
+포트폴리오는 이 Mac 로컬(`Application Support/Weave`)에만 저장되며 외부로 전송되지 않습니다. Binance·Naver·Yahoo Finance의 공개 시세·캔들만 조회하고, 계정·API 키·텔레메트리는 전혀 없습니다. 자세한 내용은 [PRIVACY.md](https://github.com/kang1027/Weave/blob/main/PRIVACY.md)·[SECURITY.md](https://github.com/kang1027/Weave/blob/main/SECURITY.md)에 있습니다.
+
+시세 데이터는 비공식 공개 엔드포인트에서 오며 지연되거나 부정확할 수 있습니다. Weave는 개인용 기록 도구이지 투자 조언이 아닙니다.
+
+## 후원
+
+Weave는 무료 오픈소스입니다. 개발을 후원하고 싶으시면 Mac App Store에서 유료 빌드로도 받으실 수 있습니다. 같은 앱이며, 그저 마음을 보태는 용도입니다.
+
+## 문서
+
+[기능 명세](https://github.com/kang1027/Weave/blob/main/docs/FEATURES.ko.md) · [동작 플로우](https://github.com/kang1027/Weave/blob/main/docs/FLOWS.ko.md) · [Privacy](https://github.com/kang1027/Weave/blob/main/PRIVACY.md) · [Security](https://github.com/kang1027/Weave/blob/main/SECURITY.md) · [Contributing](https://github.com/kang1027/Weave/blob/main/CONTRIBUTING.md)
 
 ## 라이선스
 
-[MIT License](https://github.com/kang1027/Weave/blob/main/LICENSE)
+[MIT](https://github.com/kang1027/Weave/blob/main/LICENSE) © 2026 kang1027
