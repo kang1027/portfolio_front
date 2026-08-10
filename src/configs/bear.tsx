@@ -9,7 +9,7 @@ const bear: BearData[] = [
       {
         id: "about-me",
         title: "About Me",
-        file: "markdown/about-me.md",
+        file: "markdown/about-me.md?v=20260810",
         icon: "i-fa-solid:user",
         excerpt: "Rust와 React Native로 서비스를 만들고 운영하는 풀스택 개발자입니다..."
       },
