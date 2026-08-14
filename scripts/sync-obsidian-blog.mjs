@@ -94,8 +94,13 @@ function toList(value) {
   return [];
 }
 
+// macOS/iCloud 파일명은 NFD(자모 분해형)라 NFC 리터럴·본문 텍스트와 키 비교가 어긋난다
+function nfc(name) {
+  return name.normalize("NFC");
+}
+
 function slugify(name) {
-  return name
+  return nfc(name)
     .trim()
     .toLowerCase()
     .replace(/\s+/g, "-")
@@ -126,7 +131,7 @@ async function buildAssetIndex() {
   const files = await walk(VAULT_ROOT, { skip: new Set([".obsidian", ".trash"]) });
   for (const file of files) {
     if (!ASSET_EXTENSIONS.has(path.extname(file).toLowerCase())) continue;
-    const base = path.basename(file);
+    const base = nfc(path.basename(file));
     if (!index.has(base)) index.set(base, file);
   }
   return index;
@@ -178,7 +183,7 @@ async function transformBody(body, slug, assetIndex, slugByNoteName) {
     const embeds = [...segment.matchAll(/!\[\[([^\]|]+)(?:\|[^\]]*)?\]\]/g)];
     for (const embed of embeds) {
       const target = embed[1].trim();
-      const sourcePath = assetIndex.get(path.basename(target));
+      const sourcePath = assetIndex.get(nfc(path.basename(target)));
       if (!sourcePath) {
         warnings.push(`${slug}: 첨부 "${target}"를 vault에서 찾지 못해 그대로 둠`);
         continue;
@@ -194,7 +199,7 @@ async function transformBody(body, slug, assetIndex, slugByNoteName) {
     // 내부 링크: 발행 글이면 블로그 링크, 아니면 텍스트만 남긴다
     segment = segment.replace(/\[\[([^\]|]+)(?:\|([^\]]*))?\]\]/g, (_, target, alias) => {
       const label = alias?.trim() || target.trim();
-      const linkedSlug = slugByNoteName.get(path.basename(target.trim(), ".md"));
+      const linkedSlug = slugByNoteName.get(nfc(path.basename(target.trim(), ".md")));
       return linkedSlug ? `[${label}](/blog/${linkedSlug})` : label;
     });
 
@@ -225,7 +230,7 @@ async function collectNotes() {
   const folders = await fs.readdir(VAULT_BLOG_DIR, { withFileTypes: true });
   for (const folder of folders) {
     if (!folder.isDirectory() || folder.name.startsWith(".")) continue;
-    const group = GROUP_BY_FOLDER[folder.name];
+    const group = GROUP_BY_FOLDER[nfc(folder.name)];
     if (!group) {
       warnings.push(`갈래 매핑에 없는 폴더 "${folder.name}" 건너뜀`);
       continue;
@@ -252,7 +257,7 @@ async function main() {
 
   const slugByNoteName = new Map();
   for (const note of published) {
-    const name = path.basename(note.file, ".md");
+    const name = nfc(path.basename(note.file, ".md"));
     note.slug =
       typeof note.data.slug === "string" && note.data.slug
         ? note.data.slug
