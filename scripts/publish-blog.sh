@@ -3,7 +3,7 @@
 # 어디서 실행하든 레포로 이동해 sync → 커밋 → 푸시(=자동 배포)까지 처리한다.
 set -euo pipefail
 
-REPO="/Users/kang1027/project/portfolio/portfolio_front"
+REPO="/Users/kdh/project/portfolio/portfolio_front"
 cd "$REPO"
 
 branch=$(git branch --show-current)
