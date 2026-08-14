@@ -14,7 +14,7 @@ import { fileURLToPath } from "node:url";
 const REPO_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const VAULT_BLOG_DIR =
   process.env.OBSIDIAN_BLOG_DIR ??
-  "/Users/kang1027/Library/Mobile Documents/iCloud~md~obsidian/Documents/Obsidian Vault/08 Me/blog";
+  "/Users/kdh/Library/Mobile Documents/iCloud~md~obsidian/Documents/Obsidian Vault/08 Me/blog";
 const VAULT_ROOT = path.resolve(VAULT_BLOG_DIR, "../../..");
 const OUT_POSTS_DIR = path.join(REPO_ROOT, "src/content/blog/posts");
 const OUT_ASSETS_DIR = path.join(REPO_ROOT, "public/blog");
