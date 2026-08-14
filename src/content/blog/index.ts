@@ -6,6 +6,7 @@ import type {
   BlogYearGroup
 } from "./types";
 import groups from "./groups.json";
+import sampleRaw from "./sample.md?raw";
 
 export const blogGroups = groups as readonly BlogGroup[];
 
@@ -102,6 +103,10 @@ export const blogPosts = Object.entries(rawPosts)
   .map(([path, raw]) => parsePost(path, raw))
   .sort((a, b) => b.date.localeCompare(a.date));
 
+// 렌더링 샘플 — 목록·피드에는 노출하지 않고 /blog/sample 직접 접근으로만 제공.
+// posts/ 밖에 두어 sync 전량 재생성의 영향을 받지 않는다.
+const samplePost = parsePost("./posts/sample.md", sampleRaw);
+
 export const getBlogGroup = (groupId: BlogGroupId): BlogGroup => {
   const group = blogGroups.find((item) => item.id === groupId);
   if (!group) throw new Error(`Unknown blog group "${groupId}"`);
@@ -109,6 +114,7 @@ export const getBlogGroup = (groupId: BlogGroupId): BlogGroup => {
 };
 
 export const getBlogPost = (slug: string): BlogPost | undefined => {
+  if (slug === samplePost.slug) return samplePost;
   return blogPosts.find((post) => post.slug === slug);
 };
 
