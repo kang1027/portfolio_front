@@ -53,3 +53,8 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha,scope=playground-macos
           cache-to: type=gha,mode=max,scope=playground-macos
+          # Vite는 이 값들을 빌드 시점에 번들로 굳힌다.
+          build-args: |
+            VITE_ADMIN_PASSWORD=${{ secrets.VITE_ADMIN_PASSWORD }}
+            VITE_API_URL=${{ secrets.VITE_API_URL }}
+            VITE_OPENWEATHER_API_KEY=${{ secrets.VITE_OPENWEATHER_API_KEY }}
