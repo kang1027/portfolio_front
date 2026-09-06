@@ -1,6 +1,7 @@
 import React from "react";
 import { wallpapers, user } from "~/configs";
 import type { MacActions } from "~/types";
+import { readEnv } from "../utils/env";
 
 interface LoginProps extends MacActions {
   setAdminMode?: (admin: boolean) => void;
@@ -21,7 +22,7 @@ export default function Login(props: LoginProps) {
   };
 
   const loginHandle = () => {
-    const adminPassword = import.meta.env.VITE_ADMIN_PASSWORD;
+    const adminPassword = readEnv(import.meta.env.VITE_ADMIN_PASSWORD);
 
     // 관리자 비밀번호로 로그인
     if (adminPassword && password === adminPassword) {

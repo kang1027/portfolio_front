@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { readEnv } from "../../utils/env";
 
 const Contact = () => {
   const dark = useStore((state) => state.dark);
@@ -55,7 +56,7 @@ const Contact = () => {
     setSubmitStatus("idle");
 
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:3000";
+      const apiUrl = readEnv(import.meta.env.VITE_API_URL, "http://localhost:3000");
       const response = await fetch(`${apiUrl}/api/contact`, {
         method: "POST",
         headers: {

@@ -1,3 +1,4 @@
+import { readEnv } from "../utils/env";
 // 백엔드에서 현재 재생 중인 곡 정보 가져오기 (WebSocket)
 
 export interface NowPlayingTrack {
@@ -33,7 +34,7 @@ class NowPlayingService {
   private autoConnected: boolean = false; // 자동 연결 여부
 
   constructor() {
-    const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:3000";
+    const apiUrl = readEnv(import.meta.env.VITE_API_URL, "http://localhost:3000");
 
     // HTTP -> WS, HTTPS -> WSS 변환
     // https:// -> wss://, http:// -> ws://
