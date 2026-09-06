@@ -1,3 +1,4 @@
+import { readEnv } from "../utils/env";
 // Apple Music API Service
 // Developer Token을 사용하여 Apple Music API와 통신
 
@@ -24,7 +25,7 @@ class AppleMusicService {
 
       // Developer Token 발급 필요
       // 보안상 이유로 서버에서 발급하는 것이 권장됨
-      const developerToken = import.meta.env.VITE_APPLE_MUSIC_DEVELOPER_TOKEN;
+      const developerToken = readEnv(import.meta.env.VITE_APPLE_MUSIC_DEVELOPER_TOKEN);
 
       if (!developerToken) {
         console.warn("Apple Music Developer Token not found in .env");

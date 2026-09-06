@@ -1,3 +1,4 @@
+import { readEnv } from "../utils/env";
 export interface WeatherData {
   temperature: number;
   feelsLike: number;
@@ -48,7 +49,7 @@ class WeatherService {
   private hourlyData: HourlyForecast[] = [];
   private updateInterval: NodeJS.Timeout | null = null;
   private isFetching = false;
-  private readonly WEATHER_API_KEY = import.meta.env.VITE_OPENWEATHER_API_KEY;
+  private readonly WEATHER_API_KEY = readEnv(import.meta.env.VITE_OPENWEATHER_API_KEY);
   private readonly WEATHER_API_URL = "https://api.openweathermap.org/data/2.5/weather";
   private readonly FORECAST_API_URL = "https://api.openweathermap.org/data/2.5/forecast";
 

@@ -1,4 +1,5 @@
 import { wallpapers } from "~/configs";
+import { readEnv } from "../utils/env";
 
 interface AdminSetupProps {
   onComplete: () => void;
@@ -57,7 +58,7 @@ export default function AdminSetup({ onComplete, onSkip }: AdminSetupProps) {
       // User Token 발급을 위해서는 MusicKit JS를 사용해야 함
 
       // 임시로 백엔드에 Developer Token 요청
-      const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:3000";
+      const apiUrl = readEnv(import.meta.env.VITE_API_URL, "http://localhost:3000");
       const tokenResponse = await fetch(`${apiUrl}/api/admin/get-developer-token`);
 
       if (!tokenResponse.ok) {
