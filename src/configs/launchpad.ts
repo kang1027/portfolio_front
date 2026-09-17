@@ -8,6 +8,12 @@ const launchpadApps: LaunchpadData[] = [
     link: "https://github.com/kang1027/Weave"
   },
   {
+    id: "staytab",
+    title: "StayTab",
+    img: "https://raw.githubusercontent.com/kang1027/StayTab/main/assets/staytab-icon.png",
+    link: "https://github.com/kang1027/StayTab"
+  },
+  {
     id: "omninews",
     title: "OmniNews",
     img: "https://avatars.githubusercontent.com/u/249217599?s=200&v=4",

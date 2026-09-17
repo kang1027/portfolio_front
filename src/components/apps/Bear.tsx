@@ -341,7 +341,7 @@ const Middlebar = ({ items, cur, setContent }: MiddlebarProps) => {
 };
 
 // GitHub README를 옮겨 온 문서는 넓은 폭과 전용 레이아웃을 사용
-const readmeContentIDs = new Set(["weave"]);
+const readmeContentIDs = new Set(["weave", "staytab"]);
 
 const fixImageURL = (text: string): string => {
   text = text.replace(/&nbsp;/g, "");
