@@ -157,7 +157,8 @@ npx expo start
 ## 배포 현황
 
 - **웹:** https://kang1027.com/classicmap
-- **모바일:** React Native 기반 iOS·Android 앱 구현
+- **iOS:** [App Store](https://apps.apple.com/kr/app/%ED%81%B4%EB%9E%98%EC%8B%9D%EB%A7%B5/id6756231284)
+- **모바일:** React Native(Expo) 기반 iOS·Android 단일 코드베이스
 - **백엔드:** Docker Compose (MySQL + Rust API, 포트 1037)
 
 ## 데이터베이스 스키마
