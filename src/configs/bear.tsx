@@ -48,7 +48,7 @@ const bear: BearData[] = [
       {
         id: "omninews",
         title: "OmniNews",
-        file: "markdown/omninews.md",
+        file: "markdown/omninews.md?v=20260918",
         icon: "i-fa-solid:newspaper",
         excerpt: "Rust 백엔드와 React Native 프론트엔드를 사용한 뉴스 애그리게이터...",
         link: "https://github.com/Omni-News"
