@@ -340,6 +340,9 @@ const Middlebar = ({ items, cur, setContent }: MiddlebarProps) => {
   );
 };
 
+// GitHub README를 옮겨 온 문서는 넓은 폭과 전용 레이아웃을 사용
+const readmeContentIDs = new Set(["weave"]);
+
 const fixImageURL = (text: string): string => {
   text = text.replace(/&nbsp;/g, "");
   return text;
@@ -368,7 +371,7 @@ const Content = ({ contentID, contentURL }: ContentProps) => {
     fetchMarkdown(contentID, contentURL);
   }, [contentID, contentURL, fetchMarkdown]);
 
-  const contentWidth = contentID === "weave" ? "weave-readme-content" : "w-2/3";
+  const contentWidth = readmeContentIDs.has(contentID) ? "app-readme-content" : "w-2/3";
 
   return (
     <div className={`markdown ${contentWidth} mx-auto px-2 py-6 text-c-700`}>
