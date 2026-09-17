@@ -34,7 +34,7 @@
 
 근래 가장 집중하고 있는 언어입니다. OmniNews와 ClassicMap 프로젝트의 백엔드를 Rust로 개발했고, Rust 오픈소스 생태계에 기여하고 있습니다.
 
-Rocket 프레임워크로 비동기 API 서버를 구축하고, sqlx로 MariaDB와 연결해서 실제 서비스를 운영하고 있습니다. Apple Music API, Spotify API, KOPIS API 등 외부 API를 호출하고 데이터를 가공하는 작업도 다수 진행했고, WebSocket으로 포트폴리오에 실시간 음악 재생 정보를 연동하기도 했습니다.
+Rocket 프레임워크로 비동기 API 서버를 구축하고, sqlx로 MySQL과 연결해서 실제 서비스를 운영하고 있습니다. Apple Music API, Spotify API, KOPIS API 등 외부 API를 호출하고 데이터를 가공하는 작업도 다수 진행했고, WebSocket으로 포트폴리오에 실시간 음악 재생 정보를 연동하기도 했습니다.
 
 특히 옴니뉴스를 개발하며 RRSS(Reverse-RSS)를 만들 때 rannoy(Annoy)와 rust-bert를 사용해 데이터를 임베딩하고 유사도 검색 알고리즘을 구현해 머신러닝 분야도 다루었습니다.
 
