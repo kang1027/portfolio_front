@@ -16,7 +16,7 @@ const bear: BearData[] = [
       {
         id: "skills",
         title: "Skills & Style",
-        file: "markdown/skills.md",
+        file: "markdown/skills.md?v=20260918",
         icon: "i-fa-solid:code",
         excerpt: "다양한 기술 스택을 활용한 실전 프로젝트 경험..."
       }
