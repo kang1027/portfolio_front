@@ -72,6 +72,8 @@ Contact me by:
   - AI활용 포스터 제작대회 준장 훈상
   - 정보보안기사 자격증 취득
   - [OmniNews](https://github.com/Omni-News) ([web](https://kang1027.com/omninews) / [App Store](https://apps.apple.com/kr/app/omninews/id6746567181) / [Google Play](https://play.google.com/store/apps/details?id=com.kdh.omninews)) 개발 및 배포
+- **개인사업자 · 프리랜서 활동 시작 (2025.07 ~ 현재)**
+  - 외주 개발과 자체 제품 개발 병행
 - **[ClassicMap](https://github.com/ClassicMap)** ([web](https://kang1027.com/classicmap)) 개발 및 배포
 - **[Portfolio](https://kang1027.com)** 구축
 

@@ -94,6 +94,14 @@ const bear: BearData[] = [
           "2026.01~2026.08. 풀스택. TOONT-M 플랫폼 개발과 TOONT 쇼핑몰 리뉴얼 담당..."
       },
       {
+        id: "exp-freelance",
+        title: "개인사업자 · 프리랜서",
+        file: "markdown/exp-freelance.md?v=20260918",
+        icon: "i-fa-solid:laptop-code",
+        excerpt:
+          "2025.07~. 외주 개발과 OmniNews, ClassicMap, Weave, StayTab 등 자체 제품 개발 병행..."
+      },
+      {
         id: "exp-army",
         title: "M/W 운용병",
         file: "markdown/exp-army.md",
