@@ -37,6 +37,15 @@ const bear: BearData[] = [
         link: "https://github.com/kang1027/Weave"
       },
       {
+        id: "staytab",
+        title: "StayTab",
+        file: "markdown/staytab.md?v=20260917",
+        icon: "i-fa-solid:thumbtack",
+        excerpt:
+          "매일 쓰는 앱을 종료해도 Command-Tab의 같은 자리에 고정하는 macOS 앱 전환기...",
+        link: "https://github.com/kang1027/StayTab"
+      },
+      {
         id: "omninews",
         title: "OmniNews",
         file: "markdown/omninews.md",

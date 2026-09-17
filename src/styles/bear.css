@@ -273,6 +273,21 @@
   margin-bottom: 0.5rem;
 }
 
+.bear .markdown .app-readme-figure {
+  margin: 2rem auto;
+  text-align: center;
+}
+
+.bear .markdown .app-readme-figure img {
+  display: block;
+  margin: 0 auto;
+}
+
+.bear .markdown .app-readme-figure figcaption {
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+}
+
 .bear .markdown .app-readme-gallery {
   display: grid;
   grid-template-columns: repeat(3, 230px);
