@@ -9,7 +9,7 @@ const bear: BearData[] = [
       {
         id: "about-me",
         title: "About Me",
-        file: "markdown/about-me.md?v=20260810",
+        file: "markdown/about-me.md?v=20260918",
         icon: "i-fa-solid:user",
         excerpt: "Rust와 React Native로 서비스를 만들고 운영하는 풀스택 개발자입니다..."
       },
@@ -88,9 +88,10 @@ const bear: BearData[] = [
       {
         id: "exp-opark",
         title: "(주)오파크",
-        file: "markdown/exp-opark.md?v=20260810",
+        file: "markdown/exp-opark.md?v=20260918",
         icon: "i-fa-solid:rocket",
-        excerpt: "2026~ 풀스택. TOONT-M 플랫폼 개발과 TOONT 쇼핑몰 리뉴얼 담당..."
+        excerpt:
+          "2026.01~2026.08. 풀스택. TOONT-M 플랫폼 개발과 TOONT 쇼핑몰 리뉴얼 담당..."
       },
       {
         id: "exp-army",
