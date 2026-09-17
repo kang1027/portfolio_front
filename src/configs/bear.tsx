@@ -28,6 +28,15 @@ const bear: BearData[] = [
     icon: "i-octicon:repo",
     md: [
       {
+        id: "namo",
+        title: "Namo",
+        file: "markdown/namo.md?v=20260918",
+        icon: "i-fa-solid:seedling",
+        excerpt:
+          "원격 식물 재배·배송 서비스. ESP32-S3 펌웨어를 Rust로 작성해 센서와 급수 펌프 제어...",
+        link: "https://github.com/namo-labs/namo-firmware"
+      },
+      {
         id: "weave",
         title: "Weave",
         file: "markdown/weave.md?v=20260810-2",
@@ -44,6 +53,14 @@ const bear: BearData[] = [
         excerpt:
           "매일 쓰는 앱을 종료해도 Command-Tab의 같은 자리에 고정하는 macOS 앱 전환기...",
         link: "https://github.com/kang1027/StayTab"
+      },
+      {
+        id: "homeserver",
+        title: "홈서버 인프라",
+        file: "markdown/homeserver.md?v=20260918",
+        icon: "i-fa-solid:server",
+        excerpt:
+          "WSL2 + Docker에서 Cloudflare Tunnel을 거쳐 M4 Mac mini k3s로 옮긴 온프레미스 홈서버..."
       },
       {
         id: "omninews",
