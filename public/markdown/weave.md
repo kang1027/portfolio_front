@@ -1,21 +1,21 @@
-<p class="weave-readme-logo"><img src="https://raw.githubusercontent.com/kang1027/Weave/main/assets/logo.svg" width="112" height="112" alt="Weave" /></p>
+<p class="app-readme-logo"><img src="https://raw.githubusercontent.com/kang1027/Weave/main/assets/logo.svg" width="112" height="112" alt="Weave" /></p>
 
-<h1 class="weave-readme-title">Weave</h1>
+<h1 class="app-readme-title">Weave</h1>
 
-<p class="weave-readme-tagline"><strong>한국·미국·일본 주식과 크립토를 macOS 메뉴바에서. 계정 없이 로컬 저장, 내 거래 기반 실제 손익까지.</strong></p>
+<p class="app-readme-tagline"><strong>한국·미국·일본 주식과 크립토를 macOS 메뉴바에서. 계정 없이 로컬 저장, 내 거래 기반 실제 손익까지.</strong></p>
 
-<p class="weave-readme-badges">
+<p class="app-readme-badges">
   <a href="https://github.com/kang1027/Weave/releases"><img src="https://img.shields.io/github/v/release/kang1027/Weave?label=release&amp;color=6366F1" alt="Release" /></a>
   <a href="https://github.com/kang1027/Weave/blob/main/LICENSE"><img src="https://img.shields.io/github/license/kang1027/Weave?color=6366F1" alt="License" /></a>
   <a href="https://www.apple.com/macos"><img src="https://img.shields.io/badge/macOS-14%2B-111111?logo=apple&amp;logoColor=white" alt="macOS" /></a>
   <a href="https://swift.org"><img src="https://img.shields.io/badge/Swift-5.9-F05138?logo=swift&amp;logoColor=white" alt="Swift" /></a>
 </p>
 
-<p class="weave-readme-language"><a href="https://github.com/kang1027/Weave/blob/main/README.md">English</a> · <strong>한국어</strong></p>
+<p class="app-readme-language"><a href="https://github.com/kang1027/Weave/blob/main/README.md">English</a> · <strong>한국어</strong></p>
 
-<p class="weave-readme-menubar"><img src="https://raw.githubusercontent.com/kang1027/Weave/main/assets/screenshot-menubar.png" width="300" alt="macOS 메뉴바의 Weave" /><br /><em>메뉴바에 상주</em></p>
+<p class="app-readme-menubar"><img src="https://raw.githubusercontent.com/kang1027/Weave/main/assets/screenshot-menubar.png" width="300" alt="macOS 메뉴바의 Weave" /><br /><em>메뉴바에 상주</em></p>
 
-<div class="weave-readme-gallery">
+<div class="app-readme-gallery">
   <figure>
     <img src="https://raw.githubusercontent.com/kang1027/Weave/main/assets/screenshot.png" width="230" alt="Weave 포트폴리오 개요" />
     <figcaption><strong>포트폴리오</strong></figcaption>
