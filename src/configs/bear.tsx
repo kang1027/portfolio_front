@@ -59,8 +59,7 @@ const bear: BearData[] = [
         title: "홈서버 인프라",
         file: "markdown/homeserver.md?v=20260918",
         icon: "i-fa-solid:server",
-        excerpt:
-          "WSL2 + Docker에서 Cloudflare Tunnel을 거쳐 M4 Mac mini k3s로 옮긴 온프레미스 홈서버..."
+        excerpt: "WSL2 + Docker에서 M4 Mac mini k3s로 옮긴 온프레미스 홈서버..."
       },
       {
         id: "omninews",
@@ -115,8 +114,7 @@ const bear: BearData[] = [
         title: "개인사업자 · 프리랜서",
         file: "markdown/exp-freelance.md?v=20260918",
         icon: "i-fa-solid:laptop-code",
-        excerpt:
-          "2025.07~. 외주 개발과 OmniNews, ClassicMap, Weave, StayTab 등 자체 제품 개발 병행..."
+        excerpt: "2025.07~. 개인사업자로 외주 개발과 자체 제품 개발 병행..."
       },
       {
         id: "exp-army",
