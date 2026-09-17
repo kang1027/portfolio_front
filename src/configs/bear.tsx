@@ -9,7 +9,7 @@ const bear: BearData[] = [
       {
         id: "about-me",
         title: "About Me",
-        file: "markdown/about-me.md?v=20260918",
+        file: "markdown/about-me.md?v=20260918-2",
         icon: "i-fa-solid:user",
         excerpt: "Rust와 React Native로 서비스를 만들고 운영하는 풀스택 개발자입니다..."
       },
@@ -72,7 +72,7 @@ const bear: BearData[] = [
       {
         id: "classicmap",
         title: "ClassicMap",
-        file: "markdown/classicmap.md?v=20260810",
+        file: "markdown/classicmap.md?v=20260918",
         icon: "i-fa-solid:music",
         excerpt:
           "클래식 음악 입문자를 위한 로드맵 서비스. Apple Music, Spotify API 연동...",
