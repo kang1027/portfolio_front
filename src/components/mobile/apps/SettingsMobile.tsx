@@ -216,7 +216,9 @@ function AboutSection() {
         />
       </div>
       <div className="text-xl font-semibold">{displayName}</div>
-      <div className="text-sm text-c-500 mb-6">Full-stack Developer @ (주)오파크</div>
+      <div className="text-sm text-c-500 mb-6">
+        Software Engineer · Fullstack / AI-Driven Development
+      </div>
       <div className="bg-white dark:bg-neutral-800 rounded-xl divide-y divide-black/5 dark:divide-white/5 text-left">
         <a
           href={githubLink}
