@@ -80,7 +80,7 @@ aside는 쓰는 방법이 두 가지인데, aside 자체 에이전트에게 일�
 
 ![](/blog/selenium-vs-aside-agent-benchmark/sva-pulse-live.gif)
 
-*빨간 LIVE 띠가 초당 5번 깜빡이는 실제 화면이다. (깜빡임이 빠르니 주의.)*
+*빨간 LIVE 띠가 초당 5번 깜빡이는 실제 화면이다.*
 
 ![](/blog/selenium-vs-aside-agent-benchmark/sva-pulse-modal.png)
 
