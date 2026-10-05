@@ -6,6 +6,7 @@
 // - frontmatter `publish: true`인 노트만 발행. 나머지는 초고로 간주.
 // - `![[이미지]]` 첨부는 public/blog/<slug>/로 복사하고 표준 마크다운 경로로 재작성.
 // - `[[노트]]` 링크는 대상이 발행 노트면 /blog/<slug> 링크, 아니면 일반 텍스트로 변환.
+// - properties `image`에 첨부 이름을 적으면 그 이미지를 공유 미리보기로 쓴다. 없으면 빌드 때 카드를 자동으로 만든다.
 import { promises as fs } from "node:fs";
 import path from "node:path";
 import process from "node:process";
@@ -209,6 +210,28 @@ async function transformBody(body, slug, assetIndex, slugByNoteName) {
   return result.join("");
 }
 
+// 공유 미리보기 이미지: properties의 image에 첨부 이름이나 [[첨부]]를 적으면 자산으로 복사해 경로를 넘긴다.
+async function resolveCoverImage(value, slug, assetIndex) {
+  if (typeof value !== "string" || !value.trim()) return undefined;
+  const target = value
+    .trim()
+    .replace(/^!?\[\[|\]\]$/g, "")
+    .split("|")[0]
+    .trim();
+  if (/^https?:\/\//.test(target)) return target;
+
+  const sourcePath = assetIndex.get(nfc(path.basename(target)));
+  if (!sourcePath) {
+    warnings.push(`${slug}: image "${target}"를 vault에서 찾지 못해 자동 카드로 대체`);
+    return undefined;
+  }
+  const assetName = sanitizeAssetName(path.basename(target));
+  const destDir = path.join(OUT_ASSETS_DIR, slug);
+  await fs.mkdir(destDir, { recursive: true });
+  await fs.copyFile(sourcePath, path.join(destDir, assetName));
+  return `/blog/${slug}/${assetName}`;
+}
+
 function serializePost(meta, body) {
   const lines = [
     "---",
@@ -221,6 +244,7 @@ function serializePost(meta, body) {
   ];
   if (meta.project) lines.push(`project: "${meta.project}"`);
   if (meta.projectHref) lines.push(`projectHref: "${meta.projectHref}"`);
+  if (meta.image) lines.push(`image: "${meta.image}"`);
   lines.push("---", "", body, "");
   return lines.join("\n");
 }
@@ -311,7 +335,8 @@ async function main() {
       projectHref:
         typeof data.projectHref === "string" && data.projectHref
           ? data.projectHref
-          : undefined
+          : undefined,
+      image: await resolveCoverImage(data.image, note.slug, assetIndex)
     };
     if (!meta.summary) {
       warnings.push(`${note.slug}: summary를 만들 본문이 없음 — 빈 값으로 발행됨`);

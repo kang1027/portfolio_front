@@ -1,7 +1,9 @@
+import { createHash } from "node:crypto";
 import { promises as fs } from "node:fs";
 import path from "node:path";
 import process from "node:process";
 import { fileURLToPath } from "node:url";
+import { CARD_HEIGHT, CARD_WIDTH, renderPostCard } from "./blog-og-image.mjs";
 
 const REPO_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const DIST_DIR = path.join(REPO_ROOT, "dist");
@@ -104,6 +106,7 @@ async function readMarkdownPosts(groups) {
       tags,
       href: `/blog/${slug}`,
       readingMinutes: Math.max(1, Math.ceil(charCount / 500)),
+      image: typeof data.image === "string" && data.image ? data.image : undefined,
       year: requireText(data, "date", sourcePath).slice(0, 4)
     });
   }
@@ -234,8 +237,7 @@ function groupMeta(config, group, posts) {
   };
 }
 
-function articleMeta(config, post, group) {
-  const image = config.blogImage;
+function articleMeta(config, post, group, image) {
   return {
     canonical: siteUrl(config, post.href),
     description: post.summary,
@@ -268,6 +270,43 @@ function articleMeta(config, post, group) {
   };
 }
 
+function formatKoreanDate(date) {
+  const [year, month, day] = date.split("-").map(Number);
+  return `${year}년 ${month}월 ${day}일`;
+}
+
+// 글 frontmatter의 image가 있으면 그걸 쓰고, 없으면 글마다 미리보기 카드를 구워 dist/og/blog/에 둔다.
+// 카드를 못 만들면(폰트 다운로드 실패 등) 빌드를 막지 않고 블로그 기본 이미지로 돌아간다.
+async function postImage(config, post, group) {
+  if (post.image) return { path: post.image, alt: post.title };
+
+  try {
+    const png = await renderPostCard({
+      title: post.title,
+      summary: post.summary,
+      groupTitle: group.title,
+      dateLabel: formatKoreanDate(post.date),
+      readingLabel: `${post.readingMinutes}분 읽기`
+    });
+    const relativePath = `og/blog/${post.slug}.png`;
+    await fs.mkdir(path.join(DIST_DIR, "og/blog"), { recursive: true });
+    await fs.writeFile(path.join(DIST_DIR, relativePath), png);
+    // nginx가 png를 1년 immutable로 캐시하니, 내용이 바뀌면 주소도 바뀌게 한다.
+    const version = createHash("sha1").update(png).digest("hex").slice(0, 8);
+    return {
+      path: `/${relativePath}?v=${version}`,
+      width: CARD_WIDTH,
+      height: CARD_HEIGHT,
+      alt: `${post.title} | ${config.blogName}`
+    };
+  } catch (error) {
+    process.stderr.write(
+      `⚠ ${post.slug}: 미리보기 카드를 못 만들어 기본 이미지를 씀 (${error instanceof Error ? error.message : String(error)})\n`
+    );
+    return config.blogImage;
+  }
+}
+
 function seoBlock(meta) {
   const keywords = Array.isArray(meta.keywords)
     ? meta.keywords.join(", ")
@@ -284,8 +323,12 @@ function seoBlock(meta) {
     `    <meta property="og:title" content="${escapeHtml(meta.title)}" />`,
     `    <meta property="og:description" content="${escapeHtml(meta.description)}" />`,
     `    <meta property="og:image" content="${escapeHtml(meta.image)}" />`,
-    `    <meta property="og:image:width" content="${escapeHtml(meta.imageWidth)}" />`,
-    `    <meta property="og:image:height" content="${escapeHtml(meta.imageHeight)}" />`,
+    ...(meta.imageWidth && meta.imageHeight
+      ? [
+          `    <meta property="og:image:width" content="${escapeHtml(meta.imageWidth)}" />`,
+          `    <meta property="og:image:height" content="${escapeHtml(meta.imageHeight)}" />`
+        ]
+      : []),
     `    <meta property="og:image:alt" content="${escapeHtml(meta.imageAlt)}" />`,
     '    <meta property="og:locale" content="ko_KR" />',
     '    <meta property="og:site_name" content="kang1027\'s Portfolio" />'
@@ -307,6 +350,7 @@ function seoBlock(meta) {
     `    <meta name="twitter:title" content="${escapeHtml(meta.title)}" />`,
     `    <meta name="twitter:description" content="${escapeHtml(meta.description)}" />`,
     `    <meta name="twitter:image" content="${escapeHtml(meta.image)}" />`,
+    `    <meta name="twitter:image:alt" content="${escapeHtml(meta.imageAlt)}" />`,
     `    <link rel="canonical" href="${escapeHtml(meta.canonical)}" />`,
     `    <script type="application/ld+json">${escapeJsonForScript(meta.jsonLd)}</script>`,
     "    <!-- SEO:END -->"
@@ -381,7 +425,11 @@ async function main() {
   for (const post of posts) {
     const group = groupById.get(post.group);
     if (!group) throw new Error(`Unknown group "${post.group}" for ${post.slug}`);
-    await writeRoute(post.href, withSeo(baseHtml, articleMeta(config, post, group)));
+    const image = await postImage(config, post, group);
+    await writeRoute(
+      post.href,
+      withSeo(baseHtml, articleMeta(config, post, group, image))
+    );
   }
 
   const sitemapRoutes = [
