@@ -215,7 +215,7 @@ function BlogArticleView({ slug }: { slug: string }) {
         className="absolute inset-0 overflow-y-auto px-4 text-c-500"
         style={{ paddingTop: NAV_TOP_PT }}
       >
-        글을 못 찾았어.
+        글을 찾을 수 없습니다.
       </div>
     );
   }

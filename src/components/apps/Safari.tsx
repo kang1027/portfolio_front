@@ -70,9 +70,9 @@ const BlockedEmbedPage = ({ url, openExternalURL }: BlockedEmbedPageProps) => {
         <div className="mx-auto size-14 rounded-2xl flex-center bg-c-200 text-c-700">
           <span className="i-ion:open-outline text-3xl" />
         </div>
-        <div className="mt-5 text-2xl font-bold text-c-900">새 창에서 열어야 함</div>
+        <div className="mt-5 text-2xl font-bold text-c-900">새 창에서 열어 주세요</div>
         <div className="mt-3 text-sm leading-6 text-c-600">
-          {host}가 내장 브라우저 표시를 막고 있음.
+          {host}에서 내장 브라우저 표시를 막고 있습니다.
         </div>
         <button
           type="button"

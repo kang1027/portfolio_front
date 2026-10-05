@@ -4,7 +4,7 @@
   "authorName": "강동현",
   "authorUrl": "https://www.kang1027.com/",
   "homeTitle": "kang1027's Portfolio",
-  "homeDescription": "macOS 스타일로 구성한 강동현의 포트폴리오. 프로젝트, 기술 스택, 연락처, 작업 기록을 담고 있다.",
+  "homeDescription": "macOS 스타일로 구성한 강동현의 포트폴리오. 프로젝트, 기술 스택, 연락처, 작업 기록을 담고 있습니다.",
   "homeKeywords": ["portfolio", "developer", "macOS", "kang1027", "web development"],
   "homeImage": {
     "path": "/screenshots/light.png?v=20260810",

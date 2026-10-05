@@ -371,9 +371,9 @@ function BlogNotFoundPane() {
         url={`${siteUrl}/blog`}
       />
       <section className="blog-article-shell">
-        <h1>글을 못 찾았어.</h1>
+        <h1>글을 찾을 수 없습니다.</h1>
         <p className="blog-not-found-copy">
-          주소가 바뀌었거나 아직 공개되지 않은 글이야.
+          주소가 바뀌었거나 아직 공개되지 않은 글입니다.
         </p>
         <a href="/blog" className="blog-return-link">
           글 목록으로 돌아가기
