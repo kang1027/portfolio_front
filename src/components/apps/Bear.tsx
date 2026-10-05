@@ -376,7 +376,7 @@ const Content = ({ contentID, contentURL }: ContentProps) => {
   return (
     <div className={`markdown ${contentWidth} mx-auto px-2 py-6 text-c-700`}>
       <ReactMarkdown
-        remarkPlugins={[remarkGfm, remarkMath]}
+        remarkPlugins={[[remarkGfm, { singleTilde: false }], remarkMath]}
         rehypePlugins={[
           rehypeRaw,
           rehypeKatex,

@@ -127,7 +127,7 @@ export default function MarkdownArticle({
   return (
     <div className={`markdown ${className}`}>
       <ReactMarkdown
-        remarkPlugins={[remarkGfm, remarkMath]}
+        remarkPlugins={[[remarkGfm, { singleTilde: false }], remarkMath]}
         remarkRehypeOptions={{
           footnoteLabel: "각주",
           footnoteBackLabel: "본문으로 돌아가기"

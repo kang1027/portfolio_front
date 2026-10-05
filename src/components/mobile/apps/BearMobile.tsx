@@ -192,7 +192,7 @@ function ArticleView({ file }: ArticleViewProps) {
           <div className="text-red-500">불러오기 실패: {error}</div>
         ) : (
           <ReactMarkdown
-            remarkPlugins={[remarkGfm]}
+            remarkPlugins={[[remarkGfm, { singleTilde: false }]]}
             rehypePlugins={[
               rehypeRaw,
               [rehypeExternalLinks, { target: "_blank", rel: ["noopener", "noreferrer"] }]
